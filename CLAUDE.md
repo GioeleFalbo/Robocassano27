@@ -9,11 +9,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - Si scrive in **italiano**, in modo diretto e semplice (i ragazzi devono capire).
 
 ## Regole fisse (da rispettare sempre)
-1. Ogni modifica al codice del robot = **versione nuova** in una cartella nuova: `ClaudeRob_V<n>` (ultima: **V39**).
+1. Ogni modifica al codice del robot = **versione nuova** in una cartella nuova: `ClaudeRob_V<n>` (ultima: **V40**).
    Il simulatore ha la sua numerazione: `ClaudeRob_Simulatore_V<n>` (ultimo: **V31**).
 2. **Non modificare mai** le cartelle delle versioni già consegnate: si copia l'ultima e si lavora sulla copia.
 3. I **nomi dei file** delle classi non cambiano mai (`RwdFoto.py`, `ViennaClsRobot.py`, `ViennaDataConf.py`, ...).
-4. Ogni modifica è commentata nel codice con **`[FIX n]`** (ultimo: **FIX 104**), con il motivo (di solito: quale scatola
+4. Ogni modifica è commentata nel codice con **`[FIX n]`** (ultimo: **FIX 105**), con il motivo (di solito: quale scatola
    nera, quale secondo, cosa si vede nei dati).
 5. In ogni versione aggiornare **`CHANGELOG.md`** (sezione nuova in cima + riga nella tabella delle versioni) e
    **`LEGGIMI_MODIFICHE.md`** (una riga per FIX), con **fine riga CRLF** (Windows).
@@ -26,11 +26,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
    (`ClaudeRob_Simulatore_V*`), non cancella niente; il suo lavoro finisce con un riassunto "Shuri:".
 
 ## Su GitHub
-- Il repository contiene solo l'**ultima versione** del codice, il simulatore V31, gli strumenti di prova e alcune scatole
-  nere recenti, con gli **stessi nomi di cartella** del Mac (così i percorsi relativi funzionano uguale). Le versioni
+- Il repository contiene le **ultime versioni** del codice (V39 come riferimento, V40), il simulatore V31, gli strumenti
+  di prova, il Laboratorio Shuri (solo gli strumenti), i pezzi stampati (`Meccanica_STL/`) e alcune scatole nere recenti, con gli **stessi nomi di cartella** del Mac (così i percorsi relativi funzionano uguale). Le versioni
   vecchie (V25-V38) restano sul Mac; la loro storia è nel `CHANGELOG.md`.
-- Versione nuova: si copia `ClaudeRob_V39` in `ClaudeRob_V40`, si lavora lì, poi un commit con un messaggio tipo
-  "V40: FIX 105 ...". Non si modifica la cartella della versione precedente (resta come riferimento per i confronti).
+- Versione nuova: si copia l'ultima (`ClaudeRob_V40`) in `ClaudeRob_V41`, si lavora lì, poi un commit con un messaggio tipo
+  "V41: FIX 106 ...". Non si modifica la cartella della versione precedente (resta come riferimento per i confronti).
 - Le scatole nere nuove vanno in `ScatoleNere/`. File rigenerabili (replay, zip, `__pycache__`) esclusi da `.gitignore`.
 
 ## Cartelle
@@ -45,7 +45,7 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   - `NOTE.md` – note datate del prof.
 - Raspberry: il programma oggi viene lanciato da **`/home/pi`**, una cartella con 82 file .py misti: per questo
   l'**impronta** nella scatola nera risulta sempre "diversa". Va copiata la cartella pulita e lanciata da lì:
-  `cd ~/ClaudeRob_V39 && python3 RwdFoto.py` (oppure `./avvia.sh`).
+  `cd ~/ClaudeRob_V40 && python3 RwdFoto.py` (oppure `./avvia.sh`).
 
 ## Il robot
 - Raspberry Pi 5, due camere Picamera2 (camera linea + camera arena), YOLO NCNN (classi della linea: `Ln` linea,
@@ -59,7 +59,7 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   lato corto accanto al triangolo rosso; i triangoli (rosso e verde) vengono spostati tra le prove; c'è una parete a
   destra di una parte della pista e un'altalena dopo l'uscita.
 
-## Il codice (ClaudeRob_V39, impronta 9ef3d48e550bc741)
+## Il codice (ClaudeRob_V40, impronta dcd59068b49486ac; V39: 9ef3d48e550bc741)
 - `RwdFoto.py` – programma di gara (~4500 righe): seguilinea `InseguitoreIA`, verdi e incroci, ostacolo, ingresso
   (`TrovaIngressoArena`, `DirezioneIngresso`, `CentraSullIngresso`, `EntraDallaPorta`), palline (`ArenaAI`), uscita
   (`TrovaUscitaArena` → `AvvicinatiAlMuro` / `GiroDeiMuri` / `SeguiParete` / `EsciDallaPortaDavanti` /
@@ -90,9 +90,13 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   (`ROSSO_FOTO` in `pista_scuola.py`). `SIMULA.bat`/`SIMULA.command` partono ancora con ClaudeRob_V34.
 - Limiti: il laser è un raggio sottile (il VL53L1X vero ha un cono largo); contro uno stipite il robot si ferma e non
   ruota; niente altalena; il robot vero risponde circa 0,1 s più tardi.
-- Risultati di riferimento V39: scuola semi 1-6 arrivo (255-259 s); rcj2026 1468, lunga 1893, contorto 1989 (tutti con
-  arrivo); arena_parete e gara arrivo. `scuola_basso` e `scuola_rampa` non arrivano (parete di destra presa per ostacolo,
-  così da V34).
+- Risultati di riferimento V39 = V40 (identici): scuola semi 1-6 arrivo (255-259 s); rcj2026 1468, lunga 1893, contorto
+  1989 (tutti con arrivo); arena_parete (227 s) e gara (362 s) arrivo. `scuola_basso` e `scuola_rampa` non arrivano (parete
+  di destra presa per ostacolo, così da V34); anche `scuola_parete` non arriva (fuori campo a 115 s).
+- Lo scenario `scuola` (e gli altri senza piastrelle) non ha le LoP: per provare lo switch spento lì bisogna spegnere
+  `switch_avvio` del mondo da uno script di prova. Le LoP vere ci sono in `rcj2026`, `lunga`, `contorto`.
+- V40 `stress_guasti_reali` (rcj2026, `imu_bloccato`, `tof_fr_spurie` 0.15, `tof_lat_spurie` 0.1): 8 minuti, 984 punti, 1 LoP
+  (la V39 si piantava a 417,9 s).
 
 ## Storia delle versioni (V28 → V39)
 - **V28** (2/11) FIX 83-85: scarico solo con triangolo al centro; uscita centrata sulla striscia nera; interruzione dopo curva.
@@ -109,21 +113,23 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - **V39** FIX 104: uscita col laser davanti (sotto 30 cm è il muro accanto alla porta: cerca l'apertura verso l'interno);
   niente tentativi da 0 cm; "girato da solo" solo oltre il ritardo dello sterzo; altalena "ferma" anche inclinata;
   messaggio "Arduino zitto: switch spento?".
+- **V40** (8/11, prima versione fatta in Claude Code) FIX 105: con lo switch spento (LoP) il programma non si pianta più in
+  `ControllaAperturaMuro` (funzione `SwitchSpento`); `Dritto` a switch spento ferma i motori e aspetta 0,1 s. Prova: switch
+  spento in 74 istanti diversi (scuola e rcj2026): V39 1 blocco, V40 nessuno; gare normali identiche alla V39.
 
 ## Com'è andata sul robot vero
 - 5/11 16:12 (V36): percorso completo, arrivo a 429 s.
 - 6/11 10:48 (V38): percorso completo, arrivo a 376 s, 3 palline su 3, altalena riconosciuta e superata. Tempi: seguilinea
   49 s, ingresso 33 s, palline 91 s, uscita 187 s (110 s persi davanti al muro accanto alla porta → corretto in V39).
-- Il prof: l'ingresso "funziona sempre" (dalla V37). La V39 **non è ancora stata provata** sul robot vero.
+- Il prof: l'ingresso "funziona sempre" (dalla V37). La V39 e la V40 **non sono ancora state provate** sul robot vero.
 
 ## Aperto / da fare
-1. **Provare la V39 sul robot vero** e guardare la scatola nera: uscita (messaggi "Uscita: davanti c'è muro..."),
+1. **Provare la V40 sul robot vero** (stesso comportamento della V39 con lo switch acceso) e guardare la scatola nera: uscita (messaggi "Uscita: davanti c'è muro..."),
    ingresso, altalena.
 2. **Altalena**: il prof dice che "non ci siamo ancora" (dopo lo stoppie il robot perde la linea). La V38/V39 la
    riconosce; serve una scatola nera con l'altalena per capire cosa fa dopo.
-3. **Shuri (rapporto del 5/11 sulla V37)**: nella prova `stress_guasti_reali` il programma **si pianta** (ciclo senza
-   attesa in `ControllaAperturaMuro` quando lo switch è spento dopo una LoP) – non ancora corretto; con la bussola
-   disturbata (`stress_bussola`) l'uscita "incerta" lascia il robot incastrato nella porta.
+3. **Shuri (rapporto del 5/11 sulla V37)**: il blocco in `stress_guasti_reali` è **corretto nella V40** (FIX 105). Resta
+   aperto: con la bussola disturbata (`stress_bussola`) l'uscita "incerta" lascia il robot incastrato nella porta.
 4. Parete di destra presa per ostacolo in `scuola_basso` / `scuola_rampa` (simulatore).
 5. Uscita: le correzioni lungo i muri "non sono forti come vorremmo ma stiamo migliorando" (il prof).
 6. Raspberry: lanciare da una cartella pulita della versione (impronta giusta, nessun file vecchio).
