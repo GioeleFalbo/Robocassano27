@@ -5,7 +5,8 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 
 ## Chi siamo
 - Prof. Giovanni Vaccaro, IISS "Erodoto di Thurii" (Cassano allo Ionio), indirizzo Elettronica e robotica. Squadra
-  **RoboCassano**, RoboCup Junior **Rescue Line**. Con lui lavora lo studente **Battista**.
+  **RoboCassano**, RoboCup Junior **Rescue Line**. Con lui lavorano gli studenti **Battista** e **Gioele**
+  (collaboratori su GitHub; la loro guida è `COME_LAVORARE.md`).
 - Si scrive in **italiano**, in modo diretto e semplice (i ragazzi devono capire).
 
 ## Regole fisse (da rispettare sempre)
@@ -26,6 +27,10 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
    (`ClaudeRob_Simulatore_V*`), non cancella niente; il suo lavoro finisce con un riassunto "Shuri:".
 
 ## Su GitHub
+- `main` è **protetto**: si cambia solo con una pull request, che unisce il prof. Claude e gli studenti lavorano su rami.
+- **Versioni prenotate con le issue**: chi apre per primo l'issue "V<n> – nome – argomento" prende quella versione (e i
+  FIX successivi); il prossimo prende la V<n+1>. Prima di cominciare una versione nuova, Claude guarda le issue aperte e le
+  pull request: se la V<n> è già presa da Battista o Gioele, usa il numero dopo. Ognuno lavora su un pezzo diverso del robot.
 - Il repository contiene le **ultime versioni** del codice (V39 come riferimento, V40), il simulatore V31, gli strumenti
   di prova, il Laboratorio Shuri (solo gli strumenti), i pezzi stampati (`Meccanica_STL/`) e alcune scatole nere recenti, con gli **stessi nomi di cartella** del Mac (così i percorsi relativi funzionano uguale). Le versioni
   vecchie (V25-V38) restano sul Mac; la loro storia è nel `CHANGELOG.md`.
