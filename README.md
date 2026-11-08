@@ -12,6 +12,8 @@ Robot della squadra **RoboCassano** (IISS "Erodoto di Thurii", Cassano allo Ioni
 | `Meccanica_STL/` | i pezzi stampati in 3D del robot (millimetri) |
 | `ScatoleNere/` | alcune scatole nere vere (gare del 5 e 6 novembre 2026) e la foto dell'arena dall'alto |
 | `CLAUDE.md` | regole del progetto, storia delle versioni e cose da fare (lo legge Claude Code) |
+| `COME_LAVORARE.md` | **per chi entra nella squadra**: come si lavora con GitHub, le regole delle versioni, le prove nel simulatore |
+| `Aggiorna da GitHub.command` | doppio clic sul Mac: aggiorna la cartella `02_Robotica` con l'ultima versione di `main` |
 
 Provare una versione nel simulatore:
 ```
