@@ -8,7 +8,7 @@ Robot della squadra **RoboCassano** (IISS "Erodoto di Thurii", Cassano allo Ioni
 | `ClaudeRob_V39/` | la versione precedente, tenuta per i confronti nel simulatore |
 | `ClaudeRob_Simulatore_V31/` | il simulatore (Python 3 + `numpy` + `opencv-python`), con la pista della scuola |
 | `Strumenti_prove_Claude/` | prove automatiche di porte e altalena nel simulatore |
-| `Laboratorio Shuri/` | gli strumenti di Shuri: batteria di prove nel simulatore, analisi delle scatole nere, ultimo rapporto |
+| `Laboratorio Shuri/` | gli strumenti di **Shuri**, l'agente collaudatore sul Mac del prof: batteria di prove nel simulatore, analisi delle scatole nere, ultimo rapporto. Chi è: `CHI_E_SHURI.md` |
 | `Meccanica_STL/` | i pezzi stampati in 3D del robot (millimetri) |
 | `ScatoleNere/` | alcune scatole nere vere (gare del 5 e 6 novembre 2026) e la foto dell'arena dall'alto |
 | `CLAUDE.md` | regole del progetto, storia delle versioni e cose da fare (lo legge Claude Code) |

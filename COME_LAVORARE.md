@@ -83,6 +83,8 @@ italiano semplice"*, *"cosa fa questa riga?"*. E spiegatevelo a vicenda: insegna
 1. **Prova sul robot** con l'ultima versione (cartella pulita, sezione 9), sulla pista della scuola: arena **e** altalena,
    più volte. Annotate a parte cosa vedete ("dopo l'altalena ha perso la linea", "incastrato nella porta d'uscita"…).
 2. **Scatola nera sul Mac** con `Laboratorio Shuri/Scarica scatole nere.command`.
+   Scrivete anche le **note di laboratorio**: un file di testo con lo stesso nome della scatola nera
+   (`run_..._V40.txt`) con dov'era il robot e cosa avete visto. Shuri le legge e le mette nell'analisi.
 3. **Scatola nera su GitHub, una volta sola**, in `ScatoleNere/` (con un ramo e una pull request, oppure la carica il
    prof con Claude). Da lì la leggono tutti: il vostro Claude, quello del prof, Shuri. Non serve darla a ogni Claude.
 4. **Una issue per ognuno**, ognuno sul suo pezzo, per esempio "V41 – Battista – altalena" e "V42 – Gioele – uscita".
@@ -167,6 +169,14 @@ prova prima/dopo.
 5. Un compito = una sessione nuova = un ramo = una pull request.
 6. Prima di aprire la pull request, chiedi a Claude di spiegarti la modifica finché sai rispondere da solo alle tre
    domande della sezione 0. **La pull request la firmi tu**: il prof la approva solo se sai spiegarla.
+
+### Shuri, il collaudatore
+
+Oltre a Claude c'è un secondo agente, **Shuri**, che gira sul Mac del prof: **prova** ogni versione nel simulatore
+(circa 16 gare, comprese le prove con i guasti), **analizza** le scatole nere vere con le foto delle camere e scrive un
+**rapporto** con i problemi (DOVE / COSA / VERIFICATO o IPOTESI). **Non modifica mai il codice.** Prima di cominciare
+un lavoro leggete il suo ultimo rapporto (`Laboratorio Shuri/SHURI_rapporto.md`) e la sua scheda sulle scatole nere
+(`ScatoleNere/SHURI_scheda_reale.md`, quando c'è). Chi è, cosa fa e come usarlo: **`Laboratorio Shuri/CHI_E_SHURI.md`**.
 
 ## 8. Cosa NON fare
 
