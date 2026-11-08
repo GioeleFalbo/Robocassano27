@@ -1,0 +1,37 @@
+{
+  "ClaudeRob_V27": {
+    "data": "2026-11-02T16:07",
+    "impronta": "80f9d925e94fe51f",
+    "codice": "ClaudeRob_V27",
+    "simulatore": "ClaudeRob_Simulatore_V28",
+    "cartella": "2026-11-02_1607_ClaudeRob_V27"
+  },
+  "ClaudeRob_V25": {
+    "data": "2026-11-02T16:17",
+    "impronta": "3d26e9c379fe29f2",
+    "codice": "ClaudeRob_V25",
+    "simulatore": "ClaudeRob_Simulatore_V28",
+    "cartella": "2026-11-02_1617_ClaudeRob_V25"
+  },
+  "ClaudeRob_V29": {
+    "data": "2026-11-03T08:10",
+    "impronta": "b96d1c5e84fb96dd",
+    "codice": "ClaudeRob_V29",
+    "simulatore": "ClaudeRob_Simulatore_V28",
+    "cartella": "2026-11-03_0810_ClaudeRob_V29"
+  },
+  "ClaudeRob_V30": {
+    "data": "2026-11-03T09:48",
+    "impronta": "963769661822edac",
+    "codice": "ClaudeRob_V30",
+    "simulatore": "ClaudeRob_Simulatore_V29",
+    "cartella": "2026-11-03_0948_ClaudeRob_V30"
+  },
+  "ClaudeRob_V37": {
+    "data": "2026-11-05T21:13",
+    "impronta": "6bd7433259d5c305",
+    "codice": "ClaudeRob_V37",
+    "simulatore": "ClaudeRob_Simulatore_V31",
+    "cartella": "2026-11-05_2113_ClaudeRob_V37"
+  }
+}

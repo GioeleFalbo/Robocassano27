@@ -1,0 +1,65 @@
+cartella;codice;data;prova;scenario;esito;tempo_s;punti;massimo;perc;piastrelle;lop;urti;vittime;arrivato
+2026-11-02_1607_ClaudeRob_V27;ClaudeRob_V27;2026-11-02T16:07;rcj2026_s1;rcj2026;arrivo;395.93;1468.0;1468.0;100.0;55.0;0.0;3.0;3.0;True
+2026-11-02_1607_ClaudeRob_V27;ClaudeRob_V27;2026-11-02T16:07;rcj2026_s2;rcj2026;arrivo;391.73;1468.0;1468.0;100.0;55.0;0.0;3.0;3.0;True
+2026-11-02_1607_ClaudeRob_V27;ClaudeRob_V27;2026-11-02T16:07;rcj2026_s3;rcj2026;arrivo;390.32;1468.0;1468.0;100.0;55.0;0.0;3.0;3.0;True
+2026-11-02_1607_ClaudeRob_V27;ClaudeRob_V27;2026-11-02T16:07;lunga_s1;lunga;tempo scaduto;480.0;1728.7;1893.4;91.3;82.0;0.0;4.0;3.0;False
+2026-11-02_1607_ClaudeRob_V27;ClaudeRob_V27;2026-11-02T16:07;lunga_s2;lunga;tempo scaduto;480.0;861.0;1893.4;45.5;82.0;0.0;3.0;1.0;False
+2026-11-02_1607_ClaudeRob_V27;ClaudeRob_V27;2026-11-02T16:07;contorto_s1;contorto;tempo scaduto;480.0;1503.7;1989.4;75.6;77.0;1.0;5.0;3.0;False
+2026-11-02_1607_ClaudeRob_V27;ClaudeRob_V27;2026-11-02T16:07;contorto_s2;contorto;tempo scaduto;480.0;1824.8;1989.4;91.7;77.0;0.0;3.0;3.0;False
+2026-11-02_1607_ClaudeRob_V27;ClaudeRob_V27;2026-11-02T16:07;arena_parete_s1;arena_parete;arrivo;227.45;;;;;;0.0;3.0;True
+2026-11-02_1607_ClaudeRob_V27;ClaudeRob_V27;2026-11-02T16:07;stress_argento_rampa;lunga;arrivo;477.27;1893.4;1893.4;100.0;82.0;0.0;0.0;3.0;True
+2026-11-02_1607_ClaudeRob_V27;ClaudeRob_V27;2026-11-02T16:07;stress_bussola;rcj2026;tempo scaduto;480.0;984.1;1468.0;67.0;55.0;1.0;4.0;3.0;False
+2026-11-02_1607_ClaudeRob_V27;ClaudeRob_V27;2026-11-02T16:07;stress_porta;arena_parete;arrivo;227.45;;;;;;0.0;3.0;True
+2026-11-02_1617_ClaudeRob_V25;ClaudeRob_V25;2026-11-02T16:17;rcj2026_s1;rcj2026;NON ESEGUITA;;;;;;;;;
+2026-11-02_1617_ClaudeRob_V25;ClaudeRob_V25;2026-11-02T16:17;rcj2026_s2;rcj2026;arrivo;472.6;1432.4;1468.0;97.6;55.0;1.0;9.0;3.0;True
+2026-11-02_1617_ClaudeRob_V25;ClaudeRob_V25;2026-11-02T16:17;rcj2026_s3;rcj2026;arrivo;432.2;1468.0;1468.0;100.0;55.0;0.0;7.0;3.0;True
+2026-11-02_1617_ClaudeRob_V25;ClaudeRob_V25;2026-11-02T16:17;lunga_s1;lunga;tempo scaduto;480.0;1070.2;1893.4;56.5;82.0;1.0;9.0;3.0;False
+2026-11-02_1617_ClaudeRob_V25;ClaudeRob_V25;2026-11-02T16:17;lunga_s2;lunga;tempo scaduto;480.0;666.4;1893.4;35.2;82.0;3.0;6.0;2.0;False
+2026-11-02_1617_ClaudeRob_V25;ClaudeRob_V25;2026-11-02T16:17;contorto_s1;contorto;tempo scaduto;480.0;1074.1;1989.4;54.0;77.0;1.0;5.0;2.0;False
+2026-11-02_1617_ClaudeRob_V25;ClaudeRob_V25;2026-11-02T16:17;contorto_s2;contorto;tempo scaduto;480.0;1564.1;1989.4;78.6;77.0;0.0;7.0;3.0;False
+2026-11-02_1617_ClaudeRob_V25;ClaudeRob_V25;2026-11-02T16:17;arena_parete_s1;arena_parete;arrivo;317.89;;;;;;8.0;3.0;True
+2026-11-02_1617_ClaudeRob_V25;ClaudeRob_V25;2026-11-02T16:17;stress_argento_rampa;lunga;tempo scaduto;480.0;265.0;1893.4;14.0;82.0;9.0;3.0;0.0;False
+2026-11-02_1617_ClaudeRob_V25;ClaudeRob_V25;2026-11-02T16:17;stress_bussola;rcj2026;tempo scaduto;480.0;1152.5;1468.0;78.5;55.0;0.0;14.0;3.0;False
+2026-11-02_1617_ClaudeRob_V25;ClaudeRob_V25;2026-11-02T16:17;stress_porta;arena_parete;arrivo;334.14;;;;;;9.0;3.0;True
+2026-11-03_0810_ClaudeRob_V29;ClaudeRob_V29;2026-11-03T08:10;rcj2026_s1;rcj2026;arrivo;396.1;1468.0;1468.0;100.0;55.0;0.0;3.0;3.0;True
+2026-11-03_0810_ClaudeRob_V29;ClaudeRob_V29;2026-11-03T08:10;rcj2026_s2;rcj2026;arrivo;391.81;1468.0;1468.0;100.0;55.0;0.0;3.0;3.0;True
+2026-11-03_0810_ClaudeRob_V29;ClaudeRob_V29;2026-11-03T08:10;rcj2026_s3;rcj2026;arrivo;390.46;1468.0;1468.0;100.0;55.0;0.0;3.0;3.0;True
+2026-11-03_0810_ClaudeRob_V29;ClaudeRob_V29;2026-11-03T08:10;lunga_s1;lunga;tempo scaduto;480.0;1728.7;1893.4;91.3;82.0;0.0;4.0;3.0;False
+2026-11-03_0810_ClaudeRob_V29;ClaudeRob_V29;2026-11-03T08:10;lunga_s2;lunga;tempo scaduto;480.0;1687.6;1893.4;89.1;82.0;0.0;0.0;3.0;False
+2026-11-03_0810_ClaudeRob_V29;ClaudeRob_V29;2026-11-03T08:10;contorto_s1;contorto;tempo scaduto;480.0;1742.4;1989.4;87.6;77.0;0.0;4.0;3.0;False
+2026-11-03_0810_ClaudeRob_V29;ClaudeRob_V29;2026-11-03T08:10;contorto_s2;contorto;tempo scaduto;480.0;1824.8;1989.4;91.7;77.0;0.0;3.0;3.0;False
+2026-11-03_0810_ClaudeRob_V29;ClaudeRob_V29;2026-11-03T08:10;arena_parete_s1;arena_parete;arrivo;227.57;;;;;;0.0;3.0;True
+2026-11-03_0810_ClaudeRob_V29;ClaudeRob_V29;2026-11-03T08:10;stress_argento_rampa;lunga;arrivo;477.21;1893.4;1893.4;100.0;82.0;0.0;0.0;3.0;True
+2026-11-03_0810_ClaudeRob_V29;ClaudeRob_V29;2026-11-03T08:10;stress_bussola;rcj2026;arrivo;405.52;1468.0;1468.0;100.0;55.0;0.0;4.0;3.0;True
+2026-11-03_0810_ClaudeRob_V29;ClaudeRob_V29;2026-11-03T08:10;stress_porta;arena_parete;arrivo;227.57;;;;;;0.0;3.0;True
+2026-11-03_0948_ClaudeRob_V30;ClaudeRob_V30;2026-11-03T09:48;rcj2026_s1;rcj2026;arrivo;458.38;1468.0;1468.0;100.0;55.0;0.0;3.0;3.0;True
+2026-11-03_0948_ClaudeRob_V30;ClaudeRob_V30;2026-11-03T09:48;rcj2026_s2;rcj2026;arrivo;407.69;1468.0;1468.0;100.0;55.0;0.0;3.0;3.0;True
+2026-11-03_0948_ClaudeRob_V30;ClaudeRob_V30;2026-11-03T09:48;rcj2026_s3;rcj2026;arrivo;406.34;1468.0;1468.0;100.0;55.0;0.0;3.0;3.0;True
+2026-11-03_0948_ClaudeRob_V30;ClaudeRob_V30;2026-11-03T09:48;lunga_s1;lunga;tempo scaduto;480.0;1687.6;1893.4;89.1;82.0;0.0;0.0;3.0;False
+2026-11-03_0948_ClaudeRob_V30;ClaudeRob_V30;2026-11-03T09:48;lunga_s2;lunga;tempo scaduto;480.0;1687.6;1893.4;89.1;82.0;0.0;1.0;3.0;False
+2026-11-03_0948_ClaudeRob_V30;ClaudeRob_V30;2026-11-03T09:48;contorto_s1;contorto;tempo scaduto;480.0;1742.4;1989.4;87.6;77.0;0.0;5.0;3.0;False
+2026-11-03_0948_ClaudeRob_V30;ClaudeRob_V30;2026-11-03T09:48;contorto_s2;contorto;tempo scaduto;480.0;1824.8;1989.4;91.7;77.0;0.0;3.0;3.0;False
+2026-11-03_0948_ClaudeRob_V30;ClaudeRob_V30;2026-11-03T09:48;arena_parete_s1;arena_parete;arrivo;227.57;;;;;;0.0;3.0;True
+2026-11-03_0948_ClaudeRob_V30;ClaudeRob_V30;2026-11-03T09:48;stress_argento_rampa;lunga;tempo scaduto;480.0;1728.7;1893.4;91.3;82.0;0.0;2.0;3.0;False
+2026-11-03_0948_ClaudeRob_V30;ClaudeRob_V30;2026-11-03T09:48;stress_bussola;rcj2026;arrivo;421.21;1468.0;1468.0;100.0;55.0;0.0;5.0;3.0;True
+2026-11-03_0948_ClaudeRob_V30;ClaudeRob_V30;2026-11-03T09:48;stress_porta;arena_parete;arrivo;227.57;;;;;;0.0;3.0;True
+2026-11-03_0948_ClaudeRob_V30;ClaudeRob_V30;2026-11-03T09:48;stress_guasti_reali;rcj2026;tempo scaduto;480.0;1103.1;1468.0;75.1;55.0;2.0;5.0;3.0;False
+2026-11-03_0948_ClaudeRob_V30;ClaudeRob_V30;2026-11-03T09:48;stress_guasti_lunga;lunga;tempo scaduto;480.0;1086.6;1893.4;57.4;82.0;1.0;5.0;3.0;False
+2026-11-03_0948_ClaudeRob_V30;ClaudeRob_V30;2026-11-03T09:48;scuola;scuola;tempo scaduto;420.0;;;;;;1.0;0.0;False
+2026-11-03_0948_ClaudeRob_V30;ClaudeRob_V30;2026-11-03T09:48;scuola_rampa;scuola_rampa;tempo scaduto;300.0;;;;;;0.0;0.0;False
+2026-11-05_2113_ClaudeRob_V37;ClaudeRob_V37;2026-11-05T21:13;rcj2026_s1;rcj2026;arrivo;392.14;1468.0;1468.0;100.0;55.0;0.0;4.0;3.0;True
+2026-11-05_2113_ClaudeRob_V37;ClaudeRob_V37;2026-11-05T21:13;rcj2026_s2;rcj2026;arrivo;396.1;1468.0;1468.0;100.0;55.0;0.0;5.0;3.0;True
+2026-11-05_2113_ClaudeRob_V37;ClaudeRob_V37;2026-11-05T21:13;rcj2026_s3;rcj2026;arrivo;395.66;1468.0;1468.0;100.0;55.0;0.0;5.0;3.0;True
+2026-11-05_2113_ClaudeRob_V37;ClaudeRob_V37;2026-11-05T21:13;lunga_s1;lunga;arrivo;461.59;1893.4;1893.4;100.0;82.0;0.0;0.0;3.0;True
+2026-11-05_2113_ClaudeRob_V37;ClaudeRob_V37;2026-11-05T21:13;lunga_s2;lunga;arrivo;472.84;1893.4;1893.4;100.0;82.0;0.0;3.0;3.0;True
+2026-11-05_2113_ClaudeRob_V37;ClaudeRob_V37;2026-11-05T21:13;contorto_s1;contorto;arrivo;476.19;1989.4;1989.4;100.0;77.0;0.0;4.0;3.0;True
+2026-11-05_2113_ClaudeRob_V37;ClaudeRob_V37;2026-11-05T21:13;contorto_s2;contorto;tempo scaduto;480.0;1742.4;1989.4;87.6;77.0;0.0;4.0;3.0;False
+2026-11-05_2113_ClaudeRob_V37;ClaudeRob_V37;2026-11-05T21:13;arena_parete_s1;arena_parete;arrivo;226.69;;;;;;1.0;3.0;True
+2026-11-05_2113_ClaudeRob_V37;ClaudeRob_V37;2026-11-05T21:13;stress_argento_rampa;lunga;arrivo;473.75;1893.4;1893.4;100.0;82.0;0.0;3.0;3.0;True
+2026-11-05_2113_ClaudeRob_V37;ClaudeRob_V37;2026-11-05T21:13;stress_bussola;rcj2026;tempo scaduto;480.0;984.1;1468.0;67.0;55.0;1.0;8.0;3.0;False
+2026-11-05_2113_ClaudeRob_V37;ClaudeRob_V37;2026-11-05T21:13;stress_porta;arena_parete;arrivo;230.65;;;;;;0.0;3.0;True
+2026-11-05_2113_ClaudeRob_V37;ClaudeRob_V37;2026-11-05T21:13;stress_guasti_reali;rcj2026;NON ESEGUITA;;;;;;;;;
+2026-11-05_2113_ClaudeRob_V37;ClaudeRob_V37;2026-11-05T21:13;stress_guasti_lunga;lunga;tempo scaduto;480.0;1086.6;1893.4;57.4;82.0;2.0;7.0;3.0;False
+2026-11-05_2113_ClaudeRob_V37;ClaudeRob_V37;2026-11-05T21:13;scuola;scuola;arrivo;254.69;;;;;;2.0;3.0;True
+2026-11-05_2113_ClaudeRob_V37;ClaudeRob_V37;2026-11-05T21:13;scuola_rampa;scuola_rampa;bloccato;218.03;;;;;;0.0;0.0;False
+2026-11-05_2113_ClaudeRob_V37;ClaudeRob_V37;2026-11-05T21:13;scuola_parete;scuola_parete;fuori campo;115.4;;;;;;0.0;0.0;False

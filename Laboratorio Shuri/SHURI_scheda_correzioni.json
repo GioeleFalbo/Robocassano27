@@ -1,0 +1,585 @@
+{
+ "versione": "ClaudeRob_V37",
+ "simulatore": "ClaudeRob_Simulatore_V31",
+ "data_batteria": "2026-11-05T21:13",
+ "cartella_codice": "02_Robotica/ClaudeRob_V37",
+ "medie_per_pista": [
+  {
+   "scenario": "arena_parete",
+   "prove": 2,
+   "punti_medi": null,
+   "perc_media": null,
+   "lop_totali": 0.0,
+   "urti_medi": 0.5
+  },
+  {
+   "scenario": "contorto",
+   "prove": 2,
+   "punti_medi": 1865.9,
+   "perc_media": 93.8,
+   "lop_totali": 0.0,
+   "urti_medi": 4.0
+  },
+  {
+   "scenario": "lunga",
+   "prove": 4,
+   "punti_medi": 1691.7,
+   "perc_media": 89.4,
+   "lop_totali": 2.0,
+   "urti_medi": 3.2
+  },
+  {
+   "scenario": "rcj2026",
+   "prove": 5,
+   "punti_medi": 1347.0,
+   "perc_media": 91.8,
+   "lop_totali": 1.0,
+   "urti_medi": 5.5
+  },
+  {
+   "scenario": "scuola",
+   "prove": 1,
+   "punti_medi": null,
+   "perc_media": null,
+   "lop_totali": 0.0,
+   "urti_medi": 2.0
+  },
+  {
+   "scenario": "scuola_parete",
+   "prove": 1,
+   "punti_medi": null,
+   "perc_media": null,
+   "lop_totali": 0.0,
+   "urti_medi": 0.0
+  },
+  {
+   "scenario": "scuola_rampa",
+   "prove": 1,
+   "punti_medi": null,
+   "perc_media": null,
+   "lop_totali": 0.0,
+   "urti_medi": 0.0
+  }
+ ],
+ "problemi": [
+  {
+   "prova": "scuola_rampa",
+   "descrizione": "Pista della SCUOLA: dalla rampa con i tubi",
+   "scenario": "scuola_rampa",
+   "config": {
+    "seme": 1
+   },
+   "come_riprodurre": "cd ../ClaudeRob_Simulatore_*/ && python3 -c \"import esegui; esegui.esegui('../ClaudeRob_V37', 'riprova_scuola_rampa', 300, {'seme': 1}, 'scuola_rampa')\"",
+   "tipo": "robot fermo",
+   "gravita": "alta",
+   "secondo": 218.03,
+   "cosa_succede": "Robot fermo da 60 secondi: gara interrotta",
+   "punti_persi": null,
+   "log_prima": [
+    "ARRESTO SICURO DEL ROBOT",
+    "Chiusura Robot...",
+    "Robot fermato correttamente."
+   ],
+   "stampa_ripetuta": null,
+   "nel_codice": [
+    {
+     "file": "ViennaClsRobot.py",
+     "riga": 1172,
+     "funzione": "def StopLetture(self):",
+     "codice": "print(\"Robot fermato correttamente.\")",
+     "fix_vicini": [
+      6,
+      70
+     ]
+    },
+    {
+     "file": "ViennaClsRobot.py",
+     "riga": 1162,
+     "funzione": "def StopLetture(self):",
+     "codice": "print(\"Chiusura Robot...\")",
+     "fix_vicini": [
+      6,
+      70,
+      72
+     ]
+    },
+    {
+     "file": "RwdFoto.py",
+     "riga": 4387,
+     "funzione": "def ArenaAI():",
+     "codice": "print(\"ARRESTO SICURO DEL ROBOT\")",
+     "fix_vicini": [
+      6,
+      37,
+      46,
+      100
+     ]
+    }
+   ],
+   "criterio_successo": "L'evento non si ripete nella stessa prova.",
+   "id": "P1",
+   "ipotesi": "VERIFICATO (posizioni del replay): a ~102 s, a (34-48, 105) cm il robot va verso la parete della pista (muro a y=123,5) e il laser frontale la legge a 8-16 cm: 'POSSIBILE OSTACOLO' (RwdFoto.py riga 3042) -> 'Ostacolo confermato' (riga 2914). ScegliLatoOstacolo [FIX 90] riconosce la parete solo se è DI LATO (laser laterale < OST_PARETE_CM): qui è DAVANTI, quindi aggira a destra (default -1), passa oltre il bordo del muro (x=-11) e dietro la parete (y 133-146), 'Trovata Linea' su un pezzo sbagliato, poi gira sul posto 60 s ('Linea NON ritrovata') -> fermo. IPOTESI: la ricostruzione della pista (pista_scuola.py, parete a 123,5 cm e semicerchio) potrebbe mettere la linea più vicina al muro del vero: sul robot vero (16:12, V36) a 72 s c'è un 'OSTACOLO: lo aggiro' che va controllato con le note dei ragazzi.",
+   "proposta": "In ScegliLatoOstacolo / OstAutDet: se durante il 'LATO LUNGO' il laser laterale vede l'ostacolo per più di ~30 cm (un mattone è 15-20 cm), è una parete: tornare indietro sulla linea e cercarla con RecuperaLinea invece di continuare il giro. In più, prima di aggirare, guardare la camera linea: se la linea curva a destra o sinistra entro pochi cm, seguirla invece di aggirare. Controllare con Giovanni la distanza vera linea-parete in quel punto."
+  },
+  {
+   "prova": "stress_bussola",
+   "descrizione": "STRESS: giroscopio disturbato di 15°",
+   "scenario": "rcj2026",
+   "config": {
+    "seme": 1,
+    "bussola_distorsione": 15
+   },
+   "come_riprodurre": "cd ../ClaudeRob_Simulatore_*/ && python3 -c \"import esegui; esegui.esegui('../ClaudeRob_V37', 'riprova_stress_bussola', 480, {'seme': 1, 'bussola_distorsione': 15}, 'rcj2026')\"",
+   "tipo": "LoP nella zona di evacuazione",
+   "gravita": "alta",
+   "secondo": 442.1,
+   "cosa_succede": "LoP n. 1 nella zona: 150 s nella zona senza salvare vittime né uscire. Si riparte dalla piastrella 44",
+   "punti_persi": 483.9,
+   "log_prima": [],
+   "stampa_ripetuta": null,
+   "nel_codice": [],
+   "criterio_successo": "Nella stessa prova (stress_bussola) l'evento non si ripete e i punti salgono oltre 984.",
+   "id": "P2",
+   "ipotesi": "VERIFICATO (replay stress_bussola, campioni 397-442 s): dopo 3 palline il giro dei muri trova 'una porta proprio qui' subito dopo l'angolo (RwdFoto.py riga 2151, [FIX 63]/[FIX 94]); ControllaAperturaMuro: 'camera arena dice uscita, pavimento None' -> EsciControllando senza aver visto la striscia nera; esce storto (rotta 154 invece di ~180, bussola distorta di 15°) e resta incastrato nella porta a (531, 141) per 45 s: 'Uscito senza vedere la striscia nera', poi 'Uscita confermata: ritrovata la linea nera' (era la striscia d'uscita), 2 × '[Gira] TIMEOUT', 7 urti, LoP zona a 442 s. IPOTESI sulla causa: EsciControllando restituisce 'incerto' e ControllaAperturaMuro (riga ~1912) lo accetta come 'uscita'; StrisciaFerma [FIX 84/99] controlla l'incastro solo se la striscia nera si vede, quindi l'incastro storto non viene visto. La V30 nella stessa prova usciva (1468 punti).",
+   "proposta": "1) Con esito 'incerto' non dichiarare l'uscita fatta: controllare che il robot si sia mosso (laser frontale che cambia, o LineaFuori che trova una linea che NON sia la striscia d'uscita) e altrimenti arretrare e rifare SquadraSullUscita. 2) Usare RobotFermo/laser come controllo di incastro anche quando la striscia non si vede. 3) Prima di uscire raddrizzarsi sulla parete appena seguita (AsseParete) invece che sulla rotta della bussola."
+  },
+  {
+   "prova": "stress_guasti_lunga",
+   "descrizione": "STRESS: gli stessi guasti sulla pista lunga",
+   "scenario": "lunga",
+   "config": {
+    "seme": 1,
+    "imu_bloccato": true,
+    "tof_fr_spurie": 0.15,
+    "tof_lat_spurie": 0.1
+   },
+   "come_riprodurre": "cd ../ClaudeRob_Simulatore_*/ && python3 -c \"import esegui; esegui.esegui('../ClaudeRob_V37', 'riprova_stress_guasti_lunga', 480, {'seme': 1, 'imu_bloccato': True, 'tof_fr_spurie': 0.15, 'tof_lat_spurie': 0.1}, 'lunga')\"",
+   "tipo": "LoP sul percorso",
+   "gravita": "alta",
+   "secondo": 68.71,
+   "cosa_succede": "LoP n. 1: caduto da un bordo rialzato. Si riparte dalla piastrella 12",
+   "punti_persi": 806.8,
+   "log_prima": [
+    "Linea ritrovata girando di 30 gradi",
+    "Sinistro",
+    "Sinistro",
+    "Sinistro",
+    "Sinistro",
+    "Sinistro",
+    "Sinistro",
+    "Sinistro",
+    "IA         BIANCO               Bi Bi Bi Bi Bi: "
+   ],
+   "stampa_ripetuta": {
+    "testo": "Sinistro",
+    "volte": 7
+   },
+   "nel_codice": [
+    {
+     "file": "ViennaClsWebCam.py",
+     "riga": 1144,
+     "funzione": "def CalcolaErrore(frame):",
+     "codice": "print(TrovSinistro,\"      \", TrovDestro)",
+     "fix_vicini": [
+      10,
+      29
+     ]
+    },
+    {
+     "file": "ViennaClsWebCam.py",
+     "riga": 1153,
+     "funzione": "def CalcolaErrore(frame):",
+     "codice": "print(\"Alto Destro Sinistro\", (CentroX-cBkAlX) )",
+     "fix_vicini": [
+      10,
+      29
+     ]
+    },
+    {
+     "file": "ViennaClsWebCam.py",
+     "riga": 1158,
+     "funzione": "def CalcolaErrore(frame):",
+     "codice": "print(\"Sinistro-Destro\")",
+     "fix_vicini": [
+      10,
+      29
+     ]
+    },
+    {
+     "file": "RwdFoto.py",
+     "riga": 3287,
+     "funzione": "def InseguitoreIA():",
+     "codice": "print ('IA         BIANCO               Bi Bi Bi Bi Bi: ')",
+     "fix_vicini": [
+      9,
+      32,
+      44,
+      58,
+      75,
+      95
+     ]
+    },
+    {
+     "file": "RwdFoto.py",
+     "riga": 3305,
+     "funzione": "def InseguitoreIA():",
+     "codice": "print ('IA         BIANCO               Bi Bi Bi Bi Bi: ')",
+     "fix_vicini": [
+      9,
+      44,
+      58,
+      75,
+      95
+     ]
+    }
+   ],
+   "criterio_successo": "Nella stessa prova (stress_guasti_lunga) l'evento non si ripete e i punti salgono oltre 1087.",
+   "id": "P3",
+   "ipotesi": "GIÀ NOTO (rapporto V30, problema 3): giroscopio bloccato, caduta dall'altopiano a 68,7 s, uguale alla V30 (stesso punteggio 1087). VERIFICATO nel replay; causa IPOTESI: AttraversaVuoto/RecuperaLinea [FIX 58] con la rotta stimata girano verso il bordo.",
+   "proposta": "Come nella scheda V30: con 'bus' = stimata, in RecuperaLinea limitare la rotazione e non avanzare oltre 0,3 s senza linea vicino a un bordo; caso raro sul robot vero (giroscopio riparato: nelle gare del 5/11 il ritardo è 0,3 s e la rotazione 33-44 °/s)."
+  },
+  {
+   "prova": "stress_guasti_lunga",
+   "descrizione": "STRESS: gli stessi guasti sulla pista lunga",
+   "scenario": "lunga",
+   "config": {
+    "seme": 1,
+    "imu_bloccato": true,
+    "tof_fr_spurie": 0.15,
+    "tof_lat_spurie": 0.1
+   },
+   "come_riprodurre": "cd ../ClaudeRob_Simulatore_*/ && python3 -c \"import esegui; esegui.esegui('../ClaudeRob_V37', 'riprova_stress_guasti_lunga', 480, {'seme': 1, 'imu_bloccato': True, 'tof_fr_spurie': 0.15, 'tof_lat_spurie': 0.1}, 'lunga')\"",
+   "tipo": "LoP sul percorso",
+   "gravita": "alta",
+   "secondo": 262.21,
+   "cosa_succede": "LoP n. 2: ha preso una linea fuori sequenza. Si riparte dalla piastrella 48",
+   "punti_persi": 806.8,
+   "log_prima": [
+    "Alto",
+    "Alto",
+    "Alto",
+    "Alto",
+    "Alto",
+    "Alto",
+    "Alto",
+    "Alto",
+    "Alto",
+    "Alto",
+    "Alto",
+    "Alto"
+   ],
+   "stampa_ripetuta": {
+    "testo": "Alto",
+    "volte": 38
+   },
+   "nel_codice": [
+    {
+     "file": "ViennaClsWebCam.py",
+     "riga": 1142,
+     "funzione": "def CalcolaErrore(frame):",
+     "codice": "print(\"      \", TrovAlto, \"      \")",
+     "fix_vicini": [
+      5,
+      10,
+      29
+     ]
+    },
+    {
+     "file": "ViennaClsWebCam.py",
+     "riga": 1153,
+     "funzione": "def CalcolaErrore(frame):",
+     "codice": "print(\"Alto Destro Sinistro\", (CentroX-cBkAlX) )",
+     "fix_vicini": [
+      10,
+      29
+     ]
+    },
+    {
+     "file": "ViennaClsWebCam.py",
+     "riga": 1168,
+     "funzione": "def CalcolaErrore(frame):",
+     "codice": "print(\"Alto -Sinistro-Destro Basso\")",
+     "fix_vicini": [
+      10,
+      29
+     ]
+    }
+   ],
+   "criterio_successo": "Nella stessa prova (stress_guasti_lunga) l'evento non si ripete e i punti salgono oltre 1087.",
+   "id": "P4",
+   "ipotesi": "VERIFICATO (log e campioni 224-262 s): all'ingresso dell'arena, giroscopio bloccato: 'Ingresso subito dopo una svolta a SINISTRA: entro verso 308 (robot a 39)' (RwdFoto.py riga 1671, DirezioneIngresso, [FIX 96]/[FIX 101]): la direzione attesa e la rotta stimata differiscono di ~91 gradi. Il robot si gira verso il muro, 'Centratura sull'ingresso: striscia non vista' (riga 1603), gira sul posto 30 s a (649, 249) con 3 urti, poi 'Linea ritrovata tornando indietro' e riparte nel verso sbagliato -> LoP 'linea fuori sequenza'. Nella V30 questo non succedeva (1 LoP). IPOTESI: con la bussola stimata (FIX 88) dopo una svolta l'errore è grande e 'attesa' (SvoltaAttesa) non è affidabile.",
+   "proposta": "In DirezioneIngresso: se |attesa - rotta attuale| > 45 gradi, non fidarsi di 'attesa' (e meno ancora se Rwd 'bus' è 'stimata'): usare la retta della striscia vista dalla camera (ramo 'linea' sotto) o la rotta attuale. Riprodurre con il comando della scheda e controllare che la frase 'entro verso X (robot a Y)' abbia X e Y vicini."
+  },
+  {
+   "prova": "stress_guasti_reali",
+   "descrizione": "STRESS: giroscopio bloccato + laser che saltano (come il robot vero il 3/11)",
+   "scenario": "rcj2026",
+   "config": {
+    "seme": 1,
+    "imu_bloccato": true,
+    "tof_fr_spurie": 0.15,
+    "tof_lat_spurie": 0.1
+   },
+   "come_riprodurre": "cd ../ClaudeRob_Simulatore_*/ && python3 -c \"import esegui; esegui.esegui('../ClaudeRob_V37', 'riprova_stress_guasti_reali', 480, {'seme': 1, 'imu_bloccato': True, 'tof_fr_spurie': 0.15, 'tof_lat_spurie': 0.1}, 'rcj2026')\"",
+   "tipo": "programma bloccato",
+   "gravita": "alta",
+   "secondo": null,
+   "cosa_succede": "BLOCCATO: dopo 110 s reali la gara non era finita (il tempo simulato non avanza: probabile ciclo senza sleep nel codice). Nessun replay: per capire DOVE si blocca, rilanciare con 120, 240, 360 s e leggere le ultime righe del log.",
+   "punti_persi": null,
+   "log_prima": [],
+   "stampa_ripetuta": null,
+   "nel_codice": [],
+   "criterio_successo": "La gara finisce da sola entro 480 s simulati (arrivo o tempo scaduto) in meno di 60 s reali.",
+   "id": "P5",
+   "ipotesi": "VERIFICATO (rifatta da sola: >172 s reali, e con faulthandler): il robot arriva a 414 s simulati in 18 s reali, poi si blocca in ControllaAperturaMuro, RwdFoto.py righe 1838-1845 (ciclo 'while time.time() - t0 < 3.0: Rwd.Dritto(...); LaserVeri()'). A ~414 s scatta la LoP della zona (150 s senza salvare né uscire, false aperture da 13 cm per i laser che saltano): il simulatore spegne lo switch. Rwd.Dritto esce subito con lo switch spento ([FIX 88], ViennaClsRobot.py riga ~1034) SENZA dormire, quindi il ciclo gira senza sleep e il tempo simulato non avanza più. Sul robot vero sono 3 s di CPU al 100%, ma lo stesso ciclo, a switch spento, continua la manovra della porta invece di tornare in attesa.",
+   "proposta": "Nei cicli 'while time.time() - t0 < ...' che chiamano solo Dritto/LaserVeri (ControllaAperturaMuro righe 1838 e 1857, ricerca lenta della porta riga ~1899, ecc.) aggiungere 'if not Rwd.GetSwitch()[\"sw_sof\"]: return None' oppure fare in modo che Dritto, quando esce per lo switch, faccia comunque time.sleep(0.02). Meglio la seconda: copre tutti i cicli. Criterio: stress_guasti_reali finisce in meno di 60 s reali."
+  },
+  {
+   "prova": "contorto_s2",
+   "descrizione": "Campo contorto, seme 2",
+   "scenario": "contorto",
+   "config": {
+    "seme": 2
+   },
+   "come_riprodurre": "cd ../ClaudeRob_Simulatore_*/ && python3 -c \"import esegui; esegui.esegui('../ClaudeRob_V37', 'riprova_contorto_s2', 480, {'seme': 2}, 'contorto')\"",
+   "tipo": "punteggio basso senza errori evidenti",
+   "gravita": "media",
+   "secondo": null,
+   "cosa_succede": "1742/1989 punti (87.6%), esito tempo scaduto",
+   "punti_persi": 247.0,
+   "log_prima": [],
+   "stampa_ripetuta": null,
+   "nel_codice": [],
+   "criterio_successo": "Punteggio almeno al 90% del massimo.",
+   "id": "P6",
+   "ipotesi": "VERIFICATO (replay): nessun errore. Il robot fa tutto il percorso e le 3 palline, ma resta 196 s nella zona (238 -> 434 s) e scrive 'FESTA! Percorso completato' a 479,7 s: il simulatore chiude a 480 s senza contare l'arrivo (mancano 0,3 s). La V30 qui faceva 1825 (anche lei tempo scaduto). Sono il giro dei muri e l'uscita a essere lenti (3 urti in arena a 280-312 s, 'Non avanzo e davanti è vicino: è un angolo' a 408 s).",
+   "proposta": "Nessuna correzione urgente. Per guadagnare tempo: misurare quanto dura il giro dei muri [FIX 94] in contorto_s2 e ridurre le soste dopo gli angoli; obiettivo arrivo entro 470 s."
+  },
+  {
+   "prova": "scuola_parete",
+   "descrizione": "Pista della SCUOLA: semicerchio accanto alla parete destra (Simulatore V30)",
+   "scenario": "scuola_parete",
+   "config": {
+    "seme": 1
+   },
+   "come_riprodurre": "cd ../ClaudeRob_Simulatore_*/ && python3 -c \"import esegui; esegui.esegui('../ClaudeRob_V37', 'riprova_scuola_parete', 300, {'seme': 1}, 'scuola_parete')\"",
+   "tipo": "errore segnalato dal simulatore",
+   "gravita": "media",
+   "secondo": 115.4,
+   "cosa_succede": "Il robot è uscito dal campo",
+   "punti_persi": null,
+   "log_prima": [
+    "Inizio Ostacolo Dritto",
+    "ARRESTO SICURO DEL ROBOT",
+    "Chiusura Robot...",
+    "Robot fermato correttamente."
+   ],
+   "stampa_ripetuta": null,
+   "nel_codice": [
+    {
+     "file": "ViennaClsRobot.py",
+     "riga": 1172,
+     "funzione": "def StopLetture(self):",
+     "codice": "print(\"Robot fermato correttamente.\")",
+     "fix_vicini": [
+      6,
+      70
+     ]
+    },
+    {
+     "file": "ViennaClsRobot.py",
+     "riga": 1162,
+     "funzione": "def StopLetture(self):",
+     "codice": "print(\"Chiusura Robot...\")",
+     "fix_vicini": [
+      6,
+      70,
+      72
+     ]
+    },
+    {
+     "file": "RwdFoto.py",
+     "riga": 4387,
+     "funzione": "def ArenaAI():",
+     "codice": "print(\"ARRESTO SICURO DEL ROBOT\")",
+     "fix_vicini": [
+      6,
+      37,
+      46,
+      100
+     ]
+    },
+    {
+     "file": "RwdFoto.py",
+     "riga": 1158,
+     "funzione": "def OstAutDet(Verso=1): # Verso assume valori -1 e 1 e definisce il lato di agir",
+     "codice": "print(\"Inizio Ostacolo Dritto\")",
+     "fix_vicini": [
+      27,
+      54,
+      73,
+      90
+     ]
+    },
+    {
+     "file": "RwdFoto.py",
+     "riga": 1221,
+     "funzione": "def OstAutDet(Verso=1): # Verso assume valori -1 e 1 e definisce il lato di agir",
+     "codice": "print(\"Inizio Ostacolo Dritto\")",
+     "fix_vicini": [
+      27,
+      28,
+      54,
+      73,
+      90
+     ]
+    }
+   ],
+   "criterio_successo": "L'evento non si ripete nella stessa prova.",
+   "id": "P7",
+   "ipotesi": "VERIFICATO (posizioni): stessa causa di P1. A 97 s (robot a ~(50, 98) diretto verso la parete a y=123,5) 'POSSIBILE OSTACOLO' -> 'Ostacolo confermato a 8 cm' -> aggira a destra, 'Inizio Ostacolo Dritto' verso ovest, esce dal campo a x=-15 (115 s). Prima, a 95,6 s, 12 × 'Controllo verde: YOLO dice Sx, ma ho appena girato a questo incrocio: seguo la linea' (ViennaClsWebCam.py riga 1056, [FIX 80]/[FIX 91]): da controllare se quel verde andava preso. IPOTESI anche qui: ricostruzione della pista (pista_scuola.py) da verificare.",
+   "proposta": "La stessa di P1 (parete davanti riconosciuta come parete). In più: nell'aggiramento fermarsi se il laser laterale non rivede l'ostacolo entro ~40 cm di 'Ostacolo Dritto' (non c'è un ostacolo così lungo)."
+  },
+  {
+   "prova": "stress_guasti_lunga",
+   "descrizione": "STRESS: gli stessi guasti sulla pista lunga",
+   "scenario": "lunga",
+   "config": {
+    "seme": 1,
+    "imu_bloccato": true,
+    "tof_fr_spurie": 0.15,
+    "tof_lat_spurie": 0.1
+   },
+   "come_riprodurre": "cd ../ClaudeRob_Simulatore_*/ && python3 -c \"import esegui; esegui.esegui('../ClaudeRob_V37', 'riprova_stress_guasti_lunga', 480, {'seme': 1, 'imu_bloccato': True, 'tof_fr_spurie': 0.15, 'tof_lat_spurie': 0.1}, 'lunga')\"",
+   "tipo": "errore segnalato dal simulatore",
+   "gravita": "media",
+   "secondo": 68.71,
+   "cosa_succede": "CADUTO da un bordo rialzato (22 cm)",
+   "punti_persi": 806.8,
+   "log_prima": [
+    "Linea ritrovata girando di 30 gradi",
+    "Sinistro",
+    "Sinistro",
+    "Sinistro",
+    "Sinistro",
+    "Sinistro",
+    "Sinistro",
+    "Sinistro",
+    "IA         BIANCO               Bi Bi Bi Bi Bi: "
+   ],
+   "stampa_ripetuta": {
+    "testo": "Sinistro",
+    "volte": 7
+   },
+   "nel_codice": [
+    {
+     "file": "ViennaClsWebCam.py",
+     "riga": 1144,
+     "funzione": "def CalcolaErrore(frame):",
+     "codice": "print(TrovSinistro,\"      \", TrovDestro)",
+     "fix_vicini": [
+      10,
+      29
+     ]
+    },
+    {
+     "file": "ViennaClsWebCam.py",
+     "riga": 1153,
+     "funzione": "def CalcolaErrore(frame):",
+     "codice": "print(\"Alto Destro Sinistro\", (CentroX-cBkAlX) )",
+     "fix_vicini": [
+      10,
+      29
+     ]
+    },
+    {
+     "file": "ViennaClsWebCam.py",
+     "riga": 1158,
+     "funzione": "def CalcolaErrore(frame):",
+     "codice": "print(\"Sinistro-Destro\")",
+     "fix_vicini": [
+      10,
+      29
+     ]
+    },
+    {
+     "file": "RwdFoto.py",
+     "riga": 3287,
+     "funzione": "def InseguitoreIA():",
+     "codice": "print ('IA         BIANCO               Bi Bi Bi Bi Bi: ')",
+     "fix_vicini": [
+      9,
+      32,
+      44,
+      58,
+      75,
+      95
+     ]
+    },
+    {
+     "file": "RwdFoto.py",
+     "riga": 3305,
+     "funzione": "def InseguitoreIA():",
+     "codice": "print ('IA         BIANCO               Bi Bi Bi Bi Bi: ')",
+     "fix_vicini": [
+      9,
+      44,
+      58,
+      75,
+      95
+     ]
+    }
+   ],
+   "criterio_successo": "Nella stessa prova (stress_guasti_lunga) l'evento non si ripete e i punti salgono oltre 1087.",
+   "id": "P8",
+   "ipotesi": "È lo stesso evento di P3 (caduta dal bordo rialzato a 68,7 s): GIÀ NOTO dalla V30.",
+   "proposta": "Vedi P3."
+  },
+  {
+   "prova": "stress_bussola",
+   "descrizione": "STRESS: giroscopio disturbato di 15°",
+   "scenario": "rcj2026",
+   "config": {
+    "seme": 1,
+    "bussola_distorsione": 15
+   },
+   "come_riprodurre": "cd ../ClaudeRob_Simulatore_*/ && python3 -c \"import esegui; esegui.esegui('../ClaudeRob_V37', 'riprova_stress_bussola', 480, {'seme': 1, 'bussola_distorsione': 15}, 'rcj2026')\"",
+   "tipo": "molti urti",
+   "gravita": "bassa",
+   "secondo": null,
+   "cosa_succede": "8.0 urti in una gara",
+   "punti_persi": null,
+   "log_prima": [],
+   "stampa_ripetuta": null,
+   "nel_codice": [],
+   "criterio_successo": "Meno di 4 urti nella stessa prova.",
+   "id": "P9",
+   "ipotesi": "VERIFICATO: 8 urti, 7 dei quali dopo le palline (319-441 s) mentre il robot cerca l'uscita ed è incastrato nella porta (vedi P2).",
+   "proposta": "Si risolve con P2."
+  },
+  {
+   "prova": "stress_guasti_lunga",
+   "descrizione": "STRESS: gli stessi guasti sulla pista lunga",
+   "scenario": "lunga",
+   "config": {
+    "seme": 1,
+    "imu_bloccato": true,
+    "tof_fr_spurie": 0.15,
+    "tof_lat_spurie": 0.1
+   },
+   "come_riprodurre": "cd ../ClaudeRob_Simulatore_*/ && python3 -c \"import esegui; esegui.esegui('../ClaudeRob_V37', 'riprova_stress_guasti_lunga', 480, {'seme': 1, 'imu_bloccato': True, 'tof_fr_spurie': 0.15, 'tof_lat_spurie': 0.1}, 'lunga')\"",
+   "tipo": "molti urti",
+   "gravita": "bassa",
+   "secondo": null,
+   "cosa_succede": "7.0 urti in una gara",
+   "punti_persi": null,
+   "log_prima": [],
+   "stampa_ripetuta": null,
+   "nel_codice": [],
+   "criterio_successo": "Meno di 4 urti nella stessa prova.",
+   "id": "P10",
+   "ipotesi": "VERIFICATO: 7 urti, 3 all'ingresso dell'arena (229-245 s, vedi P4) e 4 tra 311 e 464 s nella zona e in uscita con giroscopio bloccato.",
+   "proposta": "Si risolve in buona parte con P4; il resto è il caso estremo giroscopio bloccato (hardware riparato sul robot vero)."
+  }
+ ]
+}
