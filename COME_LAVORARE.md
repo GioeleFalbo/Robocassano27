@@ -9,6 +9,29 @@ Prima di cominciare leggi anche `CLAUDE.md`: ci sono le regole fisse, la storia 
 
 ---
 
+## 0. Prima il robot, poi il codice
+
+La cosa più preziosa in questo progetto **non è saper scrivere Python**: è **capire il robot**. Perché un servo a
+rotazione continua non gira sotto una certa soglia, cosa vede un laser contro uno stipite, cosa succede quando lo switch
+si spegne in gara. Le correzioni migliori sono sempre nate dalla scatola nera e dalla fisica, non dal codice. Il Python
+viene dopo, e lì vi aiuta Claude.
+
+Per questo **ogni pull request deve saper rispondere a tre domande**, a voce, senza leggere il codice:
+
+1. **Che problema risolve?** Quale scatola nera, quale secondo, cosa faceva il robot.
+2. **Cosa farà di diverso il robot adesso?** Spiegato a parole, come lo spieghereste a un compagno.
+3. **Come sappiamo che funziona e che non rompe il resto?** Le prove nel simulatore, prima e dopo.
+
+Se non sapete rispondere, la pull request non è pronta, anche se il codice "funziona". Alla RoboCup i giudici fanno
+proprio queste domande.
+
+Il Python si impara **un pezzo alla volta, sul nostro robot**: si comincia da `ViennaDataConf.py` (solo parametri:
+velocità, distanze, soglie; cambiare un numero si vede subito sul robot), poi una funzione alla volta tra quelle che
+conoscete già dal comportamento del robot. Quando non capite qualcosa chiedete a Claude: *"spiegami questa funzione in
+italiano semplice"*, *"cosa fa questa riga?"*. E spiegatevelo a vicenda: insegnare è il modo più veloce per imparare.
+
+---
+
 ## 1. Le parole da sapere
 
 | Parola | Cosa vuol dire |
@@ -110,7 +133,18 @@ Il metodo che funziona: trovare il momento in cui succede il problema, guardare 
 rotta, motori, YOLO), capire la causa fisica, riprodurla nel simulatore, correggere, dimostrare la correzione con una
 prova prima/dopo.
 
-## 7. Cosa NON fare
+## 7. Lavorare con Claude Code
+
+1. Ognuno ha il **suo account Claude** (piano Pro, che comprende Claude Code): mai l'account di un altro.
+2. Su claude.ai **collega il tuo account GitHub** (lo stesso con cui sei collaboratore).
+3. Apri **Claude Code**, scegli la repository `Giooooonni93/Robocassano27`. Claude legge da solo `CLAUDE.md` e conosce
+   le regole. Il ramo lo crea Claude; se vuoi un nome chiaro, chiediglielo: *"lavora sul ramo `battista/altalena`"*.
+4. Prima richiesta di ogni lavoro: *"guarda le issue e le pull request aperte e dimmi che versione posso usare"*.
+5. Un compito = una sessione nuova = un ramo = una pull request.
+6. Prima di aprire la pull request, chiedi a Claude di spiegarti la modifica finché sai rispondere da solo alle tre
+   domande della sezione 0. **La pull request la firmi tu**: il prof la approva solo se sai spiegarla.
+
+## 8. Cosa NON fare
 
 - Non lavorare direttamente su `main` (è protetto: GitHub non te lo lascia fare).
 - Non modificare le cartelle delle versioni già consegnate né il simulatore `ClaudeRob_Simulatore_V31`
@@ -118,7 +152,7 @@ prova prima/dopo.
 - Non caricare foto o video con persone riconoscibili, password o dati personali.
 - Non caricare file enormi (sopra 50 MB): zip, video, cartelle dei modelli YOLO restano fuori.
 
-## 8. Sul robot
+## 9. Sul robot
 
 Sul Raspberry si lancia sempre la cartella pulita della versione:
 
