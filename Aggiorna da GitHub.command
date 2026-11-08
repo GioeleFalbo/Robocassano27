@@ -11,6 +11,17 @@ if ! git fetch origin main; then
     read -r -p "Premi Invio per chiudere" _
     exit 1
 fi
+# File nuovi su GitHub che sul Mac ci sono già (per esempio una scatola nera mandata a Claude):
+# se sono IDENTICI li tolgo, così git li rimette uguali; se sono diversi non li tocco e lo dico.
+git diff -z --name-only --diff-filter=A HEAD origin/main | while IFS= read -r -d '' f; do
+    if [ -e "$f" ] && ! git ls-files --error-unmatch -- "$f" >/dev/null 2>&1; then
+        if git show "origin/main:$f" | cmp -s - "$f"; then
+            rm -- "$f"
+        else
+            echo "ATTENZIONE: $f c'è già sul Mac ma è DIVERSO da quello su GitHub: non lo tocco."
+        fi
+    fi
+done
 if [ "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)" ]; then
     echo
     echo "Già aggiornata: niente di nuovo su GitHub."
