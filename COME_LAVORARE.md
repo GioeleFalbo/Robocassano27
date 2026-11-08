@@ -78,6 +78,23 @@ italiano semplice"*, *"cosa fa questa riga?"*. E spiegatevelo a vicenda: insegna
 
 ## 4. Il lavoro, passo per passo
 
+### Il giro completo della squadra
+
+1. **Prova sul robot** con l'ultima versione (cartella pulita, sezione 9), sulla pista della scuola: arena **e** altalena,
+   più volte. Annotate a parte cosa vedete ("dopo l'altalena ha perso la linea", "incastrato nella porta d'uscita"…).
+2. **Scatola nera sul Mac** con `Laboratorio Shuri/Scarica scatole nere.command`.
+3. **Scatola nera su GitHub, una volta sola**, in `ScatoleNere/` (con un ramo e una pull request, oppure la carica il
+   prof con Claude). Da lì la leggono tutti: il vostro Claude, quello del prof, Shuri. Non serve darla a ogni Claude.
+4. **Una issue per ognuno**, ognuno sul suo pezzo, per esempio "V41 – Battista – altalena" e "V42 – Gioele – uscita".
+5. **Ognuno lavora sulla sua versione** (passi qui sotto, o con Claude Code: sezione 7), partendo dall'ultima unita in
+   `main`. Prima richiesta a Claude: *"analizza la scatola nera `run_…` nella parte dell'altalena (o dell'uscita), trova
+   cosa è andato storto, riproducilo nel simulatore e proponi una correzione"*.
+6. **Pull request** con la tabella prima/dopo e le risposte alle tre domande (sezione 0). Il prof controlla, chiede, unisce.
+7. **Chi arriva secondo si aggiorna** (passo 8 qui sotto).
+8. **La versione nuova (che contiene tutte le correzioni) va sul robot**, nuova scatola nera, e si ricomincia.
+
+### Passo per passo (con GitHub Desktop)
+
 1. In GitHub Desktop: **Fetch origin** (scarichi le novità), poi controlla di essere su `main`.
 2. **Branch → New branch**, con un nome chiaro: `battista/altalena`, `gioele/uscita`, …
 3. Copia la cartella dell'ultima versione (es. `ClaudeRob_V40` → `ClaudeRob_V41`) e lavora lì.
@@ -90,8 +107,15 @@ italiano semplice"*, *"cosa fa questa riga?"*. E spiegatevelo a vicenda: insegna
    - **le prove**: una tabella "prima / dopo" con i risultati del simulatore.
 7. Il prof legge, commenta, e se va bene fa **Merge**. Se chiede modifiche: correggi sullo stesso ramo, Commit,
    Push. La pull request si aggiorna da sola.
-8. Se nel frattempo è stata unita la pull request di un altro, nella tua compare il pulsante **Update branch**: premilo
-   (o in GitHub Desktop: **Branch → Update from main**), riprova nel simulatore e controlla che vada ancora tutto bene.
+8. **Chi arriva secondo si aggiorna.** Se nel frattempo è stata unita la versione di un altro (es. la V41 di Battista),
+   la tua V42 è partita dalla V40 e **non contiene** la sua correzione. Prima del Merge:
+   - premi **Update branch** nella pull request (o in GitHub Desktop: **Branch → Update from main**);
+   - rifai la tua cartella partendo dalla versione appena unita: copia `ClaudeRob_V41` in `ClaudeRob_V42` e rimetti
+     dentro le tue modifiche (con Claude: *"la V41 è stata unita: rifai la V42 partendo dalla V41 con le mie modifiche
+     e riprova nel simulatore"*);
+   - in `CHANGELOG.md` la tua sezione va **sopra** quella della V41; in `CLAUDE.md` aggiorna "ultima" e "ultimo FIX";
+   - riprova nel simulatore, aggiorna la tabella prima/dopo (confronto con la V41) e scrivilo nella pull request.
+   Così ogni versione nuova contiene tutte quelle prima.
 9. Dopo il Merge: in GitHub Desktop torna su `main` e fai **Fetch origin** / **Pull origin**. Chiudi l'issue.
 
 ## 5. Provare nel simulatore
