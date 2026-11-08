@@ -49,6 +49,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - Le scatole nere nuove vanno in `ScatoleNere/`. File rigenerabili (replay, zip, `__pycache__`) esclusi da `.gitignore`.
 
 ## Cartelle
+- **Due Mac** (MacBook Pro Intel a Nocera Terinese, MacBook Air M2 a Rende), stessa cartella `02_Robotica` sincronizzata
+  da **iCloud** (Documenti). Dentro `02_Robotica` **non c'è git** (git dentro iCloud si rovinava: "mmap failed" il 9/11).
+  `Aggiorna da GitHub.command` tiene la copia di GitHub fuori da iCloud (`~/.robocassano27_git`, una per Mac) e copia in
+  `02_Robotica` i file nuovi o cambiati; non cancella niente e non sovrascrive mai i file di Shuri (rapporti, schede,
+  storico, analisi). Basta lanciarlo su un Mac: iCloud porta tutto sull'altro.
 - Mac: `/Users/giovannivaccaro/Documents/Claude/02_Robotica/`
   - `ClaudeRob_V25 … V39` (+ zip) – codice del robot.
   - `ClaudeRob_Simulatore_V28 … V31` – simulatore (Python + numpy + opencv).

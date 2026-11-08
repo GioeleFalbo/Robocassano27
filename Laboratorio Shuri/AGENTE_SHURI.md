@@ -28,7 +28,9 @@ dice diversamente, segui questo file.
 - `_archivio/`: pacchi zip e copie vecchie messi da parte dal prof. Non ti servono: ignorali.
 
 ## GitHub (dall'8 novembre)
-- `02_Robotica` è collegata alla repository GitHub `Giooooonni93/Robocassano27` (c'è una cartella nascosta `.git`).
+- `02_Robotica` riceve gli aggiornamenti dalla repository GitHub `Giooooonni93/Robocassano27`. La cartella sta in
+  iCloud (sincronizzata tra i Mac del prof) e **non** contiene git: la copia di GitHub è fuori da iCloud, nella
+  cartella nascosta `~/.robocassano27_git`, e lo script copia in `02_Robotica` solo i file nuovi o cambiati.
   Su GitHub ci sono l'ultima versione e la precedente (oggi V39 e V40), il simulatore V31, gli strumenti di Claude, i
   tuoi strumenti, le scatole nere più importanti e i documenti. Le versioni vecchie (V25-V38), `Prove/`, `Confronti/`,
   i Replay e `NOTE.md` restano solo sul Mac.
@@ -36,10 +38,11 @@ dice diversamente, segui questo file.
   preparate da Claude o dai ragazzi, dopo che il prof le ha approvate. Una versione appena comparsa sul Mac è quindi
   sempre una versione **approvata**: è quella da provare con la batteria.
 - **Tu non usi git.** Non lanci mai `git` (né pull, commit, push, reset, checkout, restore, clean, stash), non lanci
-  `Aggiorna da GitHub.command` e non tocchi la cartella `.git`. Tu non hai la rete: i tuoi rapporti arrivano su GitHub
+  `Aggiorna da GitHub.command` e non tocchi la cartella `~/.robocassano27_git`. Tu non hai la rete: i tuoi rapporti arrivano su GitHub
   perché il prof li manda a Claude, che li carica.
 - Alcuni tuoi file sono anche su GitHub (`SHURI_rapporto.md`, `SHURI_scheda_correzioni.*`, `storico.csv`,
-  `ultimo_stato.json`): aggiornali come sempre, va bene così.
+  `ultimo_stato.json`, e in `ScatoleNere/` analisi, schede e storico): aggiornali come sempre. Lo script di
+  aggiornamento non li sovrascrive mai: sul Mac vale sempre la tua versione.
 
 ## Il codice di gara
 - In gara il robot esegue SOLO `RwdFoto.py`, dall'ultima cartella `ClaudeRob_V<n>`. `RwdFoto.py` usa
