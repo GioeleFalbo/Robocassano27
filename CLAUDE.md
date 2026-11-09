@@ -63,9 +63,16 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   - `Strumenti_prove_Claude/` – gli script con cui Claude ha provato porte e altalena (vedi sotto).
   - `Replay_*.html` – replay da aprire nel browser.
   - `NOTE.md` – note datate del prof.
-- Raspberry: il programma oggi viene lanciato da **`/home/pi`**, una cartella con 82 file .py misti: per questo
-  l'**impronta** nella scatola nera risulta sempre "diversa". Va copiata la cartella pulita e lanciata da lì:
-  `cd ~/ClaudeRob_V40 && python3 RwdFoto.py` (oppure `./avvia.sh`).
+- Raspberry (`pi@master`, in laboratorio 192.168.2.221; Wi-Fi lento, 0,2-1 s di ping): **dal 9/11** la versione di gara
+  è in una cartella pulita, **`~/ClaudeRob_V40`** (impronta verificata sul robot: `dcd59068b49486ac`), con dentro i 4
+  modelli YOLO (`best_ncnn_model_Cross3`, `_PalCol3`, `_TrianFull3`, `_Exit3`, che non sono su GitHub: si copiano da
+  `/home/pi`). **`~/ClaudeRob_GARA`** è un collegamento alla versione di gara: l'avvio automatico all'accensione
+  (`~/.config/labwc/autostart` e `~/.config/lxsession/LXDE-pi/autostart`, copie `.prima_del_9nov`) lancia
+  `/home/pi/ClaudeRob_GARA/avvia.sh`. Versione nuova sul robot: copiare la cartella (scp o FileZilla, **come cartella**),
+  copiarci i 4 modelli, controllare l'impronta, poi `ln -sfn ~/ClaudeRob_V41 ~/ClaudeRob_GARA` (per tornare indietro: lo
+  stesso comando con la versione vecchia). Non lanciare `RwdFoto.py` via SSH: apre finestre (`cv2.imshow`), serve lo
+  schermo del robot o VNC. In `/home/pi` restano ~80 file .py e ~40 modelli vecchi di altre gare: da archiviare in
+  `~/archivio_<data>` (spostare, mai cancellare), con prima una copia sul Mac. Scatole nere in `~/OneDrive/ScatolaNera/`.
 
 ## Il robot
 - Raspberry Pi 5, due camere Picamera2 (camera linea + camera arena), YOLO NCNN (classi della linea: `Ln` linea,
@@ -152,7 +159,8 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
    aperto: con la bussola disturbata (`stress_bussola`) l'uscita "incerta" lascia il robot incastrato nella porta.
 4. Parete di destra presa per ostacolo in `scuola_basso` / `scuola_rampa` (simulatore).
 5. Uscita: le correzioni lungo i muri "non sono forti come vorremmo ma stiamo migliorando" (il prof).
-6. Raspberry: lanciare da una cartella pulita della versione (impronta giusta, nessun file vecchio).
+6. Raspberry: ~~lanciare da una cartella pulita~~ fatto il 9/11 (`~/ClaudeRob_GARA` → `~/ClaudeRob_V40`). Resta: archiviare i
+   file vecchi di `/home/pi` (dopo una gara riuscita con l'avvio nuovo e una copia sul Mac).
 7. Da tarare sul robot vero: `ENTRATA_OLTRE_CM` (9, stimato), `USCITA_LIBERO_CM` (30), `ALTALENA_SALTO_GRADI` (30).
 8. Simulatore: aggiornare `SIMULA.*` alla versione nuova; posizione vera della linea rossa della scuola.
 
