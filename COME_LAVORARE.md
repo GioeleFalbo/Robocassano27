@@ -188,10 +188,19 @@ un lavoro leggete il suo ultimo rapporto (`Laboratorio Shuri/SHURI_rapporto.md`)
 
 ## 9. Sul robot
 
-Sul Raspberry si lancia sempre la cartella pulita della versione:
+Sul Raspberry ogni versione ha la sua **cartella pulita** (`~/ClaudeRob_V40`, `~/ClaudeRob_V41`…) e **`~/ClaudeRob_GARA`** è un
+collegamento alla versione da usare in gara: all'accensione il robot lancia da solo `~/ClaudeRob_GARA/avvia.sh`.
 
-```
-cd ~/ClaudeRob_V41 && ./avvia.sh
-```
+Portare una versione nuova sul robot (esempio V41):
 
-(dentro vanno copiate le 4 cartelle dei modelli YOLO `best_ncnn_model_...`, che non sono su GitHub).
+1. dal Mac copiare la **cartella** intera (non i file sciolti in `/home/pi`):
+   `scp -r ~/Documents/Claude/02_Robotica/ClaudeRob_V41 pi@192.168.2.221:~/` (oppure FileZilla, trascinando la cartella);
+2. sul robot copiarci dentro i 4 modelli YOLO, che non sono su GitHub:
+   `cp -r ~/best_ncnn_model_Cross3 ~/best_ncnn_model_PalCol3 ~/best_ncnn_model_TrianFull3 ~/best_ncnn_model_Exit3 ~/ClaudeRob_V41/`
+3. controllare l'**impronta** (deve essere uguale a quella della versione su GitHub):
+   `cd ~/ClaudeRob_V41 && for f in $(LC_ALL=C ls *.py); do echo -n $f; cat $f; done | sha256sum | cut -c1-16`
+4. renderla la versione di gara: `ln -sfn ~/ClaudeRob_V41 ~/ClaudeRob_GARA`
+   (se va male, si torna indietro in un secondo: `ln -sfn ~/ClaudeRob_V40 ~/ClaudeRob_GARA`).
+
+Per lanciarla a mano: `cd ~/ClaudeRob_GARA && ./avvia.sh`, **dallo schermo del robot o da VNC**, non da SSH (il programma
+apre le finestre delle camere).
