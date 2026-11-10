@@ -48,37 +48,50 @@ PEZZI = [
      "dove": "Sul davanti, a sinistra: il disco si avvita alla squadretta del servo DM996 (il perno), la base piatta porta la pinza. Usa il cursore 'Braccio' per alzarlo e abbassarlo. Posizione indicativa (lo STL non è nelle coordinate di montaggio).",
      "porta": "La pinza con il suo servo (STL della pinza in arrivo).",
      "codice": "Servo DM996 all metal, PCA9685 0x40 canale 4: Braccio(angolo) in ViennaClsRobot.py; AbbassaPinza / AlzaPinza / CaricaPalla in RwdFoto.py."},
-    # --- componenti: modelli SEMPLIFICATI fatti da componenti.py (misure dei datasheet), sul vassoio accanto al robot ---
-    {"file": "componenti/Servo_FS5106R.stl", "nome": "Servo delle ruote Feetech FS5106R (x4)", "colore": "#2b2b2b", "vassoio": True,
-     "via": [0, 0, 0], "copie": [[-40, -75, -95], [5, -75, -95], [50, -75, -95], [95, -75, -95]],
-     "dove": "Sotto il robot, uno per ruota, nelle culle della piastra dei servo (foto 'sotto'). Qui sul vassoio.",
+    # --- componenti: modelli SEMPLIFICATI fatti da componenti.py (misure dei datasheet), montati ai loro LIVELLI (dal prof,
+    # 10/11): livello 1 = piastra dei servo (piano a Y -41): batteria e buck; livello 2 = base della logica (Y +4): le due
+    # PCA9685 e l'Arduino; livello 3 = copertura alta (Y +41): Raspberry e relè. Il livello è giusto; il punto preciso
+    # dentro il livello è INDICATIVO. "via" = quella del loro livello, così si smontano insieme. I servo stanno sotto.
+    {"file": "componenti/Servo_FS5106R.stl", "nome": "Servo delle ruote Feetech FS5106R (x4)", "colore": "#2b2b2b", "componente": True,
+     "via": [0, -70, 0], "copie": [[-15, -90, -275], [-15, -90, -170], [110, -90, -275], [110, -90, -170]],
+     "dove": "Sotto il robot, uno per ruota, nelle culle sotto la piastra dei servo (foto 'sotto'). Posizione indicativa.",
      "porta": "Servo a rotazione continua: si comanda la velocità, non l'angolo. Datasheet: 40,8 x 20,1 x 38 mm, 4,8-6 V.",
      "codice": "PCA9685 0x41, canali 15 e 4 (sinistra), 0 e 11 (destra). Sterzo(velocita, sterzo) in ViennaClsRobot.py."},
-    {"file": "componenti/Servo_DM996.stl", "nome": "Servo del braccio DM996 all metal", "colore": "#3a3a3a", "vassoio": True,
-     "via": [0, 0, 0], "copie": [[140, -75, -95]],
-     "dove": "Sul davanti, a sinistra: la sua squadretta muove il disco del braccio. Qui sul vassoio.",
-     "porta": "Servo di posizione con ingranaggi in metallo (formato MG996R): 40,7 x 19,7 x 42,9 mm.",
-     "codice": "PCA9685 0x40 canale 4: Braccio(angolo)."},
-    {"file": "componenti/LiPo_Zeee_3S_2200.stl", "nome": "Batteria LiPo Zeee 3S 2200 mAh 50C", "colore": "#c9a227", "vassoio": True,
-     "via": [0, 0, 0], "copie": [[40, -75, -45]],
-     "dove": "Probabilmente nel vano bianco sotto il robot (da confermare). Si toglie per caricarla.",
+    {"file": "componenti/LiPo_Zeee_3S_2200.stl", "nome": "Batteria LiPo Zeee 3S 2200 mAh 50C", "colore": "#c9a227", "componente": True,
+     "via": [0, -70, 0], "copie": [[45, -41, -222]],
+     "dove": "Livello 1, sulla piastra dei servo (dal prof). Si toglie per caricarla.",
      "porta": "11,1 V nominali (12,6 V carica), 24,4 Wh. Misure indicative (circa 106 x 34 x 25 mm): da misurare.",
      "codice": "Il Raspberry registra sottotensione e 5 V nella scatola nera (campo pi, ViennaMonitor.py)."},
-    {"file": "componenti/Buck_DCDC.stl", "nome": "Convertitori buck DC-DC (x3)", "colore": "#2f6fd6", "vassoio": True,
-     "via": [0, 0, 0], "copie": [[-40, -75, -5], [10, -75, -5], [60, -75, -5]],
-     "dove": "Nel piano basso, sul fianco (foto). Posizione di tutti e tre: da confermare.",
+    {"file": "componenti/Buck_DCDC.stl", "nome": "Convertitori buck DC-DC (x3)", "colore": "#2f6fd6", "componente": True,
+     "via": [0, -70, 0], "copie": [[124, -41, -272], [124, -41, -222], [124, -41, -172]],
+     "dove": "Livello 1, sulla piastra dei servo, accanto alla batteria (dal prof).",
      "porta": "Abbassano gli 11,1 V della batteria. Modello disegnato come i comuni LM2596 (43 x 21 mm, scheda blu con bobina): da confermare, come le tensioni.",
      "codice": "Nessuna riga di codice: è alimentazione. Un buck che non ce la fa si vede nel campo pi della scatola nera."},
-    {"file": "componenti/Arduino_Nano.stl", "nome": "Arduino Nano", "colore": "#1a8f9a", "vassoio": True,
-     "via": [0, 0, 0], "copie": [[-40, -75, -45]],
-     "dove": "Posizione sul robot: da confermare.",
-     "porta": "Legge i 3 laser VL53L1X, il giroscopio BNO055 e gli switch; 45 x 18 mm.",
-     "codice": "USB a 230400 baud, 10 numeri per riga: _arduino_reader in ViennaClsRobot.py."},
-    {"file": "componenti/PCA9685_16canali.stl", "nome": "Schede PCA9685 a 16 canali (x2)", "colore": "#5b3fa0", "vassoio": True,
-     "via": [0, 0, 0], "copie": [[125, -75, -45], [125, -75, -10]],
-     "dove": "Nella parte dell'elettronica (da confermare).",
+    {"file": "componenti/PCA9685_16canali.stl", "nome": "Schede PCA9685 a 16 canali (x2)", "colore": "#5b3fa0", "componente": True,
+     "via": [0, 0, 0], "copie": [[30, 4, -262], [30, 4, -230]],
+     "dove": "Livello 2, sulla base della logica (dal prof).",
      "porta": "Generano gli impulsi dei servo. Formato Adafruit: 62,5 x 25,4 mm, 16 connettori a 3 pin.",
      "codice": "0x41 = le 4 ruote; 0x40 = braccio (canale 4) e pinza (canale 11). _set_pwm in ViennaClsRobot.py."},
+    {"file": "componenti/Arduino_Nano.stl", "nome": "Arduino Nano", "colore": "#1a8f9a", "componente": True,
+     "via": [0, 0, 0], "copie": [[100, 4, -200]],
+     "dove": "Livello 2, sulla base della logica, insieme alle due PCA9685 (dal prof).",
+     "porta": "Legge i 3 laser VL53L1X, il giroscopio BNO055 e gli switch; 45 x 18 mm.",
+     "codice": "USB a 230400 baud, 10 numeri per riga: _arduino_reader in ViennaClsRobot.py."},
+    {"file": "componenti/Raspberry_Pi_5.stl", "nome": "Raspberry Pi 5", "colore": "#3f9e4d", "componente": True,
+     "via": [0, 75, 0], "copie": [[70, 41, -222]],
+     "dove": "Livello 3, in cima, sulla copertura alta (dal prof).",
+     "porta": "Il cervello: esegue RwdFoto.py, le reti YOLO, la scatola nera. 85 x 56 mm.",
+     "codice": "RwdFoto.py (programma di gara); avvio da ~/ClaudeRob_GARA/avvia.sh."},
+    {"file": "componenti/Rele_2_canali.stl", "nome": "Scheda a 2 relè (luci)", "colore": "#1f5fbf", "componente": True,
+     "via": [0, 75, 0], "copie": [[-5, 41, -222]],
+     "dove": "Livello 3, insieme al Raspberry (dal prof).",
+     "porta": "Accende e spegne le 2 strisce LED (5 V) delle camere. Circa 50 x 38 mm.",
+     "codice": "GPIO 22 e 23 (PIN_LUCI, lgpio, FIX 50): GetOnLed1/2, GetOffLed1/2 in ViennaClsRobot.py."},
+    {"file": "componenti/Servo_DM996.stl", "nome": "Servo del braccio DM996 all metal", "colore": "#3a3a3a", "componente": True,
+     "via": [-120, 120, 0], "copie": [[-30, -25, -170]],
+     "dove": "Sul davanti, a sinistra: la sua squadretta muove il disco del braccio. Posizione indicativa.",
+     "porta": "Servo di posizione con ingranaggi in metallo (formato MG996R): 40,7 x 19,7 x 42,9 mm.",
+     "codice": "PCA9685 0x40 canale 4: Braccio(angolo)."},
 ]
 
 
@@ -86,10 +99,9 @@ PEZZI = [
 # Quando arriva il loro STL, spostarli in PEZZI (con colore e "via").
 SENZA_MODELLO = [
     {"nome": "Pinza e il suo servo", "nota": "PCA9685 0x40 canale 11 · STL in arrivo"},
-    {"nome": "Raspberry Pi 5", "nota": "il cervello: RwdFoto.py · 85 x 56 mm"},
     {"nome": "2 camere (linea verso il basso, arena inclinata)", "nota": "Picamera2(0) e Picamera2(1)"},
     {"nome": "3 laser VL53L1X, giroscopio BNO055, switch", "nota": "collegati all'Arduino Nano"},
-    {"nome": "Scheda a 2 relè e 2 strisce LED COB 5 V", "nota": "luci su GPIO 22 e 23"},
+    {"nome": "2 strisce LED COB 5 V", "nota": "comandate dalla scheda a 2 relè (GPIO 22 e 23)"},
 ]
 
 
@@ -186,7 +198,7 @@ PAGINA = r"""<!DOCTYPE html>
 </div>
 <aside>
   <h1>RoboCassano</h1>
-  <p class="sotto">L'esploso del robot: i pezzi stampati in 3D e, sul vassoio, i componenti (millimetri). Trascina per girare, rotella per lo zoom,
+  <p class="sotto">L'esploso del robot: i pezzi stampati in 3D e i componenti, ognuno al suo livello (millimetri). Trascina per girare, rotella per lo zoom,
      clic su un pezzo per la sua scheda.</p>
   <ul id="elenco"></ul>
   <p class="sotto" style="margin:0 0 6px"><b>Senza modello 3D</b> (ancora da aggiungere):</p>
@@ -219,6 +231,7 @@ const loader = new THREE.STLLoader();
 const gruppo = new THREE.Group(); scene.add(gruppo);
 const oggetti = [];
 const portaPezzi = [];
+const copie = [];
 const box = new THREE.Box3();
 PEZZI.forEach((p, i) => {
   const bin = Uint8Array.from(atob(p.stl), (c) => c.charCodeAt(0)).buffer;
@@ -229,10 +242,11 @@ PEZZI.forEach((p, i) => {
   }
   geo.computeVertexNormals();
   const mat = new THREE.MeshStandardMaterial({ color: p.colore, roughness: 0.6, metalness: 0.05 });
-  if (p.copie) {    // componente sul vassoio: una o più copie ferme, non si smontano
+  if (p.copie) {    // componente: una o più copie, si smontano insieme al loro livello ("via")
     p.copie.forEach((c) => {
-      const m = new THREE.Mesh(geo, mat); m.userData.i = i; m.position.set(...c);
-      gruppo.add(m); oggetti.push(m); box.union(new THREE.Box3().setFromObject(m));
+      const m = new THREE.Mesh(geo, mat); m.userData.i = i; m.userData.base = new THREE.Vector3(...c);
+      m.position.copy(m.userData.base);
+      gruppo.add(m); oggetti.push(m); copie.push(m); box.union(new THREE.Box3().setFromObject(m));
     });
     return;
   }
@@ -255,7 +269,7 @@ gruppo.position.copy(centro).multiplyScalar(-1);
 const tutto = box.clone();
 PEZZI.forEach((p) => { tutto.expandByVector(new THREE.Vector3(Math.abs(p.via[0]), Math.abs(p.via[1]), Math.abs(p.via[2]))); });
 const raggio = tutto.getSize(new THREE.Vector3()).length() / 2;
-const dist = raggio / Math.sin(THREE.MathUtils.degToRad(cam.fov / 2)) * 0.55;
+const dist = raggio / Math.sin(THREE.MathUtils.degToRad(cam.fov / 2)) * 0.4;
 const mira = tutto.getCenter(new THREE.Vector3()).sub(centro).multiplyScalar(0.5);
 const dir = new THREE.Vector3(-0.75, 0.5, 0.75).normalize();
 cam.position.copy(mira.clone().add(dir.multiplyScalar(dist)));
@@ -278,9 +292,9 @@ document.getElementById("rimonta").onclick = () => { meta = 0; cursore.value = 0
 
 const elenco = document.getElementById("elenco");
 PEZZI.forEach((p, i) => {
-  if (p.vassoio && !PEZZI.slice(0, i).some((q) => q.vassoio)) {
+  if (p.componente && !PEZZI.slice(0, i).some((q) => q.componente)) {
     const t = document.createElement("p"); t.className = "sotto"; t.style.margin = "10px 0 4px";
-    t.innerHTML = "<b>Componenti</b> (modelli semplificati, sul vassoio accanto al robot):"; elenco.appendChild(t);
+    t.innerHTML = "<b>Componenti</b> (modelli semplificati, al loro livello):"; elenco.appendChild(t);
   }
   const li = document.createElement("li");
   li.innerHTML = `<input type="checkbox" checked title="mostra o nascondi"><span class="pallino" style="background:${p.colore}"></span><span>${p.nome}</span>`;
@@ -299,7 +313,7 @@ function scegli(i) {
     <dt>File</dt><dd><code>Meccanica_STL/${p.file}</code></dd>
     <dt>Ingombro</dt><dd>${p.ingombro.join(" × ")} mm · ${p.triangoli} triangoli</dd>
     <dt>Dove sta</dt><dd>${p.dove}</dd>
-    <dt>${p.vassoio ? "Cos'è (modello semplificato)" : "Cosa porta (da confermare)"}</dt><dd>${p.porta}</dd>
+    <dt>${p.componente ? "Cos'è (modello semplificato)" : "Cosa porta (da confermare)"}</dt><dd>${p.porta}</dd>
     <dt>Nel codice</dt><dd>${p.codice}</dd></dl>`;
 }
 
@@ -329,6 +343,10 @@ window.addEventListener("resize", misura); misura();
     const v = PEZZI[i].via, b = m.userData.base;
     m.position.set(v[0] * e, v[1] * e, v[2] * e);
     if (b) m.position.add(b);
+  });
+  copie.forEach((m) => {
+    const v = PEZZI[m.userData.i].via;
+    m.position.set(v[0] * e, v[1] * e, v[2] * e).add(m.userData.base);
   });
   angolo += (metaAngolo - angolo) * 0.12;
   if (portaBraccio) portaBraccio.rotation.z = THREE.MathUtils.degToRad(angolo);

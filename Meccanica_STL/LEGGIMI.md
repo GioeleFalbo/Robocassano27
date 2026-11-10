@@ -19,10 +19,12 @@ si alza e abbassa con il cursore "Braccio". Manca ancora lo STL della pinza.
 ## Componenti (modelli semplificati)
 
 In `componenti/` ci sono i modelli 3D **semplificati** (scatole e cilindri con le misure dei datasheet, valori indicativi) di
-servo FS5106R, servo DM996, Arduino Nano, PCA9685 a 16 canali, buck DC-DC (tipo LM2596) e LiPo Zeee 3S 2200 mAh. Li costruisce
+servo FS5106R, servo DM996, Arduino Nano, PCA9685 a 16 canali, buck DC-DC (tipo LM2596), LiPo Zeee 3S 2200 mAh, Raspberry Pi 5
+e scheda a 2 relè. Li costruisce
 `python3 .claude/skills/anatomia/componenti.py`: sono nostri, nessun problema di licenza. Servono per gli ingombri e
-l'esploso (sul "vassoio" accanto al robot), non per stampare. Se trovate i modelli ufficiali si possono sostituire con lo
-stesso nome; quando si conferma dove sono montati, nell'esploso si spostano al loro posto.
+l'esploso, non per stampare. Nell'esploso sono montati ai tre livelli (dal prof): livello 1 batteria e buck, livello 2 le due
+PCA9685 e l'Arduino, livello 3 Raspberry Pi 5 e relè (il punto preciso nel livello è indicativo). Se trovate i modelli
+ufficiali si possono sostituire con lo stesso nome.
 
 **Esploso 3D**: `esploso_robot.html` (doppio clic) mostra i pezzi che si smontano con un cursore; clic su un pezzo per la
 sua scheda. Si rigenera con `python3 .claude/skills/anatomia/costruisci_esploso.py`.

@@ -55,9 +55,9 @@ tabella `PEZZI` in cima allo script e rilancialo.
 ## I componenti in 3D
 
 `componenti.py` (in questa cartella) costruisce in `Meccanica_STL/componenti/` i modelli semplificati di servo, schede,
-buck e batteria, con le misure dei datasheet; `costruisci_esploso.py` li mette sul vassoio accanto al robot (tabella `PEZZI`,
-voci con `"vassoio": True` e `"copie"`). Per spostarne uno al suo posto sul robot: cambiare le sue `"copie"` e togliere
-`"vassoio"`. Non scaricare modelli da siti esterni senza controllare la licenza: la repository è pubblica.
+buck, batteria, Arduino, PCA9685, Raspberry e relè, con le misure dei datasheet; `costruisci_esploso.py` li monta ai loro
+livelli (tabella `PEZZI`, voci con `"componente": True`, `"copie"` = posizioni, `"via"` = quella del loro livello). Per
+spostarne uno: cambiare le sue `"copie"` e rilanciare. Non scaricare modelli da siti esterni senza controllare la licenza: la repository è pubblica.
 
 ## Regole
 

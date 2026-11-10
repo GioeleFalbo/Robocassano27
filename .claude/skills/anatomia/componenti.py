@@ -68,6 +68,11 @@ MODELLI = {
     "Buck_DCDC.stl": scheda(43, 21, [(26, 6, 9, 9, 9), (3, 3, 6, 6, 1)])
                      + cilindro(-43 / 2 + 15, 1.6, 0, 6, 8) + cilindro(-43 / 2 + 5, 1.6, 4, 4, 10)
                      + cilindro(43 / 2 - 5, 1.6, 4, 4, 10),
+    # Raspberry Pi 5: 85 x 56 mm; su un lato corto Ethernet e 2 doppie USB, chip al centro
+    "Raspberry_Pi_5.stl": scheda(85, 56, [(66, 2, 21, 16, 13.5), (66, 20, 17, 14, 16), (66, 38, 17, 14, 16),
+                                          (25, 20, 15, 15, 2.5), (8, 3, 51, 5, 8.5)]),
+    # scheda a 2 relè (blu, dalla foto): circa 50 x 38 mm, due relè e i morsetti
+    "Rele_2_canali.stl": scheda(50, 38, [(6, 3, 19, 15.5, 15), (6, 20, 19, 15.5, 15), (30, 3, 8, 32, 10)]),
     # LiPo Zeee 3S 2200 mAh 50C: circa 106 x 34 x 25 mm (da misurare), cavi di bilanciamento e di potenza
     "LiPo_Zeee_3S_2200.stl": scatola(-53, 0, -17, 106, 25, 34) + scatola(53, 8, -8, 12, 8, 4) + scatola(53, 8, 4, 8, 5, 4),
 }
