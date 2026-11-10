@@ -16,6 +16,14 @@ montaggio** degli altri: è disegnato con il braccio abbassato. Il perno è il c
 (X 41,7, Y 74,6, Z -372,4 nelle sue coordinate). Nell'esploso viene messo sul davanti a sinistra, in posizione indicativa, e
 si alza e abbassa con il cursore "Braccio". Manca ancora lo STL della pinza.
 
+## Componenti (modelli semplificati)
+
+In `componenti/` ci sono i modelli 3D **semplificati** (scatole e cilindri con le misure dei datasheet, valori indicativi) di
+servo FS5106R, servo DM996, Arduino Nano, PCA9685 a 16 canali, buck DC-DC (tipo LM2596) e LiPo Zeee 3S 2200 mAh. Li costruisce
+`python3 .claude/skills/anatomia/componenti.py`: sono nostri, nessun problema di licenza. Servono per gli ingombri e
+l'esploso (sul "vassoio" accanto al robot), non per stampare. Se trovate i modelli ufficiali si possono sostituire con lo
+stesso nome; quando si conferma dove sono montati, nell'esploso si spostano al loro posto.
+
 **Esploso 3D**: `esploso_robot.html` (doppio clic) mostra i pezzi che si smontano con un cursore; clic su un pezzo per la
 sua scheda. Si rigenera con `python3 .claude/skills/anatomia/costruisci_esploso.py`.
 

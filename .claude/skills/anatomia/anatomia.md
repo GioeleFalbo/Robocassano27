@@ -52,8 +52,10 @@ rimontare uno sull'altro). Asse verticale = **Y**; il muso (pinza e camere) è v
 Il modello del cruscotto (`ClaudeRob_V*/cruscotto/robot.stl`, 19092 triangoli, in cm) è questi 5 pezzi uniti.
 **Esploso 3D**: `python3 .claude/skills/anatomia/costruisci_esploso.py` → `Meccanica_STL/esploso_robot.html`.
 
-**Non hanno ancora un modello 3D**: i 4 servo delle ruote, le schede buck DC-DC, la batteria LiPo 11,1 V, l'Arduino Nano, il
-servo del braccio e la pinza (STL in arrivo). Il braccio c'è: `Braccio.stl` (vedi la scheda 6). Nell'esploso compaiono nell'elenco come "senza modello 3D".
+**Componenti in 3D semplificato** (`Meccanica_STL/componenti/`, fatti da `componenti.py` con le misure dei datasheet): i 4
+servo FS5106R, il servo DM996, la LiPo, i 3 buck, l'Arduino Nano, le 2 PCA9685; nell'esploso sono sul vassoio accanto al robot
+finché non si conferma dove sono montati. **Ancora senza modello 3D**: la pinza (STL in arrivo), il Raspberry Pi 5, le camere,
+laser, giroscopio, relè e luci. Il braccio c'è: `Braccio.stl` (vedi la scheda 6). Nell'esploso compaiono nell'elenco come "senza modello 3D".
 
 Misure che il codice usa [codice/simulatore]: larghezza **15,6 cm** (`ROBOT_LARGHEZZA_CM`), camera linea **12 cm** davanti
 alle ruote, laser davanti 11,5 cm davanti all'asse delle ruote, laser laterali 1,5 cm davanti e a ±7,5 cm di lato.

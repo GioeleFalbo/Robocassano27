@@ -48,18 +48,48 @@ PEZZI = [
      "dove": "Sul davanti, a sinistra: il disco si avvita alla squadretta del servo DM996 (il perno), la base piatta porta la pinza. Usa il cursore 'Braccio' per alzarlo e abbassarlo. Posizione indicativa (lo STL non è nelle coordinate di montaggio).",
      "porta": "La pinza con il suo servo (STL della pinza in arrivo).",
      "codice": "Servo DM996 all metal, PCA9685 0x40 canale 4: Braccio(angolo) in ViennaClsRobot.py; AbbassaPinza / AlzaPinza / CaricaPalla in RwdFoto.py."},
+    # --- componenti: modelli SEMPLIFICATI fatti da componenti.py (misure dei datasheet), sul vassoio accanto al robot ---
+    {"file": "componenti/Servo_FS5106R.stl", "nome": "Servo delle ruote Feetech FS5106R (x4)", "colore": "#2b2b2b", "vassoio": True,
+     "via": [0, 0, 0], "copie": [[-40, -75, -95], [5, -75, -95], [50, -75, -95], [95, -75, -95]],
+     "dove": "Sotto il robot, uno per ruota, nelle culle della piastra dei servo (foto 'sotto'). Qui sul vassoio.",
+     "porta": "Servo a rotazione continua: si comanda la velocità, non l'angolo. Datasheet: 40,8 x 20,1 x 38 mm, 4,8-6 V.",
+     "codice": "PCA9685 0x41, canali 15 e 4 (sinistra), 0 e 11 (destra). Sterzo(velocita, sterzo) in ViennaClsRobot.py."},
+    {"file": "componenti/Servo_DM996.stl", "nome": "Servo del braccio DM996 all metal", "colore": "#3a3a3a", "vassoio": True,
+     "via": [0, 0, 0], "copie": [[140, -75, -95]],
+     "dove": "Sul davanti, a sinistra: la sua squadretta muove il disco del braccio. Qui sul vassoio.",
+     "porta": "Servo di posizione con ingranaggi in metallo (formato MG996R): 40,7 x 19,7 x 42,9 mm.",
+     "codice": "PCA9685 0x40 canale 4: Braccio(angolo)."},
+    {"file": "componenti/LiPo_Zeee_3S_2200.stl", "nome": "Batteria LiPo Zeee 3S 2200 mAh 50C", "colore": "#c9a227", "vassoio": True,
+     "via": [0, 0, 0], "copie": [[40, -75, -45]],
+     "dove": "Probabilmente nel vano bianco sotto il robot (da confermare). Si toglie per caricarla.",
+     "porta": "11,1 V nominali (12,6 V carica), 24,4 Wh. Misure indicative (circa 106 x 34 x 25 mm): da misurare.",
+     "codice": "Il Raspberry registra sottotensione e 5 V nella scatola nera (campo pi, ViennaMonitor.py)."},
+    {"file": "componenti/Buck_DCDC.stl", "nome": "Convertitori buck DC-DC (x3)", "colore": "#2f6fd6", "vassoio": True,
+     "via": [0, 0, 0], "copie": [[-40, -75, -5], [10, -75, -5], [60, -75, -5]],
+     "dove": "Nel piano basso, sul fianco (foto). Posizione di tutti e tre: da confermare.",
+     "porta": "Abbassano gli 11,1 V della batteria. Modello disegnato come i comuni LM2596 (43 x 21 mm, scheda blu con bobina): da confermare, come le tensioni.",
+     "codice": "Nessuna riga di codice: è alimentazione. Un buck che non ce la fa si vede nel campo pi della scatola nera."},
+    {"file": "componenti/Arduino_Nano.stl", "nome": "Arduino Nano", "colore": "#1a8f9a", "vassoio": True,
+     "via": [0, 0, 0], "copie": [[-40, -75, -45]],
+     "dove": "Posizione sul robot: da confermare.",
+     "porta": "Legge i 3 laser VL53L1X, il giroscopio BNO055 e gli switch; 45 x 18 mm.",
+     "codice": "USB a 230400 baud, 10 numeri per riga: _arduino_reader in ViennaClsRobot.py."},
+    {"file": "componenti/PCA9685_16canali.stl", "nome": "Schede PCA9685 a 16 canali (x2)", "colore": "#5b3fa0", "vassoio": True,
+     "via": [0, 0, 0], "copie": [[125, -75, -45], [125, -75, -10]],
+     "dove": "Nella parte dell'elettronica (da confermare).",
+     "porta": "Generano gli impulsi dei servo. Formato Adafruit: 62,5 x 25,4 mm, 16 connettori a 3 pin.",
+     "codice": "0x41 = le 4 ruote; 0x40 = braccio (canale 4) e pinza (canale 11). _set_pwm in ViennaClsRobot.py."},
 ]
 
 
 # Componenti veri del robot che non hanno ancora un file 3D: nella pagina compaiono nell'elenco, in grigio.
 # Quando arriva il loro STL, spostarli in PEZZI (con colore e "via").
 SENZA_MODELLO = [
-    {"nome": "4 servo Feetech FS5106R (uno per ruota)", "nota": "rotazione continua · PCA9685 0x41, canali 15, 4, 0, 11 · Sterzo() in ViennaClsRobot.py"},
-    {"nome": "Batteria LiPo Zeee 3S 2200 mAh 50C (24,4 Wh)", "nota": "11,1 V nominali, 12,6 V carica · probabilmente nel vano sotto il robot"},
-    {"nome": "3 schede buck DC-DC", "nota": "abbassano gli 11,1 V della batteria · quali tensioni e per chi: da confermare"},
-    {"nome": "Arduino Nano", "nota": "3 laser, giroscopio, switch · USB 230400 baud · posizione da confermare"},
-    {"nome": "Servo del braccio DM996 all metal", "nota": "il braccio c'è; il corpo del servo non ha ancora un modello 3D"},
-    {"nome": "Pinza", "nota": "PCA9685 0x40 canale 11 · STL in arrivo"},
+    {"nome": "Pinza e il suo servo", "nota": "PCA9685 0x40 canale 11 · STL in arrivo"},
+    {"nome": "Raspberry Pi 5", "nota": "il cervello: RwdFoto.py · 85 x 56 mm"},
+    {"nome": "2 camere (linea verso il basso, arena inclinata)", "nota": "Picamera2(0) e Picamera2(1)"},
+    {"nome": "3 laser VL53L1X, giroscopio BNO055, switch", "nota": "collegati all'Arduino Nano"},
+    {"nome": "Scheda a 2 relè e 2 strisce LED COB 5 V", "nota": "luci su GPIO 22 e 23"},
 ]
 
 
@@ -156,7 +186,7 @@ PAGINA = r"""<!DOCTYPE html>
 </div>
 <aside>
   <h1>RoboCassano</h1>
-  <p class="sotto">L'esploso del robot: i pezzi stampati in 3D (millimetri). Trascina per girare, rotella per lo zoom,
+  <p class="sotto">L'esploso del robot: i pezzi stampati in 3D e, sul vassoio, i componenti (millimetri). Trascina per girare, rotella per lo zoom,
      clic su un pezzo per la sua scheda.</p>
   <ul id="elenco"></ul>
   <p class="sotto" style="margin:0 0 6px"><b>Senza modello 3D</b> (ancora da aggiungere):</p>
@@ -199,6 +229,13 @@ PEZZI.forEach((p, i) => {
   }
   geo.computeVertexNormals();
   const mat = new THREE.MeshStandardMaterial({ color: p.colore, roughness: 0.6, metalness: 0.05 });
+  if (p.copie) {    // componente sul vassoio: una o più copie ferme, non si smontano
+    p.copie.forEach((c) => {
+      const m = new THREE.Mesh(geo, mat); m.userData.i = i; m.position.set(...c);
+      gruppo.add(m); oggetti.push(m); box.union(new THREE.Box3().setFromObject(m));
+    });
+    return;
+  }
   const mesh = new THREE.Mesh(geo, mat); mesh.userData.i = i;
   oggetti.push(mesh);
   if (p.posa) {
@@ -241,9 +278,13 @@ document.getElementById("rimonta").onclick = () => { meta = 0; cursore.value = 0
 
 const elenco = document.getElementById("elenco");
 PEZZI.forEach((p, i) => {
+  if (p.vassoio && !PEZZI.slice(0, i).some((q) => q.vassoio)) {
+    const t = document.createElement("p"); t.className = "sotto"; t.style.margin = "10px 0 4px";
+    t.innerHTML = "<b>Componenti</b> (modelli semplificati, sul vassoio accanto al robot):"; elenco.appendChild(t);
+  }
   const li = document.createElement("li");
   li.innerHTML = `<input type="checkbox" checked title="mostra o nascondi"><span class="pallino" style="background:${p.colore}"></span><span>${p.nome}</span>`;
-  li.querySelector("input").onclick = (e) => { e.stopPropagation(); oggetti[i].visible = e.target.checked; };
+  li.querySelector("input").onclick = (e) => { e.stopPropagation(); oggetti.forEach((m) => { if (m.userData.i === i) m.visible = e.target.checked; }); };
   li.onclick = () => scegli(i);
   elenco.appendChild(li);
 });
@@ -251,14 +292,14 @@ PEZZI.forEach((p, i) => {
 let scelto = -1;
 function scegli(i) {
   scelto = i;
-  [...elenco.children].forEach((li, k) => li.classList.toggle("scelto", k === i));
-  oggetti.forEach((m, k) => { m.material.emissive.setHex(k === i ? 0x333333 : 0x000000); m.material.opacity = 1; });
+  [...elenco.querySelectorAll("li")].forEach((li, k) => li.classList.toggle("scelto", k === i));
+  oggetti.forEach((m) => { m.material.emissive.setHex(m.userData.i === i ? 0x333333 : 0x000000); });
   const p = PEZZI[i];
   document.getElementById("scheda").innerHTML = `<h2>${p.nome}</h2><dl>
     <dt>File</dt><dd><code>Meccanica_STL/${p.file}</code></dd>
     <dt>Ingombro</dt><dd>${p.ingombro.join(" × ")} mm · ${p.triangoli} triangoli</dd>
     <dt>Dove sta</dt><dd>${p.dove}</dd>
-    <dt>Cosa porta (da confermare)</dt><dd>${p.porta}</dd>
+    <dt>${p.vassoio ? "Cos'è (modello semplificato)" : "Cosa porta (da confermare)"}</dt><dd>${p.porta}</dd>
     <dt>Nel codice</dt><dd>${p.codice}</dd></dl>`;
 }
 
@@ -284,6 +325,7 @@ window.addEventListener("resize", misura); misura();
   t += (meta - t) * 0.12;
   const e = t * t * (3 - 2 * t);
   portaPezzi.forEach((m, i) => {
+    if (!m) return;
     const v = PEZZI[i].via, b = m.userData.base;
     m.position.set(v[0] * e, v[1] * e, v[2] * e);
     if (b) m.position.add(b);

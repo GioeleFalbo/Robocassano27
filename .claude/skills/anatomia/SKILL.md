@@ -52,6 +52,13 @@ la sua scheda, mouse per girare e zoomare. Usa i 5 STL di `Meccanica_STL/` (in m
 e three.js dalla cartella `cruscotto/` dell'ultima versione. Se cambia un pezzo stampato o se ne aggiunge uno, aggiorna la
 tabella `PEZZI` in cima allo script e rilancialo.
 
+## I componenti in 3D
+
+`componenti.py` (in questa cartella) costruisce in `Meccanica_STL/componenti/` i modelli semplificati di servo, schede,
+buck e batteria, con le misure dei datasheet; `costruisci_esploso.py` li mette sul vassoio accanto al robot (tabella `PEZZI`,
+voci con `"vassoio": True` e `"copie"`). Per spostarne uno al suo posto sul robot: cambiare le sue `"copie"` e togliere
+`"vassoio"`. Non scaricare modelli da siti esterni senza controllare la licenza: la repository è pubblica.
+
 ## Regole
 
 - Non modificare il codice del robot per rispondere: questa skill **spiega**, non corregge. Una correzione è una versione
