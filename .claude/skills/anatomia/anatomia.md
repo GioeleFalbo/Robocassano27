@@ -60,6 +60,22 @@ alle ruote, laser davanti 11,5 cm davanti all'asse delle ruote, laser laterali 1
 
 ---
 
+## 1a. Cosa si vede nelle foto del robot (10/11)  [foto, da confermare con la squadra]
+
+Foto in `immagini/foto_robot/`: `sotto.jpg`, `fianco.jpg`, `fianco_elettronica.jpg`, `davanti_pinza.jpg`.
+
+- **Sotto** (`sotto.jpg`): telaio verde oliva (`ServoRWDAmmortizzato`); **4 servo neri di formato standard**, uno per ruota,
+  in culle bianche e fissati con fascette stampate verdi; al centro, tra i servo davanti e dietro, una **scatola bianca
+  lunga** (probabile vano della batteria). Ruote stampate bianche (morbide, tassellate) con mozzi blu.
+- **Di lato** (`fianco.jpg`, `fianco_elettronica.jpg`): **molle** delle sospensioni sopra le ruote; il **Raspberry Pi**
+  (porte Ethernet/USB) sotto la copertura alta; un **convertitore buck** (scheda blu con bobina) nel piano basso; una scheda
+  **a 2 relè** blu sul fianco (le 2 luci sono comandate dai relè: GPIO 22 e 23); un **tester della LiPo** con display (mostra
+  "3", cioè 3 celle); una **maniglia** blu in alto; il servo del **braccio** (scritta "…M996…", tipo MG996R) sul davanti.
+- **Davanti** (`davanti_pinza.jpg`): la **pinza** blu a due dita con **ingranaggi**, in cima al braccio; **due strisce LED
+  COB a 5 V** inclinate ai lati; una **camera** al centro del muso e sotto un **piccolo sensore nero quadrato** (probabile
+  laser davanti VL53L1X); in alto un altro alloggiamento con una camera (cavo a nastro).
+- Sul tavolo: la batteria LiPo con il caricatore bilanciato: la batteria si toglie per caricarla.
+
 ## 1b. L'energia: batteria e convertitori  [dal prof, 10/11]
 
 - **Batteria LiPo 3S da 11,1 V** (tensione nominale; 12,6 V carica, da non scaricare sotto circa 9,9 V, cioè 3,3 V per
