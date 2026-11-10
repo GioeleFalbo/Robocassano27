@@ -7,6 +7,8 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - Prof. Giovanni Vaccaro, IISS "Erodoto di Thurii" (Cassano allo Ionio), indirizzo Elettronica e robotica. Squadra
   **RoboCassano**, RoboCup Junior **Rescue Line**. Con lui lavorano gli studenti **Battista** e **Gioele**
   (collaboratori su GitHub; la loro guida è `COME_LAVORARE.md`).
+  Nella squadra anche **Gabriel** (disegno, elettronica e meccanica, il tuttofare), **Antonio** (l'assemblatore,
+  il meccanico) e **Giuseppe** (le "carte": documenti e iscrizioni). Sul README (repository pubblico) solo i nomi, senza cognomi.
 - Si scrive in **italiano**, in modo diretto e semplice (i ragazzi devono capire).
 
 ## Regole fisse (da rispettare sempre)

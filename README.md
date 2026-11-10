@@ -93,6 +93,9 @@ Dal primo programma della squadra a oggi: **108 correzioni** (FIX), ognuna con i
 | 🧑‍🏫 | **Prof. Giovanni Vaccaro** | capo squadra: decide, controlla, approva |
 | 👨‍🎓 | **Battista** | seguilinea e altalena |
 | 👨‍🎓 | **Gioele** | zona di evacuazione: ingresso, vittime, uscita |
+| 🛠️ | **Gabriel** | il tuttofare: disegno 3D, elettronica e meccanica del robot. Se un pezzo esiste, probabilmente l'ha disegnato, saldato o avvitato lui |
+| 🚜 | **Antonio** | l'assemblatore: monta e smonta il robot con metodi da officina di campagna. Non conosce la parola "delicato", ma i pezzi alla fine stanno su |
+| 📂 | **Giuseppe** | il custode delle "carte": iscrizioni, documenti di gara e tutto quello che va consegnato in ordine e in tempo |
 | 🧠 | **Claude** | l'ingegnere del software: propone e prova le correzioni |
 | 🔧 | **Shuri** | il collaudo: prova ogni versione e analizza le scatole nere ([chi è](Laboratorio%20Shuri/CHI_E_SHURI.md)) |
 
