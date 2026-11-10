@@ -216,6 +216,8 @@ l'arena. **Scatola nera**: `led`.
 - **Scatola nera** (`ViennaMonitor.py`, FIX 37): `~/OneDrive/ScatolaNera/run_AAAA-MM-GG_hh-mm-ss_V<n>.jsonl`. Prima riga =
   intestazione (versione, impronta, cartella, file); poi un campione ~ogni 0,1 s (`tipo: "c"`) e gli eventi (`tipo: "evento"`).
   Non comunica con niente: si può usare in gara.
+  Dalla V42 (FIX 108) un file per **run**: le LoP sono dentro (eventi "STOP n" con fase, laser e rotta dell'ultimo istante con lo
+  switch acceso, e "LoP n: si riparte dopo x s"; campo `lop`); file nuovo solo dopo `CRONO_NUOVA_GARA_S` (120 s) di switch spento.
 - **Cruscotto** (solo laboratorio, `CRUSCOTTO`): pagina web 3D su `http://<ip-del-robot>:8000` con il modello del robot.
 - **Terminale "cabina di pilotaggio"** (V42, FIX 107, `ViennaCabina.py`, `TERMINALE = "cabina"`): schermata fissa a riquadri
   ridisegnata 5 volte al secondo: laser visti dall'alto, assetto con 20 s di storia, **cronometro** che parte con lo switch e

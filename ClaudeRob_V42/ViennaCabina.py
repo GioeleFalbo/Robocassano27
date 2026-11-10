@@ -455,8 +455,10 @@ def schermo(c, storia, eventi, fase, durate, versione, crono=None, cam_linea=Non
              (f"{VERDE}{verde[:16]}{R}" if verde else ""), f"{DIM}{c.get('fps', 0):.0f} fps · {c.get('dec_s', 0):.0f} dec/s{R}"]
     t_ar = [f"{DIM}vede{R}", f"{AZZURRO}{B}{(c.get('arena') or '—')[:17]}{R}"]
     meta = L // 2
-    out += affianca(riquadro_camera("CAMERA LINEA", cam_linea, t_lin, meta, 8, eta_linea),
-                    riquadro_camera("CAMERA ARENA", cam_arena, t_ar, L - meta, 8, eta_arena))
+    # [FIX 108] le camere crescono con la finestra: 8 righe (100 x 38), fino a 20 con un terminale grande
+    alt_cam = max(8, min(20, int((meta - 22) / 3.4), righe_tot - 32))
+    out += affianca(riquadro_camera("CAMERA LINEA", cam_linea, t_lin, meta, alt_cam, eta_linea),
+                    riquadro_camera("CAMERA ARENA", cam_arena, t_ar, L - meta, alt_cam, eta_arena))
     out += riquadro_motori(c, L)
     out += riquadro_gara(fase, durate, L)
     resto = max(2, righe_tot - len(out) - 3)

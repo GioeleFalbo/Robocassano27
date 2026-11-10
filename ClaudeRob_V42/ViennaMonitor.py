@@ -84,6 +84,12 @@ _campione = [{}]
 
 # scatola nera
 _scatola = {"f": None, "nome": None, "ultimo_flush": 0.0, "ultimo_campione": 0.0, "ultima_foto": 0.0}
+# [FIX 108] UNA SCATOLA NERA PER RUN, con le LoP dentro. Prima ogni accensione dello switch ("NUOVA RUN") apriva un
+# file nuovo e il tempo ripartiva da 0: una gara con 2 LoP finiva in 3 file. Ora, se lo switch è rimasto spento meno di
+# CRONO_NUOVA_GARA_S (120 s), è una LoP: stesso file, stesso tempo, e due eventi ("STOP n" quando si spegne, con fase,
+# laser e rotta; "LoP n: si riparte" quando si riaccende). File nuovo solo per una gara nuova o un programma riavviato.
+_run = {"attiva": False, "sw": False, "spento_da": None, "lop": 0, "stop": 0,
+        "riacceso_t": 0.0, "ultimo_spento": None, "ultimo_acceso": None}
 
 # -------------------------------------------------------------------------------------------
 #   NOMI DELLE FUNZIONI -> cosa sta facendo il robot (in italiano)
@@ -400,8 +406,21 @@ def _gestisci_messaggio(testo):
     with _lock:
         _registro.append(grezzo)                # [FIX 47] anche le print "di rumore" vanno nella finestra
     if re.match(r"^\s*NUOVA RUN", testo):
-        _t_run = _ora()
-        _nuova_scatola()
+        t = _ora()
+        lim = getattr(RwdConf, "CRONO_NUOVA_GARA_S", 120.0)
+        # quanto è rimasto spento lo switch (il monitor può aver già visto la riaccensione, o non ancora)
+        if _run["spento_da"] is not None:
+            spento = t - _run["spento_da"]
+        elif t - _run["riacceso_t"] < 3.0:
+            spento = _run["ultimo_spento"]
+        else:
+            spento = None
+        if _run["attiva"] and spento is not None and spento <= lim:
+            pass                                    # [FIX 108] ripartenza dopo una LoP: stessa scatola nera, stesso tempo
+        else:
+            _t_run = t
+            _nuova_scatola()
+            _run.update(attiva=True, lop=0, stop=0, spento_da=None, riacceso_t=0.0, ultimo_spento=None)
     if testo.startswith("Controllo verde"):
         _yolo.update(verde=testo.replace("Controllo verde: ", ""), verde_t=_ora())
     nuovo, cat = _classifica(testo)
@@ -700,6 +719,31 @@ def _miniatura(img, w=176, h=104):
         return None
 
 
+def _stop_e_lop(c, t):
+    """[FIX 108] Switch spento durante la run: evento STOP con dove era il robot. Riacceso entro CRONO_NUOVA_GARA_S: LoP."""
+    sw = bool(c.get("sw"))
+    if sw:
+        _run["ultimo_acceso"] = c
+    if _run["attiva"] and _run["sw"] and not sw:
+        _run["stop"] += 1
+        _run["spento_da"] = t
+        c = _run["ultimo_acceso"] or c             # com'era il robot l'ultimo istante con lo switch acceso
+        m, s = divmod(max(c["t"], 0), 60)
+        d = c.get("d") or [0, 0, 0]
+        b, ro, rt = (list(c.get("imu") or []) + [0, 0, 0])[:3]
+        evento(f"STOP {_run['stop']}: switch spento a {int(m)}:{s:04.1f} durante \"{c.get('stato', '')}\" "
+               f"(laser Sx {d[0] or 'fuori'} Fr {d[1] or 'fuori'} Dx {d[2] or 'fuori'} cm, rotta {c.get('rotta', rt)}, "
+               f"beccheggio {b:+.0f}, YOLO {(c.get('yolo') or ['-'])[0] or '-'})", "gara")
+    elif _run["attiva"] and sw and not _run["sw"] and _run["spento_da"] is not None:
+        spento = t - _run["spento_da"]
+        _run.update(riacceso_t=t, ultimo_spento=spento)
+        if spento <= getattr(RwdConf, "CRONO_NUOVA_GARA_S", 120.0):
+            _run["lop"] += 1
+            evento(f"LoP {_run['lop']}: si riparte dopo {spento:.0f} s di switch spento (STOP {_run['stop']})", "gara")
+        _run["spento_da"] = None
+    _run["sw"] = sw
+
+
 def _campiona_se_serve(frame=None):
     t = _ora()
     if t - _scatola["ultimo_campione"] < 0.1:
@@ -707,6 +751,11 @@ def _campiona_se_serve(frame=None):
     _scatola["ultimo_campione"] = t
     pila = _pila(frame) if frame is not None else None
     c = _campione_ora(pila)
+    try:
+        _stop_e_lop(c, t)                       # [FIX 108]
+    except Exception:
+        pass
+    c["lop"] = _run["lop"]
     if _cab["crono"] is not None:               # [FIX 107] cronometro, fasi e storia per la cabina
         try:
             cr = _cab["crono"]

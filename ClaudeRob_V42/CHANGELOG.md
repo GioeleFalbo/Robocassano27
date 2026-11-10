@@ -4,7 +4,7 @@ Robot RoboCup Junior Rescue Line – IISS "Erodoto di Thurii", Cassano allo Ioni
 Versione attuale: **ClaudeRob V42** (10 novembre 2026)
 
 Questo file riassume, versione per versione, cosa è cambiato e perché. Il dettaglio tecnico di ogni
-modifica è in `LEGGIMI_MODIFICHE.md`: ogni correzione è numerata (FIX 1 … FIX 107) e nel codice è
+modifica è in `LEGGIMI_MODIFICHE.md`: ogni correzione è numerata (FIX 1 … FIX 108) e nel codice è
 segnata con un commento `# [FIX n]`, così si ritrova subito con "Cerca" in Notepad++.
 
 Il programma da lanciare è sempre `RwdFoto.py` dalla cartella `ClaudeRob_V42` (oppure `./avvia.sh`).
@@ -57,7 +57,7 @@ sono nello zip.
 | V39 | Uscita: col laser capisce se davanti c'è il muro e cerca la porta di lato; ingresso senza tentativi sprecati; altalena più svelta |
 | V40 | Con lo switch spento (LoP) il programma non si pianta più nel giro dei muri |
 | V41 | Ingresso: niente più retromarce inutili quando il robot sta entrando dalla porta aperta |
-| V42 | Terminale "cabina di pilotaggio": laser, assetto, cronometro dallo switch, le due camere in piccolo, fasi della gara |
+| V42 | Terminale "cabina di pilotaggio" con camere e cronometro; una scatola nera per ogni run, con le LoP dentro |
 
 ---
 
@@ -85,6 +85,19 @@ Serve una finestra di almeno 100 x 38 caratteri (in VNC: ingrandire il terminale
 con un evento e usa il pannello di prima. `TERMINALE = "pannello"` rimette il terminale della V41.
 La stessa schermata serve alla moviola delle scatole nere: `Strumenti_prove_Claude/terminale_nuovo.py`.
 
+**FIX 108 – una scatola nera per ogni run, con le LoP dentro** (`ViennaMonitor.py`). Il prof (10/11): "ogni volta
+che interrompo la run spegnendo lo switch il sistema mi crea una scatola nera; vorrei una scatola nera per ogni run con
+dentro i vari LoP, così capisco meglio dove sbaglia il robot". Prima ogni "NUOVA RUN" (switch acceso) apriva un file nuovo
+e il tempo ripartiva da 0. Ora:
+- se lo switch è rimasto spento meno di `CRONO_NUOVA_GARA_S` (120 s) è una **LoP**: stesso file e **stesso tempo** (non
+  riparte da 0), ogni campione ha il campo `lop` (quante LoP finora);
+- quando si spegne lo switch c'è l'evento **"STOP n: switch spento a m:ss durante ..."** con com'era il robot l'ultimo
+  istante acceso (fase, laser, rotta, beccheggio, YOLO); quando si riaccende, **"LoP n: si riparte dopo x s"**;
+- file nuovo solo per una gara nuova (switch spento più di 120 s) o un programma riavviato. Il nome resta
+  `run_AAAA-MM-GG_hh-mm-ss_V<n>.jsonl` (così gli strumenti di Shuri trovano tutto come prima).
+Anche le **camere della cabina crescono con la finestra**: 8 righe con 100 x 38, fino a 20 con un terminale grande
+(a 160 x 52 sono circa il doppio).
+
 **Cosa NON cambia:** la gara. La cabina è solo nel monitor (thread a parte, tutto dentro try/except) e nel simulatore
 non c'è il terminale.
 
@@ -96,8 +109,9 @@ non c'è il terminale.
 | Monitor vero con robot finto, terminale 110 x 42, switch acceso / spento / riacceso | – | cabina 5 volte al secondo, cronometro dallo switch, **1 LoP contata** |
 | Terminale piccolo 80 x 24 | – | avviso e pannello di prima |
 | Moviola della scatola nera del 9/11 (V40) | – | fasi con i tempi veri (uscita 65 s), camere e cronometro |
+| Scatola nera con robot finto: acceso, spento 0,5 s, riacceso, spento a lungo, riacceso (limite 1 s per la prova) | un file per ogni accensione | **2 file**: la prima gara con STOP 1, LoP 1, STOP 2 e tempo continuo; poi la gara nuova |
 
-Impronta del codice V42: `ebaf44adfcfb2e81`.
+Impronta del codice V42: `23983472617a3c07`.
 
 ---
 
