@@ -110,7 +110,8 @@ Foto in `immagini/foto_robot/`: `sotto.jpg`, `fianco.jpg`, `fianco_elettronica.j
 - **Avvio**: all'accensione `~/.config/labwc/autostart` (e `lxsession`) lancia `~/ClaudeRob_GARA/avvia.sh`; `ClaudeRob_GARA`
   è un collegamento alla versione di gara (`ln -sfn ~/ClaudeRob_V41 ~/ClaudeRob_GARA`).
 - **File**: `ViennaClsRobot.py` (corpo: motori, sensori, movimenti), `ViennaClsWebCam.py` (occhi), `ViennaDataConf.py`
-  (tutti i parametri: ~200), `ViennaMonitor.py` (scatola nera, terminale, cruscotto), `ViennaPannello.py` (pannello a schermo).
+  (tutti i parametri: ~200), `ViennaMonitor.py` (scatola nera, terminale, cruscotto), `ViennaPannello.py` (pannello a schermo),
+  `ViennaCabina.py` (dalla V42: il terminale "cabina di pilotaggio").
 - **Ciclo principale** (fondo di `RwdFoto.py`): in PAUSA finché lo switch è spento; acceso → `Protetto(InseguitoreIA)` →
   `Protetto(ArenaAI)` → `Protetto(TrovaUscitaArena)`. `Protetto` (FIX 100): un errore Python non chiude la gara, passa alla
   fase dopo. `finally` (FIX 6): qualunque cosa succeda, ferma i motori.
@@ -216,6 +217,13 @@ l'arena. **Scatola nera**: `led`.
   intestazione (versione, impronta, cartella, file); poi un campione ~ogni 0,1 s (`tipo: "c"`) e gli eventi (`tipo: "evento"`).
   Non comunica con niente: si può usare in gara.
 - **Cruscotto** (solo laboratorio, `CRUSCOTTO`): pagina web 3D su `http://<ip-del-robot>:8000` con il modello del robot.
+- **Terminale "cabina di pilotaggio"** (V42, FIX 107, `ViennaCabina.py`, `TERMINALE = "cabina"`): schermata fissa a riquadri
+  ridisegnata 5 volte al secondo: laser visti dall'alto, assetto con 20 s di storia, **cronometro** che parte con lo switch e
+  non si azzera con le LoP (le conta; gara nuova solo dopo `CRONO_NUOVA_GARA_S` 120 s di switch spento; `CRONO_DURATA_S` 480),
+  camera linea e camera arena in piccolo (mezzi blocchi a 256 colori), motori e pinza, fasi della gara, eventi. Serve una
+  finestra di almeno 100 x 38 caratteri; più piccola → torna il pannello di prima (`"pannello"`, FIX 37/42). Riceve lo stesso
+  campione della scatola nera, quindi la **moviola** `Strumenti_prove_Claude/terminale_nuovo.py` rivede una gara vera uguale.
+  Esercizio: rivedete l'altalena del 9/11 (`--da 375 --velocita 1`) e guardate beccheggio, camera e cronometro insieme.
 - **Strumenti**: `Strumenti_prove_Claude/analizza_scatola_nera.py` (eventi, o campioni tra due istanti);
   `Laboratorio Shuri/analizza_scatola.py` (problemi + foto delle camere).
 

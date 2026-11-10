@@ -10,11 +10,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - Si scrive in **italiano**, in modo diretto e semplice (i ragazzi devono capire).
 
 ## Regole fisse (da rispettare sempre)
-1. Ogni modifica al codice del robot = **versione nuova** in una cartella nuova: `ClaudeRob_V<n>` (ultima: **V41**).
+1. Ogni modifica al codice del robot = **versione nuova** in una cartella nuova: `ClaudeRob_V<n>` (ultima: **V42**).
    Il simulatore ha la sua numerazione: `ClaudeRob_Simulatore_V<n>` (ultimo: **V32**).
 2. **Non modificare mai** le cartelle delle versioni già consegnate: si copia l'ultima e si lavora sulla copia.
 3. I **nomi dei file** delle classi non cambiano mai (`RwdFoto.py`, `ViennaClsRobot.py`, `ViennaDataConf.py`, ...).
-4. Ogni modifica è commentata nel codice con **`[FIX n]`** (ultimo: **FIX 106**), con il motivo (di solito: quale scatola
+4. Ogni modifica è commentata nel codice con **`[FIX n]`** (ultimo: **FIX 107**), con il motivo (di solito: quale scatola
    nera, quale secondo, cosa si vede nei dati).
 5. In ogni versione aggiornare **`CHANGELOG.md`** (sezione nuova in cima + riga nella tabella delle versioni) e
    **`LEGGIMI_MODIFICHE.md`** (una riga per FIX), con **fine riga CRLF** (Windows).
@@ -41,11 +41,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   una pull request) → un'issue per pezzo (es. Battista l'altalena, Gioele l'uscita) → ognuno la sua versione, analisi della
   scatola nera, simulatore, pull request con prima/dopo → il prof controlla e unisce → chi arriva secondo si aggiorna → la
   versione nuova va sul robot. Dettagli per gli studenti in `COME_LAVORARE.md`.
-- Il repository contiene le **ultime versioni** del codice (V39 e V40 come riferimento, V41), i simulatori V31 e V32, gli strumenti
+- Il repository contiene le **ultime versioni** del codice (V39, V40 e V41 come riferimento, V42), i simulatori V31 e V32, gli strumenti
   di prova, il Laboratorio Shuri (solo gli strumenti), i pezzi stampati (`Meccanica_STL/`) e alcune scatole nere recenti, con gli **stessi nomi di cartella** del Mac (così i percorsi relativi funzionano uguale). Le versioni
   vecchie (V25-V38) restano sul Mac; la loro storia è nel `CHANGELOG.md`.
-- Versione nuova: si copia l'ultima (`ClaudeRob_V41`) in `ClaudeRob_V42`, si lavora lì, poi un commit con un messaggio tipo
-  "V42: FIX 107 ...". Non si modifica la cartella della versione precedente (resta come riferimento per i confronti).
+- Versione nuova: si copia l'ultima (`ClaudeRob_V42`) in `ClaudeRob_V43`, si lavora lì, poi un commit con un messaggio tipo
+  "V43: FIX 108 ...". Non si modifica la cartella della versione precedente (resta come riferimento per i confronti).
 - Le scatole nere nuove vanno in `ScatoleNere/`. File rigenerabili (replay, zip, `__pycache__`) esclusi da `.gitignore`.
 
 ## Cartelle
@@ -92,7 +92,7 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   lato corto accanto al triangolo rosso; i triangoli (rosso e verde) vengono spostati tra le prove; c'è una parete a
   destra di una parte della pista e un'altalena dopo l'uscita.
 
-## Il codice (ClaudeRob_V41, impronta 7fa6d06745b2776b; V40: dcd59068b49486ac; V39: 9ef3d48e550bc741)
+## Il codice (ClaudeRob_V42, impronta ebaf44adfcfb2e81; V41: 7fa6d06745b2776b; V40: dcd59068b49486ac; V39: 9ef3d48e550bc741)
 - `RwdFoto.py` – programma di gara (~4500 righe): seguilinea `InseguitoreIA`, verdi e incroci, ostacolo, ingresso
   (`TrovaIngressoArena`, `DirezioneIngresso`, `CentraSullIngresso`, `EntraDallaPorta`), palline (`ArenaAI`), uscita
   (`TrovaUscitaArena` → `AvvicinatiAlMuro` / `GiroDeiMuri` / `SeguiParete` / `EsciDallaPortaDavanti` /
@@ -103,6 +103,9 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   `Gira`, `RuotaVerso`, `Dritto(..., ruota=False)`, `StoriaBeccheggio`, `Pendenza`.
 - `ViennaClsWebCam.py` – camere e YOLO. `ViennaDataConf.py` – tutti i parametri. `ViennaMonitor.py` – scatola nera e
   monitor (eventi riconosciuti da elenchi di espressioni regolari). `ViennaPannello.py` – pannello a schermo.
+  `ViennaCabina.py` (V42) – il terminale "cabina di pilotaggio" (`TERMINALE = "cabina"`): laser dall'alto, assetto,
+  cronometro dallo switch (conta le LoP), camere in piccolo, fasi della gara, eventi; finestra di almeno 100 x 38, altrimenti
+  torna il pannello. La stessa schermata rivede le scatole nere: `Strumenti_prove_Claude/terminale_nuovo.py` (moviola).
 
 ## La scatola nera
 - `run_AAAA-MM-GG_hh-mm-ss_V<n>.jsonl`: prima riga intestazione (`versione`, `impronta`, `cartella_codice`, `file`), poi
@@ -170,6 +173,9 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - **V41** (9/11, issue #12) FIX 106: ingresso, niente falsi "non avanzo" con la porta aperta: se il laser davanti è lontano
   (>= 60 cm) il controllo parte dopo 1,5 s e vuole 5 cm in 1,2 s (prima: 1,5 cm dopo 0,6 s). Nelle 17 scatole nere i 10
   "non avanzo" dell'ingresso erano tutti con il laser lontano; i 4 dell'uscita (muso a 4-9 cm, veri) non cambiano.
+- **V42** (10/11, issue #19) FIX 107: terminale "cabina di pilotaggio" (`ViennaCabina.py`) con le due camere in piccolo e il
+  cronometro che parte con lo switch e conta le LoP. La gara non cambia: simulatore identico alla V41 (6 gare, campione per
+  campione). Prima V43/V44: i compiti di Battista (altalena) e Gioele (uscita).
 
 ## Com'è andata sul robot vero
 - 5/11 16:12 (V36): percorso completo, arrivo a 429 s.
@@ -181,8 +187,9 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - Il prof: l'ingresso "funziona sempre" (dalla V37), ma "usciva in retromarcia" (9/11). La V41 **non è ancora stata provata**.
 
 ## Aperto / da fare
-1. **Provare la V41 sul robot vero** (copiarla in `~/ClaudeRob_V41`, modelli, impronta `7fa6d06745b2776b`, poi
-   `ln -sfn ~/ClaudeRob_V41 ~/ClaudeRob_GARA`): l'ingresso non deve più tornare indietro con la porta aperta davanti.
+1. **Provare la V42 sul robot vero** (copiarla in `~/ClaudeRob_V42`, modelli, impronta `ebaf44adfcfb2e81`, poi
+   `ln -sfn ~/ClaudeRob_V42 ~/ClaudeRob_GARA`): l'ingresso non deve più tornare indietro con la porta aperta davanti (FIX 106);
+   in VNC ingrandire il terminale ad almeno 100 x 38 per la cabina (FIX 107).
 2. **Altalena**: il 9/11 (V40) superata bene in gara (380-385 s). Il prof diceva che "non ci siamo ancora": servono altre
    prove (2-3 passaggi) per vedere se perde ancora la linea dopo lo stoppie (compito di Battista).
 3. **Shuri (rapporto del 5/11 sulla V37)**: il blocco in `stress_guasti_reali` è **corretto nella V40** (FIX 105). Resta
