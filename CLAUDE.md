@@ -81,8 +81,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   10 campi `d1,d2,d3,hd,rl,pt,sw1,sw2,t0,t1`. **Quando il prof spegne lo switch l'Arduino smette di mandare dati**: non è
   un guasto (verificato su 4 scatole nere il 5/11).
 - Servo a rotazione continua: sotto circa 40 di sterzo (a velocità 47) non girano. VelCrs 47, VelArena 68.
-- 4 servo a rotazione continua (uno per ruota); batteria **LiPo 3S 11,1 V**; schede **buck DC-DC** per abbassare la
-  tensione (quante e quali tensioni: da confermare). Braccio e pinza: STL in arrivo dal prof.
+- Hardware (dal prof, 10/11): 4 servo **Feetech FS5106R** a rotazione continua (uno per ruota) sulla PCA9685 0x41; braccio
+  con servo **DM996 all metal** e pinza sulla seconda PCA9685 (0x40); **3 buck DC-DC** (tensioni da confermare); batteria
+  **LiPo Zeee 3S 2200 mAh 50C (24,4 Wh)**. Camera **linea** = quella che punta in basso, camera **arena** = quella inclinata.
+  Foto in `immagini/foto_robot/`; dettagli nella skill `anatomia`. `Meccanica_STL/Braccio.stl` (10/11, non nelle coordinate
+  di montaggio: nell'esploso in posizione indicativa, cursore "Braccio"); STL della pinza in arrivo dal prof.
 - Robot largo **15,6 cm**; porte dell'arena circa **27-31 cm**. Camera linea 12 cm davanti alle ruote.
 - Pista della scuola: arena **120 x 90 cm**; ingresso argento sul lato lungo (in comune con la pista), uscita nera sul
   lato corto accanto al triangolo rosso; i triangoli (rosso e verde) vengono spostati tra le prove; c'è una parete a

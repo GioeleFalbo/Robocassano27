@@ -33,22 +33,32 @@ PEZZI = [
     {"file": "SupportoPinzaWebcam_1.stl", "nome": "Supporto della pinza e della camera linea", "colore": "#2f9e6f",
      "via": [-95, -10, 0], "dove": "Davanti, sul muso.",
      "porta": "Il braccio con la pinza per le vittime e la camera che guarda la linea (12 cm davanti alle ruote).",
-     "codice": "Braccio: PCA9685 0x40 canale 4; pinza: canale 11. Camera linea: Picamera2(0), 440x260, YOLO Cross3."},
+     "codice": "Braccio: servo DM996, PCA9685 0x40 canale 4; pinza: canale 11. Camera linea (punta verso il basso): Picamera2(0), 440x260, YOLO Cross3."},
     {"file": "CupolaWebArenaLED.stl", "nome": "Cupola della camera arena e delle luci", "colore": "#d64f6a",
      "via": [-150, 45, 0], "dove": "Sul muso, in alto: un pannello sottile.",
      "porta": "La camera che guarda l'arena e le luci LED.",
-     "codice": "Camera arena: Picamera2(1), 440x260, YOLO PalCol3 / TrianFull3 / Exit3. Luci: GPIO 22 e 23."},
+     "codice": "Camera arena (quella inclinata): Picamera2(1), 440x260, YOLO PalCol3 / TrianFull3 / Exit3. Luci: GPIO 22 e 23."},
+    {"file": "Braccio.stl", "nome": "Braccio (servo DM996)", "colore": "#22a6b3",
+     "via": [-120, 120, 0],
+     # [10/11] lo STL del prof (0Servo4WDFisso2006PinzaMonoVaccaro.stl) NON è nelle coordinate di montaggio. È disegnato con
+     # il braccio ABBASSATO (base della pinza vicino al pavimento, davanti al muso). Il perno è il centro del disco per la
+     # squadretta del servo (asse = larghezza del robot): lo si porta sul davanti, a sinistra, e nella pagina il cursore
+     # "Braccio" lo ruota da 0 (giù) a "alzato" (gradi negativi). Posizione INDICATIVA, presa dalle foto.
+     "posa": {"perno_stl": [41.7, 74.6, -372.4], "perno": [-30, 5, -160], "alzato_gradi": -140},
+     "dove": "Sul davanti, a sinistra: il disco si avvita alla squadretta del servo DM996 (il perno), la base piatta porta la pinza. Usa il cursore 'Braccio' per alzarlo e abbassarlo. Posizione indicativa (lo STL non è nelle coordinate di montaggio).",
+     "porta": "La pinza con il suo servo (STL della pinza in arrivo).",
+     "codice": "Servo DM996 all metal, PCA9685 0x40 canale 4: Braccio(angolo) in ViennaClsRobot.py; AbbassaPinza / AlzaPinza / CaricaPalla in RwdFoto.py."},
 ]
 
 
 # Componenti veri del robot che non hanno ancora un file 3D: nella pagina compaiono nell'elenco, in grigio.
 # Quando arriva il loro STL, spostarli in PEZZI (con colore e "via").
 SENZA_MODELLO = [
-    {"nome": "4 servo a rotazione continua (uno per ruota)", "nota": "PCA9685 0x41, canali 15, 4, 0, 11 · Sterzo() in ViennaClsRobot.py"},
-    {"nome": "Batteria LiPo 3S 11,1 V", "nota": "nominale 11,1 V, carica 12,6 V · posizione e capacità da confermare"},
-    {"nome": "Schede buck DC-DC", "nota": "abbassano la tensione della batteria per Raspberry e servo · quante e quali tensioni: da confermare"},
+    {"nome": "4 servo Feetech FS5106R (uno per ruota)", "nota": "rotazione continua · PCA9685 0x41, canali 15, 4, 0, 11 · Sterzo() in ViennaClsRobot.py"},
+    {"nome": "Batteria LiPo Zeee 3S 2200 mAh 50C (24,4 Wh)", "nota": "11,1 V nominali, 12,6 V carica · probabilmente nel vano sotto il robot"},
+    {"nome": "3 schede buck DC-DC", "nota": "abbassano gli 11,1 V della batteria · quali tensioni e per chi: da confermare"},
     {"nome": "Arduino Nano", "nota": "3 laser, giroscopio, switch · USB 230400 baud · posizione da confermare"},
-    {"nome": "Braccio", "nota": "PCA9685 0x40 canale 4 · STL in arrivo"},
+    {"nome": "Servo del braccio DM996 all metal", "nota": "il braccio c'è; il corpo del servo non ha ancora un modello 3D"},
     {"nome": "Pinza", "nota": "PCA9685 0x40 canale 11 · STL in arrivo"},
 ]
 
@@ -138,11 +148,15 @@ PAGINA = r"""<!DOCTYPE html>
     <input id="smonta" type="range" min="0" max="1" step="0.01" value="0">
     <button id="tutto">Smonta tutto</button>
     <button id="rimonta">Rimonta</button>
+    <span id="rigaBraccio" style="display:flex;gap:8px;align-items:center;flex:1;min-width:200px">
+      <label for="braccio">Braccio</label><small>giù</small>
+      <input id="braccio" type="range" step="1" style="flex:1;accent-color:#22a6b3"><small>su</small>
+    </span>
   </div>
 </div>
 <aside>
   <h1>RoboCassano</h1>
-  <p class="sotto">L'esploso del robot: 5 pezzi stampati in 3D (millimetri). Trascina per girare, rotella per lo zoom,
+  <p class="sotto">L'esploso del robot: i pezzi stampati in 3D (millimetri). Trascina per girare, rotella per lo zoom,
      clic su un pezzo per la sua scheda.</p>
   <ul id="elenco"></ul>
   <p class="sotto" style="margin:0 0 6px"><b>Senza modello 3D</b> (ancora da aggiungere):</p>
@@ -174,14 +188,29 @@ const sole = new THREE.DirectionalLight(0xffffff, 0.8); sole.position.set(-200, 
 const loader = new THREE.STLLoader();
 const gruppo = new THREE.Group(); scene.add(gruppo);
 const oggetti = [];
+const portaPezzi = [];
 const box = new THREE.Box3();
 PEZZI.forEach((p, i) => {
   const bin = Uint8Array.from(atob(p.stl), (c) => c.charCodeAt(0)).buffer;
-  const geo = loader.parse(bin); geo.computeVertexNormals();
+  const geo = loader.parse(bin);
+  if (p.posa) {   // pezzo non nelle coordinate di montaggio: il suo perno va nell'origine, poi lo muove un "porta-pezzo"
+    const a = p.posa.perno_stl;
+    geo.translate(-a[0], -a[1], -a[2]);
+  }
+  geo.computeVertexNormals();
   const mat = new THREE.MeshStandardMaterial({ color: p.colore, roughness: 0.6, metalness: 0.05 });
   const mesh = new THREE.Mesh(geo, mat); mesh.userData.i = i;
-  gruppo.add(mesh); oggetti.push(mesh);
-  geo.computeBoundingBox(); box.union(geo.boundingBox);
+  oggetti.push(mesh);
+  if (p.posa) {
+    const porta = new THREE.Group(); porta.add(mesh); gruppo.add(porta);
+    porta.userData.base = new THREE.Vector3(...p.posa.perno);
+    porta.position.copy(porta.userData.base); porta.rotation.z = THREE.MathUtils.degToRad(p.posa.alzato_gradi || 0);
+    porta.updateMatrixWorld(true); portaPezzi[i] = porta;
+    box.union(new THREE.Box3().setFromObject(porta));
+  } else {
+    gruppo.add(mesh); portaPezzi[i] = mesh;
+    geo.computeBoundingBox(); box.union(geo.boundingBox);
+  }
 });
 const centro = box.getCenter(new THREE.Vector3());
 gruppo.position.copy(centro).multiplyScalar(-1);
@@ -196,6 +225,15 @@ cam.position.copy(mira.clone().add(dir.multiplyScalar(dist)));
 ctrl.target.copy(mira); ctrl.update();
 
 let t = 0, meta = 0;
+const iBraccio = PEZZI.findIndex((p) => p.posa);
+const portaBraccio = iBraccio >= 0 ? portaPezzi[iBraccio] : null;
+const alzato = iBraccio >= 0 ? (PEZZI[iBraccio].posa.alzato_gradi || 0) : 0;
+let angolo = alzato, metaAngolo = alzato;
+const cursBraccio = document.getElementById("braccio");
+// il cursore va da 0 (giù, come è disegnato lo STL) a |alzato_gradi| (su); il verso della rotazione è il segno di alzato_gradi
+if (portaBraccio) { cursBraccio.min = 0; cursBraccio.max = Math.abs(alzato); cursBraccio.value = Math.abs(alzato);
+  cursBraccio.oninput = () => { metaAngolo = Math.sign(alzato) * +cursBraccio.value; }; }
+else document.getElementById("rigaBraccio").style.display = "none";
 const cursore = document.getElementById("smonta");
 cursore.oninput = () => { meta = +cursore.value; };
 document.getElementById("tutto").onclick = () => { meta = 1; cursore.value = 1; };
@@ -245,7 +283,13 @@ window.addEventListener("resize", misura); misura();
 (function giro() {
   t += (meta - t) * 0.12;
   const e = t * t * (3 - 2 * t);
-  oggetti.forEach((m, i) => { const v = PEZZI[i].via; m.position.set(v[0] * e, v[1] * e, v[2] * e); });
+  portaPezzi.forEach((m, i) => {
+    const v = PEZZI[i].via, b = m.userData.base;
+    m.position.set(v[0] * e, v[1] * e, v[2] * e);
+    if (b) m.position.add(b);
+  });
+  angolo += (metaAngolo - angolo) * 0.12;
+  if (portaBraccio) portaBraccio.rotation.z = THREE.MathUtils.degToRad(angolo);
   ctrl.update(); rend.render(scene, cam); requestAnimationFrame(giro);
 })();
 </script>
