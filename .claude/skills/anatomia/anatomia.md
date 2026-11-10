@@ -66,22 +66,25 @@ Foto in `immagini/foto_robot/`: `sotto.jpg`, `fianco.jpg`, `fianco_elettronica.j
 
 - **Sotto** (`sotto.jpg`): telaio verde oliva (`ServoRWDAmmortizzato`); **4 servo neri di formato standard**, uno per ruota,
   in culle bianche e fissati con fascette stampate verdi; al centro, tra i servo davanti e dietro, una **scatola bianca
-  lunga** (probabile vano della batteria). Ruote stampate bianche (morbide, tassellate) con mozzi blu.
+  lunga** (probabile vano della batteria [da confermare]). Ruote stampate bianche (morbide, tassellate) con mozzi blu.
 - **Di lato** (`fianco.jpg`, `fianco_elettronica.jpg`): **molle** delle sospensioni sopra le ruote; il **Raspberry Pi**
   (porte Ethernet/USB) sotto la copertura alta; un **convertitore buck** (scheda blu con bobina) nel piano basso; una scheda
   **a 2 relè** blu sul fianco (le 2 luci sono comandate dai relè: GPIO 22 e 23); un **tester della LiPo** con display (mostra
   "3", cioè 3 celle); una **maniglia** blu in alto; il servo del **braccio** (scritta "…M996…", tipo MG996R) sul davanti.
 - **Davanti** (`davanti_pinza.jpg`): la **pinza** blu a due dita con **ingranaggi**, in cima al braccio; **due strisce LED
-  COB a 5 V** inclinate ai lati; una **camera** al centro del muso e sotto un **piccolo sensore nero quadrato** (probabile
-  laser davanti VL53L1X); in alto un altro alloggiamento con una camera (cavo a nastro).
+  COB a 5 V** inclinate ai lati; le **due camere** (il prof: quella che punta **verso il basso** è la camera **linea**,
+  quella **inclinata** è la camera **arena**); un **piccolo sensore nero quadrato** sul muso (probabile laser davanti
+  VL53L1X [da confermare]).
 - Sul tavolo: la batteria LiPo con il caricatore bilanciato: la batteria si toglie per caricarla.
 
 ## 1b. L'energia: batteria e convertitori  [dal prof, 10/11]
 
-- **Batteria LiPo 3S da 11,1 V** (tensione nominale; 12,6 V carica, da non scaricare sotto circa 9,9 V, cioè 3,3 V per
-  cella). Capacità, posizione e connettore: [da confermare].
-- **Convertitori buck DC-DC** (abbassano la tensione della batteria per i vari circuiti): quanti sono e quali tensioni
-  danno (per esempio 5 V per il Raspberry, che ne vuole fino a 5 A, e la tensione dei servo): [da confermare].
+- **Batteria LiPo Zeee 3S, 2200 mAh, 50C, 24,4 Wh** [dal prof]: 11,1 V nominali (12,6 V carica, da non scaricare sotto
+  circa 9,9 V, cioè 3,3 V per cella); 11,1 V x 2,2 Ah = 24,4 Wh. Si toglie per caricarla con il caricatore bilanciato; sul
+  robot c'è un tester con display che mostra le celle. Posizione: probabilmente il vano sotto il robot [da confermare].
+  Durata, a spanne: con 20-25 W di consumo medio (Raspberry 5 con YOLO, 4 servo, luci) circa un'ora [stima, da misurare].
+- **3 convertitori buck DC-DC** [dal prof]: abbassano gli 11,1 V della batteria per i vari circuiti. Quale tensione dà
+  ciascuno e chi alimenta (Raspberry 5 V fino a 5 A, servo delle ruote, braccio e pinza, luci 5 V): [da confermare].
 - **Nel codice**: `ViennaMonitor.py` legge dal Raspberry la **sottotensione** (`vcgencmd get_throttled`) e la tensione
   `EXT5V_V` (`vcgencmd pmic_read_adc`): nella scatola nera finiscono nel campo `pi`. Se il buck del Raspberry non ce la fa
   (batteria scarica, picchi dei servo), lì si vede. Shuri mette questi casi in "Hardware da controllare".
@@ -152,7 +155,9 @@ Foto in `immagini/foto_robot/`: `sotto.jpg`, `fianco.jpg`, `fianco_elettronica.j
 
 ## 5. Le gambe: 4 servo a rotazione continua  [codice]
 
-- **Un servo per ogni ruota** (4 in tutto) [dal prof]; modello e alimentazione: [da confermare].
+- **Un servo per ogni ruota**, 4 in tutto: **Feetech FS5106R** a rotazione continua [dal prof]. Dal datasheet (valori
+  indicativi): circa 41 x 20 x 38 mm, 4,8-6 V, coppia circa 5-6 kg·cm, circa 100 giri al minuto senza carico. Non si dice
+  "vai a 30°" ma "gira a questa velocità": per questo il codice ragiona in velocità (`Sterzo`) e non in angoli.
 
 - Scheda **PCA9685 all'indirizzo I2C 0x41**: canali **15** (avanti sinistra), **4** (dietro sinistra), **0** (avanti destra),
   **11** (dietro destra). Impulsi da 310 a 333 (fermo a 321).
@@ -171,7 +176,10 @@ Foto in `immagini/foto_robot/`: `sotto.jpg`, `fianco.jpg`, `fianco_elettronica.j
 
 ## 6. Le mani: braccio e pinza  [codice]
 
-- Scheda **PCA9685 all'indirizzo 0x40**: **canale 4 = braccio**, **canale 11 = pinza** (servo di posizione, in gradi).
+- Scheda **PCA9685 all'indirizzo 0x40** (la seconda scheda a 16 canali; la prima, 0x41, comanda solo le ruote):
+  **canale 4 = braccio**, **canale 11 = pinza** (servo di posizione, in gradi).
+- **Braccio**: servo **DM996 "all metal"** [dal prof] (ingranaggi in metallo, formato standard come l'MG996R: circa
+  40 x 20 x 43 mm). **Pinza**: due dita blu mosse da ingranaggi; modello del servo [da confermare].
 - `Braccio(angolo)`, `Pinza(angolo)`; in `RwdFoto.py`: `AbbassaPinza`, `AlzaPinza`, `ApriPinza`, `ChiudiPinza`,
   `CaricaPalla`, `SvuotaPinza`, `ScaricaPalla(tipo)`, `AccostaTriangolo`.
 - **Scatola nera**: `br` (braccio), `pz` (pinza), `pal` (palline).

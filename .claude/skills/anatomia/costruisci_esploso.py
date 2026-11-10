@@ -33,22 +33,22 @@ PEZZI = [
     {"file": "SupportoPinzaWebcam_1.stl", "nome": "Supporto della pinza e della camera linea", "colore": "#2f9e6f",
      "via": [-95, -10, 0], "dove": "Davanti, sul muso.",
      "porta": "Il braccio con la pinza per le vittime e la camera che guarda la linea (12 cm davanti alle ruote).",
-     "codice": "Braccio: PCA9685 0x40 canale 4; pinza: canale 11. Camera linea: Picamera2(0), 440x260, YOLO Cross3."},
+     "codice": "Braccio: servo DM996, PCA9685 0x40 canale 4; pinza: canale 11. Camera linea (punta verso il basso): Picamera2(0), 440x260, YOLO Cross3."},
     {"file": "CupolaWebArenaLED.stl", "nome": "Cupola della camera arena e delle luci", "colore": "#d64f6a",
      "via": [-150, 45, 0], "dove": "Sul muso, in alto: un pannello sottile.",
      "porta": "La camera che guarda l'arena e le luci LED.",
-     "codice": "Camera arena: Picamera2(1), 440x260, YOLO PalCol3 / TrianFull3 / Exit3. Luci: GPIO 22 e 23."},
+     "codice": "Camera arena (quella inclinata): Picamera2(1), 440x260, YOLO PalCol3 / TrianFull3 / Exit3. Luci: GPIO 22 e 23."},
 ]
 
 
 # Componenti veri del robot che non hanno ancora un file 3D: nella pagina compaiono nell'elenco, in grigio.
 # Quando arriva il loro STL, spostarli in PEZZI (con colore e "via").
 SENZA_MODELLO = [
-    {"nome": "4 servo a rotazione continua (uno per ruota)", "nota": "PCA9685 0x41, canali 15, 4, 0, 11 · Sterzo() in ViennaClsRobot.py"},
-    {"nome": "Batteria LiPo 3S 11,1 V", "nota": "nominale 11,1 V, carica 12,6 V · posizione e capacità da confermare"},
-    {"nome": "Schede buck DC-DC", "nota": "abbassano la tensione della batteria per Raspberry e servo · quante e quali tensioni: da confermare"},
+    {"nome": "4 servo Feetech FS5106R (uno per ruota)", "nota": "rotazione continua · PCA9685 0x41, canali 15, 4, 0, 11 · Sterzo() in ViennaClsRobot.py"},
+    {"nome": "Batteria LiPo Zeee 3S 2200 mAh 50C (24,4 Wh)", "nota": "11,1 V nominali, 12,6 V carica · probabilmente nel vano sotto il robot"},
+    {"nome": "3 schede buck DC-DC", "nota": "abbassano gli 11,1 V della batteria · quali tensioni e per chi: da confermare"},
     {"nome": "Arduino Nano", "nota": "3 laser, giroscopio, switch · USB 230400 baud · posizione da confermare"},
-    {"nome": "Braccio", "nota": "PCA9685 0x40 canale 4 · STL in arrivo"},
+    {"nome": "Braccio (servo DM996 all metal)", "nota": "PCA9685 0x40 canale 4 · STL in arrivo"},
     {"nome": "Pinza", "nota": "PCA9685 0x40 canale 11 · STL in arrivo"},
 ]
 
