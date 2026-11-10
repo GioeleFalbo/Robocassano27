@@ -41,6 +41,18 @@ PEZZI = [
 ]
 
 
+# Componenti veri del robot che non hanno ancora un file 3D: nella pagina compaiono nell'elenco, in grigio.
+# Quando arriva il loro STL, spostarli in PEZZI (con colore e "via").
+SENZA_MODELLO = [
+    {"nome": "4 servo a rotazione continua (uno per ruota)", "nota": "PCA9685 0x41, canali 15, 4, 0, 11 · Sterzo() in ViennaClsRobot.py"},
+    {"nome": "Batteria LiPo 3S 11,1 V", "nota": "nominale 11,1 V, carica 12,6 V · posizione e capacità da confermare"},
+    {"nome": "Schede buck DC-DC", "nota": "abbassano la tensione della batteria per Raspberry e servo · quante e quali tensioni: da confermare"},
+    {"nome": "Arduino Nano", "nota": "3 laser, giroscopio, switch · USB 230400 baud · posizione da confermare"},
+    {"nome": "Braccio", "nota": "PCA9685 0x40 canale 4 · STL in arrivo"},
+    {"nome": "Pinza", "nota": "PCA9685 0x40 canale 11 · STL in arrivo"},
+]
+
+
 def ultima_versione():
     c = [p for p in glob.glob(os.path.join(RADICE, "ClaudeRob_V*")) if os.path.isdir(os.path.join(p, "cruscotto"))]
     return max(c, key=lambda p: int(re.findall(r"\d+", os.path.basename(p))[-1])) if c else None
@@ -71,6 +83,7 @@ def main():
         n, ingombro = misure(dati)
         pezzi.append(dict(p, triangoli=n, ingombro=ingombro, stl=base64.b64encode(dati).decode()))
     html = PAGINA.replace("/*LIBRERIE*/", libs).replace("/*PEZZI*/", json.dumps(pezzi, ensure_ascii=False)) \
+                 .replace("/*SENZA*/", json.dumps(SENZA_MODELLO, ensure_ascii=False)) \
                  .replace("/*VERSIONE*/", os.path.basename(ver))
     open(USCITA, "w", encoding="utf-8").write(html)
     print(f"FATTO: {os.path.relpath(USCITA, RADICE)} ({len(html) // 1024} KB, {len(pezzi)} pezzi, three.js da {os.path.basename(ver)})")
@@ -106,6 +119,8 @@ PAGINA = r"""<!DOCTYPE html>
   li { display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:8px; cursor:pointer; }
   li:hover, li.scelto { background:var(--sfondo); }
   li input { accent-color:var(--accento); }
+  #mancanti li { cursor:default; color:var(--tenue); display:block; padding:4px 8px; }
+  #mancanti li small { display:block; font-size:12px; }
   .pallino { width:12px; height:12px; border-radius:3px; flex:none; }
   #scheda { border-top:1px solid var(--bordo); padding-top:12px; }
   #scheda h2 { font-size:16px; margin:0 0 8px; }
@@ -130,6 +145,8 @@ PAGINA = r"""<!DOCTYPE html>
   <p class="sotto">L'esploso del robot: 5 pezzi stampati in 3D (millimetri). Trascina per girare, rotella per lo zoom,
      clic su un pezzo per la sua scheda.</p>
   <ul id="elenco"></ul>
+  <p class="sotto" style="margin:0 0 6px"><b>Senza modello 3D</b> (ancora da aggiungere):</p>
+  <ul id="mancanti"></ul>
   <div id="scheda"><p class="sotto">Scegli un pezzo dall'elenco o cliccalo nel modello.</p></div>
   <p class="nota">Cosa porta ogni pezzo è dedotto dal nome del file: da confermare con la squadra. Le misure vengono dai file STL.
      Pagina costruita con .claude/skills/anatomia/costruisci_esploso.py (three.js da /*VERSIONE*/).</p>
@@ -137,6 +154,12 @@ PAGINA = r"""<!DOCTYPE html>
 /*LIBRERIE*/
 <script>
 const PEZZI = /*PEZZI*/;
+const SENZA = /*SENZA*/;
+SENZA.forEach((c) => {
+  const li = document.createElement("li");
+  li.innerHTML = `⬚ ${c.nome}<small>${c.nota}</small>`;
+  document.getElementById("mancanti").appendChild(li);
+});
 const scena = document.getElementById("scena");
 const rend = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 rend.setPixelRatio(window.devicePixelRatio || 1);

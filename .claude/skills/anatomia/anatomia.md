@@ -52,10 +52,25 @@ rimontare uno sull'altro). Asse verticale = **Y**; il muso (pinza e camere) è v
 Il modello del cruscotto (`ClaudeRob_V*/cruscotto/robot.stl`, 19092 triangoli, in cm) è questi 5 pezzi uniti.
 **Esploso 3D**: `python3 .claude/skills/anatomia/costruisci_esploso.py` → `Meccanica_STL/esploso_robot.html`.
 
+**Non hanno ancora un modello 3D** (il prof manda gli STL di braccio e pinza): i 4 servo delle ruote, le schede buck DC-DC,
+la batteria LiPo 11,1 V, l'Arduino Nano, il braccio e la pinza. Nell'esploso compaiono nell'elenco come "senza modello 3D".
+
 Misure che il codice usa [codice/simulatore]: larghezza **15,6 cm** (`ROBOT_LARGHEZZA_CM`), camera linea **12 cm** davanti
 alle ruote, laser davanti 11,5 cm davanti all'asse delle ruote, laser laterali 1,5 cm davanti e a ±7,5 cm di lato.
 
 ---
+
+## 1b. L'energia: batteria e convertitori  [dal prof, 10/11]
+
+- **Batteria LiPo 3S da 11,1 V** (tensione nominale; 12,6 V carica, da non scaricare sotto circa 9,9 V, cioè 3,3 V per
+  cella). Capacità, posizione e connettore: [da confermare].
+- **Convertitori buck DC-DC** (abbassano la tensione della batteria per i vari circuiti): quanti sono e quali tensioni
+  danno (per esempio 5 V per il Raspberry, che ne vuole fino a 5 A, e la tensione dei servo): [da confermare].
+- **Nel codice**: `ViennaMonitor.py` legge dal Raspberry la **sottotensione** (`vcgencmd get_throttled`) e la tensione
+  `EXT5V_V` (`vcgencmd pmic_read_adc`): nella scatola nera finiscono nel campo `pi`. Se il buck del Raspberry non ce la fa
+  (batteria scarica, picchi dei servo), lì si vede. Shuri mette questi casi in "Hardware da controllare".
+- **Simulatore**: la batteria non esiste (sempre carica, nessuna sottotensione).
+- **Sicurezza**: la LiPo si carica solo con il caricatore bilanciato, sorvegliata, e non si usa se è gonfia o rovinata.
 
 ## 2. Il cervello: Raspberry Pi 5  [codice]
 
@@ -98,7 +113,7 @@ alle ruote, laser davanti 11,5 cm davanti all'asse delle ruote, laser laterali 1
 
 ## 4. I sensi: Arduino Nano, 3 laser, giroscopio, switch  [codice]
 
-- **Arduino Nano** (`InoSensor.ino`, non su GitHub) su USB (`/dev/ttyUSB*`), **230400 baud**. Una riga di **10 numeri** separati
+- **Arduino Nano** (`InoSensor.ino`, non su GitHub; posizione sul robot [da confermare]) su USB (`/dev/ttyUSB*`), **230400 baud**. Una riga di **10 numeri** separati
   da virgole: `d1,d2,d3,hd,rl,pt,sw1,sw2,t0,t1`.
   - `d1,d2,d3` = laser **sinistro, davanti, destro** in cm; `hd,rl,pt` = rotta, rollio, beccheggio; `sw1,sw2` = switch;
     `t0,t1` = inclinazione.
@@ -120,6 +135,8 @@ alle ruote, laser davanti 11,5 cm davanti all'asse delle ruote, laser laterali 1
 ---
 
 ## 5. Le gambe: 4 servo a rotazione continua  [codice]
+
+- **Un servo per ogni ruota** (4 in tutto) [dal prof]; modello e alimentazione: [da confermare].
 
 - Scheda **PCA9685 all'indirizzo I2C 0x41**: canali **15** (avanti sinistra), **4** (dietro sinistra), **0** (avanti destra),
   **11** (dietro destra). Impulsi da 310 a 333 (fermo a 321).
