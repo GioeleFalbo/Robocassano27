@@ -125,26 +125,26 @@ italiano semplice"*, *"cosa fa questa riga?"*. E spiegatevelo a vicenda: insegna
 Dalla cartella `Strumenti_prove_Claude`:
 
 ```
-python3 gira.py ../ClaudeRob_V41 prova scuola 480 seme=1
+python3 gira.py ../ClaudeRob_V42 prova scuola 480 seme=1
 ```
 
 Risultato atteso (V39 e V40): **arrivo** in 255-259 s con i semi da 1 a 6. Prova anche le altre piste
 (`rcj2026`, `lunga`, `contorto`, `arena_parete`, `gara`) e confronta con la versione precedente:
 
 ```
-python3 gira.py ../ClaudeRob_V40 prima rcj2026 480 seme=1
-python3 gira.py ../ClaudeRob_V41 dopo  rcj2026 480 seme=1
+python3 gira.py ../ClaudeRob_V41 prima rcj2026 480 seme=1
+python3 gira.py ../ClaudeRob_V42 dopo  rcj2026 480 seme=1
 ```
 
 I risultati di riferimento sono in `CLAUDE.md` (sezione "Il simulatore"). Altre prove (porte, altalena) sono descritte
 in `Strumenti_prove_Claude/LEGGIMI.md`. Per vedere la gara nel browser:
 
 ```
-cd ../ClaudeRob_Simulatore_V31
-python3 crea_replay.py confronto.html replay_prima.json:"V40" replay_dopo.json:"V41"
+cd ../ClaudeRob_Simulatore_V32
+python3 crea_replay.py confronto.html replay_prima.json:"V41" replay_dopo.json:"V42"
 ```
 
-La batteria completa di Shuri (circa 16 gare): da `Laboratorio Shuri`, `python3 batteria.py ../ClaudeRob_V41`.
+La batteria completa di Shuri (circa 16 gare): da `Laboratorio Shuri`, `python3 batteria.py ../ClaudeRob_V42`.
 
 ## 6. Le scatole nere
 
@@ -193,7 +193,7 @@ un lavoro leggete il suo ultimo rapporto (`Laboratorio Shuri/SHURI_rapporto.md`)
 ## 8. Cosa NON fare
 
 - Non lavorare direttamente su `main` (è protetto: GitHub non te lo lascia fare).
-- Non modificare le cartelle delle versioni già consegnate né il simulatore `ClaudeRob_Simulatore_V31`
+- Non modificare le cartelle delle versioni già consegnate né i simulatori già consegnati (`ClaudeRob_Simulatore_V31`, `V32`)
   (il simulatore ha la sua numerazione: se serve cambiarlo, si fa `ClaudeRob_Simulatore_V32`).
 - Non caricare foto o video con persone riconoscibili, password o dati personali.
 - Non caricare file enormi (sopra 50 MB): zip, video, cartelle dei modelli YOLO restano fuori.

@@ -1,8 +1,8 @@
 # Strumenti di prova usati da Claude per ClaudeRob (V35-V39). Trovano il simulatore accanto a questa cartella
-# (../ClaudeRob_Simulatore_V31) oppure nella variabile d'ambiente SIMULATORE.
+# (../ClaudeRob_Simulatore_V32) oppure nella variabile d'ambiente SIMULATORE.
 import os, sys, shutil
 QUI = os.path.dirname(os.path.abspath(__file__))
-SIM = os.path.abspath(os.environ.get("SIMULATORE") or os.path.join(QUI, "..", "ClaudeRob_Simulatore_V31"))
+SIM = os.path.abspath(os.environ.get("SIMULATORE") or os.path.join(QUI, "..", "ClaudeRob_Simulatore_V32"))
 sys.path.insert(0, SIM)
 PROVE = os.path.join(QUI, "copie_di_prova")       # copie delle versioni con un "main" di prova (si possono cancellare)
 

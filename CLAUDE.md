@@ -10,11 +10,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - Si scrive in **italiano**, in modo diretto e semplice (i ragazzi devono capire).
 
 ## Regole fisse (da rispettare sempre)
-1. Ogni modifica al codice del robot = **versione nuova** in una cartella nuova: `ClaudeRob_V<n>` (ultima: **V41**).
-   Il simulatore ha la sua numerazione: `ClaudeRob_Simulatore_V<n>` (ultimo: **V31**).
+1. Ogni modifica al codice del robot = **versione nuova** in una cartella nuova: `ClaudeRob_V<n>` (ultima: **V42**).
+   Il simulatore ha la sua numerazione: `ClaudeRob_Simulatore_V<n>` (ultimo: **V32**).
 2. **Non modificare mai** le cartelle delle versioni già consegnate: si copia l'ultima e si lavora sulla copia.
 3. I **nomi dei file** delle classi non cambiano mai (`RwdFoto.py`, `ViennaClsRobot.py`, `ViennaDataConf.py`, ...).
-4. Ogni modifica è commentata nel codice con **`[FIX n]`** (ultimo: **FIX 106**), con il motivo (di solito: quale scatola
+4. Ogni modifica è commentata nel codice con **`[FIX n]`** (ultimo: **FIX 107**), con il motivo (di solito: quale scatola
    nera, quale secondo, cosa si vede nei dati).
 5. In ogni versione aggiornare **`CHANGELOG.md`** (sezione nuova in cima + riga nella tabella delle versioni) e
    **`LEGGIMI_MODIFICHE.md`** (una riga per FIX), con **fine riga CRLF** (Windows).
@@ -41,11 +41,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   una pull request) → un'issue per pezzo (es. Battista l'altalena, Gioele l'uscita) → ognuno la sua versione, analisi della
   scatola nera, simulatore, pull request con prima/dopo → il prof controlla e unisce → chi arriva secondo si aggiorna → la
   versione nuova va sul robot. Dettagli per gli studenti in `COME_LAVORARE.md`.
-- Il repository contiene le **ultime versioni** del codice (V39 e V40 come riferimento, V41), il simulatore V31, gli strumenti
+- Il repository contiene le **ultime versioni** del codice (V39, V40 e V41 come riferimento, V42), i simulatori V31 e V32, gli strumenti
   di prova, il Laboratorio Shuri (solo gli strumenti), i pezzi stampati (`Meccanica_STL/`) e alcune scatole nere recenti, con gli **stessi nomi di cartella** del Mac (così i percorsi relativi funzionano uguale). Le versioni
   vecchie (V25-V38) restano sul Mac; la loro storia è nel `CHANGELOG.md`.
-- Versione nuova: si copia l'ultima (`ClaudeRob_V41`) in `ClaudeRob_V42`, si lavora lì, poi un commit con un messaggio tipo
-  "V42: FIX 107 ...". Non si modifica la cartella della versione precedente (resta come riferimento per i confronti).
+- Versione nuova: si copia l'ultima (`ClaudeRob_V42`) in `ClaudeRob_V43`, si lavora lì, poi un commit con un messaggio tipo
+  "V43: FIX 108 ...". Non si modifica la cartella della versione precedente (resta come riferimento per i confronti).
 - Le scatole nere nuove vanno in `ScatoleNere/`. File rigenerabili (replay, zip, `__pycache__`) esclusi da `.gitignore`.
 
 ## Cartelle
@@ -92,7 +92,7 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   lato corto accanto al triangolo rosso; i triangoli (rosso e verde) vengono spostati tra le prove; c'è una parete a
   destra di una parte della pista e un'altalena dopo l'uscita.
 
-## Il codice (ClaudeRob_V41, impronta 7fa6d06745b2776b; V40: dcd59068b49486ac; V39: 9ef3d48e550bc741)
+## Il codice (ClaudeRob_V42, impronta ebaf44adfcfb2e81; V41: 7fa6d06745b2776b; V40: dcd59068b49486ac; V39: 9ef3d48e550bc741)
 - `RwdFoto.py` – programma di gara (~4500 righe): seguilinea `InseguitoreIA`, verdi e incroci, ostacolo, ingresso
   (`TrovaIngressoArena`, `DirezioneIngresso`, `CentraSullIngresso`, `EntraDallaPorta`), palline (`ArenaAI`), uscita
   (`TrovaUscitaArena` → `AvvicinatiAlMuro` / `GiroDeiMuri` / `SeguiParete` / `EsciDallaPortaDavanti` /
@@ -103,6 +103,9 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   `Gira`, `RuotaVerso`, `Dritto(..., ruota=False)`, `StoriaBeccheggio`, `Pendenza`.
 - `ViennaClsWebCam.py` – camere e YOLO. `ViennaDataConf.py` – tutti i parametri. `ViennaMonitor.py` – scatola nera e
   monitor (eventi riconosciuti da elenchi di espressioni regolari). `ViennaPannello.py` – pannello a schermo.
+  `ViennaCabina.py` (V42) – il terminale "cabina di pilotaggio" (`TERMINALE = "cabina"`): laser dall'alto, assetto,
+  cronometro dallo switch (conta le LoP), camere in piccolo, fasi della gara, eventi; finestra di almeno 100 x 38, altrimenti
+  torna il pannello. La stessa schermata rivede le scatole nere: `Strumenti_prove_Claude/terminale_nuovo.py` (moviola).
 
 ## La scatola nera
 - `run_AAAA-MM-GG_hh-mm-ss_V<n>.jsonl`: prima riga intestazione (`versione`, `impronta`, `cartella_codice`, `file`), poi
@@ -113,16 +116,29 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - Il metodo che ha funzionato: trovare l'evento, guardare i campioni secondo per secondo (laser, rotta, motori, YOLO),
   capire la causa fisica, riprodurla nel simulatore, correggere, dimostrare la correzione con una prova prima/dopo.
 
-## Il simulatore (ClaudeRob_Simulatore_V31)
-- `python esegui.py "../ClaudeRob_V39" nome 480 scuola` (scenari: `rcj2026`, `lunga`, `contorto`, `gara`, `arena`,
+## Il simulatore (ClaudeRob_Simulatore_V32, dal 10/11; la V31 resta per i confronti)
+- **V32** (10/11, issue #17): pista della scuola **a piastrelle** dalle 9 foto del 10/11 (`pista_scuola_piastrelle.py`, BOZZA
+  da correggere con la squadra: `python3 disegna_mappa.py` → `mappa_scuola.png`, colonne A-K e righe 1-9). Scenari
+  `scuola_nuova` e `scuola_nuova_buio`. Ponte sopra il tunnel su **due livelli** (`metti(..., sotto=True)`, `K.tunnel(...)`):
+  rampe 21° (2 x 30 x tan 21° = 23,0 cm = ponte misurato), tunnel 91 x 30 x 22,3 cm (robot 21 cm: `altezza_robot`), tubi.
+  Altalena 19,5°. `realismo.py`: luci da più angolazioni con ombre (muri, ponte, robot), tunnel buio, strisce LED (GPIO 22/23),
+  verdi di 5 tonalità, alcuni lucidi (riflesso → YOLO non li vede), **cono del VL53L1X** (27°, rumore 0,5 + 1,6·(d/100)² cm),
+  il fianco scivola sulle pareti. Tutto acceso solo dal `cfg` dello scenario (`CFG_REALISMO` in `campo.py`): le 15 piste
+  vecchie danno risultati **identici** alla V31, campione per campione. Corretto `arena(palline=..., righe=4)`.
+- V32, V41 su `scuola_nuova`: semi 1-6 tutti all'arrivo (262-311 s), 5 senza LoP (1042,7 punti); seme 2: nel tunnel, storto, il
+  laser davanti (cono) vede la parete a 8 cm → "ostacolo" → torna indietro → LoP. `scuola_nuova_buio` semi 1-3: 2 senza LoP,
+  il seme 3 perde la linea 3 volte vicino al tunnel. Ingresso col cono (y 55-95): V40 8 "non avanzo", V41 4 (come il 9/11);
+  col raggio sottile V40 = V41.
+- `python esegui.py "../ClaudeRob_V41" nome 480 scuola_nuova` (scenari: `scuola_nuova`, `scuola_nuova_buio`, `rcj2026`, `lunga`, `contorto`, `gara`, `arena`,
   `arena_parete`, `scuola`, `scuola_rampa`, `scuola_basso`, `scuola_parete`; le prove "stress" con i guasti le
   aggiunge la batteria di Shuri). Scrive
   `replay_<nome>.json`; `python crea_replay.py uscita.html replay_a.json:"A" replay_b.json:"B"` fa la pagina di confronto.
 - Guasti nel `cfg`: `seme`, `imu_bloccato`, `imu_blocca_da`, `tof_fr_spurie`, `tof_lat_spurie`, `arduino_muto_da`, ...
 - La V31 ha l'arena vera della scuola (dalla foto dall'alto del 5/11). La **linea rossa** dopo l'uscita è una stima
-  (`ROSSO_FOTO` in `pista_scuola.py`). `SIMULA.bat`/`SIMULA.command` partono ancora con ClaudeRob_V34.
-- Limiti: il laser è un raggio sottile (il VL53L1X vero ha un cono largo); contro uno stipite il robot si ferma e non
-  ruota; niente altalena; il robot vero risponde circa 0,1 s più tardi.
+  (`ROSSO_FOTO` in `pista_scuola.py`). Dalla V32 `SIMULA.bat`/`SIMULA.command` partono con ClaudeRob_V41 su `scuola_nuova`.
+- Limiti: nelle piste vecchie il laser è un raggio sottile (il cono c'è solo negli scenari V32); contro uno stipite il robot
+  si ferma e non ruota (negli scenari V32 scivola); YOLO resta un oracolo (luci e ombre cambiano l'immagine e la ricerca del
+  nero, non le classi, tranne i verdi col riflesso); il robot vero risponde circa 0,1 s più tardi.
 - Risultati di riferimento V39 = V40 = V41 (identici): scuola semi 1-6 arrivo (255-259 s); rcj2026 1468, lunga 1893, contorto
   1989 (tutti con arrivo); arena_parete (227 s) e gara (362 s) arrivo. `scuola_basso` e `scuola_rampa` non arrivano (parete
   di destra presa per ostacolo, così da V34); anche `scuola_parete` non arriva (fuori campo a 115 s).
@@ -157,6 +173,9 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - **V41** (9/11, issue #12) FIX 106: ingresso, niente falsi "non avanzo" con la porta aperta: se il laser davanti è lontano
   (>= 60 cm) il controllo parte dopo 1,5 s e vuole 5 cm in 1,2 s (prima: 1,5 cm dopo 0,6 s). Nelle 17 scatole nere i 10
   "non avanzo" dell'ingresso erano tutti con il laser lontano; i 4 dell'uscita (muso a 4-9 cm, veri) non cambiano.
+- **V42** (10/11, issue #19) FIX 107: terminale "cabina di pilotaggio" (`ViennaCabina.py`) con le due camere in piccolo e il
+  cronometro che parte con lo switch e conta le LoP. La gara non cambia: simulatore identico alla V41 (6 gare, campione per
+  campione). Prima V43/V44: i compiti di Battista (altalena) e Gioele (uscita).
 
 ## Com'è andata sul robot vero
 - 5/11 16:12 (V36): percorso completo, arrivo a 429 s.
@@ -168,8 +187,9 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - Il prof: l'ingresso "funziona sempre" (dalla V37), ma "usciva in retromarcia" (9/11). La V41 **non è ancora stata provata**.
 
 ## Aperto / da fare
-1. **Provare la V41 sul robot vero** (copiarla in `~/ClaudeRob_V41`, modelli, impronta `7fa6d06745b2776b`, poi
-   `ln -sfn ~/ClaudeRob_V41 ~/ClaudeRob_GARA`): l'ingresso non deve più tornare indietro con la porta aperta davanti.
+1. **Provare la V42 sul robot vero** (copiarla in `~/ClaudeRob_V42`, modelli, impronta `ebaf44adfcfb2e81`, poi
+   `ln -sfn ~/ClaudeRob_V42 ~/ClaudeRob_GARA`): l'ingresso non deve più tornare indietro con la porta aperta davanti (FIX 106);
+   in VNC ingrandire il terminale ad almeno 100 x 38 per la cabina (FIX 107).
 2. **Altalena**: il 9/11 (V40) superata bene in gara (380-385 s). Il prof diceva che "non ci siamo ancora": servono altre
    prove (2-3 passaggi) per vedere se perde ancora la linea dopo lo stoppie (compito di Battista).
 3. **Shuri (rapporto del 5/11 sulla V37)**: il blocco in `stress_guasti_reali` è **corretto nella V40** (FIX 105). Resta
@@ -179,7 +199,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 6. Raspberry: ~~lanciare da una cartella pulita~~ fatto il 9/11 (`~/ClaudeRob_GARA` → `~/ClaudeRob_V40`). Resta: archiviare i
    file vecchi di `/home/pi` (dopo una gara riuscita con l'avvio nuovo e una copia sul Mac).
 7. Da tarare sul robot vero: `ENTRATA_OLTRE_CM` (9, stimato), `USCITA_LIBERO_CM` (30), `ALTALENA_SALTO_GRADI` (30).
-8. Simulatore: aggiornare `SIMULA.*` alla versione nuova; posizione vera della linea rossa della scuola.
+8. Simulatore: ~~`SIMULA.*`~~ fatto nella V32. **Correggere la mappa a piastrelle** con la squadra (partenza, ordine dei pezzi,
+   verdi, linea rossa, palline) e aggiungere `scuola_nuova` alla batteria di Shuri (è un file di Shuri: lo decide il prof).
+9. Dal simulatore V32: nel tunnel, se il robot entra storto, il cono del laser davanti vede la parete e la V41 la prende per un
+   ostacolo (1 prova su 6). Da guardare sul robot vero e, se serve, una versione nuova (es. niente ostacolo con le due pareti
+   laterali a meno di 10 cm).
 
 ## Skill anatomia
 - `.claude/skills/anatomia/`: "smontare" il robot sistema per sistema (`anatomia.md`: mappa, hardware, collegamenti, funzioni,
