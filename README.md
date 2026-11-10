@@ -42,13 +42,19 @@
 | **Cervello** | Raspberry Pi 5 |
 | **Occhi** | 2 camere (linea + arena) con reti neurali **YOLO** |
 | **Sensi** | Arduino Nano con 3 laser **VL53L1X**, giroscopio **BNO055**, switch |
-| **Gambe** | servo a rotazione continua |
-| **Mani** | pinza per le vittime (palline argento e nera) |
+| **Gambe** | 4 servo Feetech FS5106R a rotazione continua, uno per ruota |
+| **Mani** | braccio con servo DM996 e pinza per le vittime (palline argento e nera) |
 | **Misure** | 15,6 cm di larghezza, ~20 cm di lunghezza |
 | **Memoria** | una **scatola nera** che registra tutto, 10 volte al secondo |
-| **Corpo** | 5 pezzi stampati in 3D ([`Meccanica_STL/`](Meccanica_STL/)) |
+| **Corpo** | pezzi stampati in 3D su tre livelli ([`Meccanica_STL/`](Meccanica_STL/)) |
+| **Energia** | LiPo 3S 11,1 V 2200 mAh e 3 convertitori buck |
 
 <br clear="right">
+
+<p align="center">
+  <img src="immagini/foto_robot/fianco.jpg" alt="Il robot RoboCassano visto di fianco" width="45%">
+  <img src="immagini/foto_robot/davanti_pinza.jpg" alt="Il robot RoboCassano visto da davanti, con la pinza" width="45%">
+</p>
 
 ## 🏁 Una gara, dall'inizio alla fine
 
@@ -114,7 +120,9 @@ Nel simulatore la V41 completa la pista della scuola con 6 semi su 6 (255-259 s)
 | [`Strumenti_prove_Claude/`](Strumenti_prove_Claude/) | prove automatiche di porte e altalena nel simulatore |
 | [`Laboratorio Shuri/`](Laboratorio%20Shuri/) | gli strumenti di Shuri: batteria di prove, analisi delle scatole nere, ultimo rapporto |
 | [`ScatoleNere/`](ScatoleNere/) | le scatole nere delle gare vere e la foto dell'arena dall'alto |
-| [`Meccanica_STL/`](Meccanica_STL/) | i pezzi stampati in 3D del robot (millimetri) e **`esploso_robot.html`**: il robot in 3D che si smonta (doppio clic) |
+| [`Meccanica_STL/`](Meccanica_STL/) | i pezzi stampati in 3D del robot (millimetri), compreso il braccio, e **`esploso_robot.html`**: il robot in 3D che si smonta (doppio clic) |
+| [`Meccanica_STL/componenti/`](Meccanica_STL/componenti/) | i componenti in 3D semplificato: servo FS5106R e DM996, LiPo, buck, Arduino Nano, PCA9685, Raspberry Pi 5, relè |
+| [`immagini/`](immagini/) | il banner, il robot in 3D e le [foto del robot vero](immagini/foto_robot/) |
 | [`.claude/skills/anatomia/`](.claude/skills/anatomia/) | la skill **anatomia**: chiedete a Claude *"smontami il sistema dei laser"* e vi spiega ogni pezzo, nel robot e nel codice |
 | [`COME_LAVORARE.md`](COME_LAVORARE.md) | **per chi entra nella squadra**: GitHub, regole delle versioni, prove nel simulatore |
 | [`CLAUDE.md`](CLAUDE.md) | regole del progetto, storia delle versioni e cose da fare (lo legge Claude Code) |
