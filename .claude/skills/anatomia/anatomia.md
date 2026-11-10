@@ -216,14 +216,15 @@ l'arena. **Scatola nera**: `led`.
 - **Scatola nera** (`ViennaMonitor.py`, FIX 37): `~/OneDrive/ScatolaNera/run_AAAA-MM-GG_hh-mm-ss_V<n>.jsonl`. Prima riga =
   intestazione (versione, impronta, cartella, file); poi un campione ~ogni 0,1 s (`tipo: "c"`) e gli eventi (`tipo: "evento"`).
   Non comunica con niente: si può usare in gara.
+  Dalla V43 (FIX 108) un file per **run**: le LoP sono dentro (eventi "STOP n" con fase, laser e rotta dell'ultimo istante con lo
+  switch acceso, e "LoP n: si riparte dopo x s"; campo `lop`); file nuovo solo dopo `CRONO_NUOVA_GARA_S` (120 s) di switch spento.
 - **Cruscotto** (solo laboratorio, `CRUSCOTTO`): pagina web 3D su `http://<ip-del-robot>:8000` con il modello del robot.
 - **Terminale "cabina di pilotaggio"** (V42, FIX 107, `ViennaCabina.py`, `TERMINALE = "cabina"`): schermata fissa a riquadri
   ridisegnata 5 volte al secondo: laser visti dall'alto, assetto con 20 s di storia, **cronometro** che parte con lo switch e
   non si azzera con le LoP (le conta; gara nuova solo dopo `CRONO_NUOVA_GARA_S` 120 s di switch spento; `CRONO_DURATA_S` 480),
-  camera linea e camera arena in piccolo (mezzi blocchi a 256 colori), motori e pinza, fasi della gara, eventi. Serve una
+  camera linea e camera arena in piccolo (mezzi blocchi a 256 colori; dalla V43 più grandi con la finestra grande), motori e pinza, fasi della gara, eventi. Serve una
   finestra di almeno 100 x 38 caratteri; più piccola → torna il pannello di prima (`"pannello"`, FIX 37/42). Riceve lo stesso
   campione della scatola nera, quindi la **moviola** `Strumenti_prove_Claude/terminale_nuovo.py` rivede una gara vera uguale.
-  Esercizio: rivedete l'altalena del 9/11 (`--da 375 --velocita 1`) e guardate beccheggio, camera e cronometro insieme.
 - **Strumenti**: `Strumenti_prove_Claude/analizza_scatola_nera.py` (eventi, o campioni tra due istanti);
   `Laboratorio Shuri/analizza_scatola.py` (problemi + foto delle camere).
 
