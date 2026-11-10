@@ -81,6 +81,8 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   10 campi `d1,d2,d3,hd,rl,pt,sw1,sw2,t0,t1`. **Quando il prof spegne lo switch l'Arduino smette di mandare dati**: non è
   un guasto (verificato su 4 scatole nere il 5/11).
 - Servo a rotazione continua: sotto circa 40 di sterzo (a velocità 47) non girano. VelCrs 47, VelArena 68.
+- 4 servo a rotazione continua (uno per ruota); batteria **LiPo 3S 11,1 V**; schede **buck DC-DC** per abbassare la
+  tensione (quante e quali tensioni: da confermare). Braccio e pinza: STL in arrivo dal prof.
 - Robot largo **15,6 cm**; porte dell'arena circa **27-31 cm**. Camera linea 12 cm davanti alle ruote.
 - Pista della scuola: arena **120 x 90 cm**; ingresso argento sul lato lungo (in comune con la pista), uscita nera sul
   lato corto accanto al triangolo rosso; i triangoli (rosso e verde) vengono spostati tra le prove; c'è una parete a
@@ -174,6 +176,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
    file vecchi di `/home/pi` (dopo una gara riuscita con l'avvio nuovo e una copia sul Mac).
 7. Da tarare sul robot vero: `ENTRATA_OLTRE_CM` (9, stimato), `USCITA_LIBERO_CM` (30), `ALTALENA_SALTO_GRADI` (30).
 8. Simulatore: aggiornare `SIMULA.*` alla versione nuova; posizione vera della linea rossa della scuola.
+
+## Skill anatomia
+- `.claude/skills/anatomia/`: "smontare" il robot sistema per sistema (`anatomia.md`: mappa, hardware, collegamenti, funzioni,
+  parametri, campi della scatola nera, FIX) ed esploso 3D (`costruisci_esploso.py` → `Meccanica_STL/esploso_robot.html`).
+  Scritta sulla V41: quando una versione cambia un sistema, aggiornare anche la sua scheda in `anatomia.md`.
 
 ## Documenti più dettagliati
 Nel progetto "RoboCup Junior" su claude.ai ci sono i documenti di ogni versione (V28, V30, V31-V34, V35-V36, V37, V38,

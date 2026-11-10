@@ -10,4 +10,7 @@ Mandati dal prof in chat il 5 novembre 2026. Unità: millimetri.
 | `SupportoPinzaWebcam_1.stl` | 4556 | 61 x 67 x 157 |
 | `CupolaWebArenaLED.stl` | 1282 | 8 x 52 x 148 |
 
+**Esploso 3D**: `esploso_robot.html` (doppio clic) mostra i 5 pezzi che si smontano con un cursore; clic su un pezzo per la
+sua scheda. Si rigenera con `python3 .claude/skills/anatomia/costruisci_esploso.py`.
+
 Il modello 3D del cruscotto (`ClaudeRob_V39/cruscotto/robot.stl`, 19092 triangoli) è fatto con questi 5 pezzi messi insieme.
