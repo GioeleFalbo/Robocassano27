@@ -52,6 +52,13 @@ la sua scheda, mouse per girare e zoomare. Usa i 5 STL di `Meccanica_STL/` (in m
 e three.js dalla cartella `cruscotto/` dell'ultima versione. Se cambia un pezzo stampato o se ne aggiunge uno, aggiorna la
 tabella `PEZZI` in cima allo script e rilancialo.
 
+## I componenti in 3D
+
+`componenti.py` (in questa cartella) costruisce in `Meccanica_STL/componenti/` i modelli semplificati di servo, schede,
+buck, batteria, Arduino, PCA9685, Raspberry e relè, con le misure dei datasheet; `costruisci_esploso.py` li monta ai loro
+livelli (tabella `PEZZI`, voci con `"componente": True`, `"copie"` = posizioni, `"via"` = quella del loro livello). Per
+spostarne uno: cambiare le sue `"copie"` e rilanciare. Non scaricare modelli da siti esterni senza controllare la licenza: la repository è pubblica.
+
 ## Regole
 
 - Non modificare il codice del robot per rispondere: questa skill **spiega**, non corregge. Una correzione è una versione

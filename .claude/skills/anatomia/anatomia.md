@@ -52,13 +52,26 @@ rimontare uno sull'altro). Asse verticale = **Y**; il muso (pinza e camere) è v
 Il modello del cruscotto (`ClaudeRob_V*/cruscotto/robot.stl`, 19092 triangoli, in cm) è questi 5 pezzi uniti.
 **Esploso 3D**: `python3 .claude/skills/anatomia/costruisci_esploso.py` → `Meccanica_STL/esploso_robot.html`.
 
-**Non hanno ancora un modello 3D**: i 4 servo delle ruote, le schede buck DC-DC, la batteria LiPo 11,1 V, l'Arduino Nano, il
-servo del braccio e la pinza (STL in arrivo). Il braccio c'è: `Braccio.stl` (vedi la scheda 6). Nell'esploso compaiono nell'elenco come "senza modello 3D".
+**Componenti in 3D semplificato** (`Meccanica_STL/componenti/`, fatti da `componenti.py` con le misure dei datasheet): i 4
+servo FS5106R, il servo DM996, la LiPo, i 3 buck, l'Arduino Nano, le 2 PCA9685; nell'esploso sono montati
+al loro livello (vedi "I tre livelli"); in più il Raspberry Pi 5 e la scheda a 2 relè. **Ancora senza modello 3D**: la pinza (STL
+in arrivo), le camere, laser, giroscopio e le strisce LED. Il braccio c'è: `Braccio.stl` (vedi la scheda 6). Nell'esploso compaiono nell'elenco come "senza modello 3D".
 
 Misure che il codice usa [codice/simulatore]: larghezza **15,6 cm** (`ROBOT_LARGHEZZA_CM`), camera linea **12 cm** davanti
 alle ruote, laser davanti 11,5 cm davanti all'asse delle ruote, laser laterali 1,5 cm davanti e a ±7,5 cm di lato.
 
 ---
+
+## 1. bis I tre livelli  [dal prof, 10/11 · STL]
+
+| Livello | Pezzo stampato | Piano di appoggio | Cosa c'è sopra |
+|---|---|---|---|
+| **1** (in basso) | `ServoRWDAmmortizzato` | Y = −41 mm | **batteria LiPo** e i **3 buck DC-DC** (sotto: i 4 servo delle ruote) |
+| **2** (in mezzo) | `BaseLogica` | Y = +4 mm | le **2 PCA9685** a 16 canali e l'**Arduino Nano** |
+| **3** (in alto) | `CoperturaAlta` | Y = +41 mm | il **Raspberry Pi 5** e la **scheda a 2 relè** |
+
+Tra un piano e l'altro ci sono circa 4 cm. Nell'esploso ogni componente è al suo livello e si smonta con lui; il punto preciso
+dentro il livello è indicativo.
 
 ## 1a. Cosa si vede nelle foto del robot (10/11)  [foto, da confermare con la squadra]
 
