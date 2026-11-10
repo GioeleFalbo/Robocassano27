@@ -84,7 +84,8 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - Hardware (dal prof, 10/11): 4 servo **Feetech FS5106R** a rotazione continua (uno per ruota) sulla PCA9685 0x41; braccio
   con servo **DM996 all metal** e pinza sulla seconda PCA9685 (0x40); **3 buck DC-DC** (tensioni da confermare); batteria
   **LiPo Zeee 3S 2200 mAh 50C (24,4 Wh)**. Camera **linea** = quella che punta in basso, camera **arena** = quella inclinata.
-  Foto in `immagini/foto_robot/`; dettagli nella skill `anatomia`. STL di braccio e pinza in arrivo dal prof.
+  Foto in `immagini/foto_robot/`; dettagli nella skill `anatomia`. `Meccanica_STL/Braccio.stl` (10/11, non nelle coordinate
+  di montaggio: nell'esploso in posizione indicativa, cursore "Braccio"); STL della pinza in arrivo dal prof.
 - Robot largo **15,6 cm**; porte dell'arena circa **27-31 cm**. Camera linea 12 cm davanti alle ruote.
 - Pista della scuola: arena **120 x 90 cm**; ingresso argento sul lato lungo (in comune con la pista), uscita nera sul
   lato corto accanto al triangolo rosso; i triangoli (rosso e verde) vengono spostati tra le prove; c'è una parete a

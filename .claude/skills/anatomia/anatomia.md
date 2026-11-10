@@ -52,8 +52,8 @@ rimontare uno sull'altro). Asse verticale = **Y**; il muso (pinza e camere) è v
 Il modello del cruscotto (`ClaudeRob_V*/cruscotto/robot.stl`, 19092 triangoli, in cm) è questi 5 pezzi uniti.
 **Esploso 3D**: `python3 .claude/skills/anatomia/costruisci_esploso.py` → `Meccanica_STL/esploso_robot.html`.
 
-**Non hanno ancora un modello 3D** (il prof manda gli STL di braccio e pinza): i 4 servo delle ruote, le schede buck DC-DC,
-la batteria LiPo 11,1 V, l'Arduino Nano, il braccio e la pinza. Nell'esploso compaiono nell'elenco come "senza modello 3D".
+**Non hanno ancora un modello 3D**: i 4 servo delle ruote, le schede buck DC-DC, la batteria LiPo 11,1 V, l'Arduino Nano, il
+servo del braccio e la pinza (STL in arrivo). Il braccio c'è: `Braccio.stl` (vedi la scheda 6). Nell'esploso compaiono nell'elenco come "senza modello 3D".
 
 Misure che il codice usa [codice/simulatore]: larghezza **15,6 cm** (`ROBOT_LARGHEZZA_CM`), camera linea **12 cm** davanti
 alle ruote, laser davanti 11,5 cm davanti all'asse delle ruote, laser laterali 1,5 cm davanti e a ±7,5 cm di lato.
@@ -179,7 +179,10 @@ Foto in `immagini/foto_robot/`: `sotto.jpg`, `fianco.jpg`, `fianco_elettronica.j
 - Scheda **PCA9685 all'indirizzo 0x40** (la seconda scheda a 16 canali; la prima, 0x41, comanda solo le ruote):
   **canale 4 = braccio**, **canale 11 = pinza** (servo di posizione, in gradi).
 - **Braccio**: servo **DM996 "all metal"** [dal prof] (ingranaggi in metallo, formato standard come l'MG996R: circa
-  40 x 20 x 43 mm). **Pinza**: due dita blu mosse da ingranaggi; modello del servo [da confermare].
+  40 x 20 x 43 mm). Il braccio stampato è `Meccanica_STL/Braccio.stl` [STL]: un disco che si avvita alla squadretta del
+  servo (il **perno**, asse = larghezza del robot), un braccio a L e una base piatta (circa 6 cm) dove si monta la pinza.
+  Lo STL è disegnato **abbassato** (base vicino al pavimento, davanti al muso); alzato, il braccio ruota di circa 140°
+  attorno al perno e porta la pinza sopra il muso (foto). Nell'esploso: cursore "Braccio" (posizione indicativa). **Pinza**: due dita blu mosse da ingranaggi; modello del servo [da confermare].
 - `Braccio(angolo)`, `Pinza(angolo)`; in `RwdFoto.py`: `AbbassaPinza`, `AlzaPinza`, `ApriPinza`, `ChiudiPinza`,
   `CaricaPalla`, `SvuotaPinza`, `ScaricaPalla(tipo)`, `AccostaTriangolo`.
 - **Scatola nera**: `br` (braccio), `pz` (pinza), `pal` (palline).
