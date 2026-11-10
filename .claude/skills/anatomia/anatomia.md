@@ -54,8 +54,10 @@ Il modello del cruscotto (`ClaudeRob_V*/cruscotto/robot.stl`, 19092 triangoli, i
 
 **Componenti in 3D semplificato** (`Meccanica_STL/componenti/`, fatti da `componenti.py` con le misure dei datasheet): i 4
 servo FS5106R, il servo DM996, la LiPo, i 3 buck, l'Arduino Nano, le 2 PCA9685; nell'esploso sono montati
-al loro livello (vedi "I tre livelli"); in più il Raspberry Pi 5 e la scheda a 2 relè. **Ancora senza modello 3D**: la pinza (STL
-in arrivo), le camere, laser, giroscopio e le strisce LED. Il braccio c'è: `Braccio.stl` (vedi la scheda 6). Nell'esploso compaiono nell'elenco come "senza modello 3D".
+al loro livello (vedi "I tre livelli"); in più il Raspberry Pi 5 e la scheda a 2 relè. **Ancora senza modello 3D**: il servo della
+pinza, le camere, laser, giroscopio e le strisce LED. Il braccio c'è: `Braccio.stl` (vedi la scheda 6), con le due ganasce della
+pinza (`PinzaParteSxSfera.stl`, `PinzaParteDxSfera.stl`, 10/11) agganciate sotto; c'è anche il supporto degli interruttori
+(`BiSwitch.stl`, sul fianco, in alto). Nell'esploso compaiono nell'elenco come "senza modello 3D".
 
 Misure che il codice usa [codice/simulatore]: larghezza **15,6 cm** (`ROBOT_LARGHEZZA_CM`), camera linea **12 cm** davanti
 alle ruote, laser davanti 11,5 cm davanti all'asse delle ruote, laser laterali 1,5 cm davanti e a ±7,5 cm di lato.
@@ -197,6 +199,9 @@ Foto in `immagini/foto_robot/`: `sotto.jpg`, `fianco.jpg`, `fianco_elettronica.j
   servo (il **perno**, asse = larghezza del robot), un braccio a L e una base piatta (circa 6 cm) dove si monta la pinza.
   Lo STL è disegnato **abbassato** (base vicino al pavimento, davanti al muso); alzato, il braccio ruota di circa 140°
   attorno al perno e porta la pinza sopra il muso (foto). Nell'esploso: cursore "Braccio" (posizione indicativa). **Pinza**: due dita blu mosse da ingranaggi; modello del servo [da confermare].
+  Le due ganasce sono `PinzaParteSxSfera.stl` e `PinzaParteDxSfera.stl` [STL, 10/11]: coppe a mezza sfera (pallina di circa
+  5 cm) con gli ingranaggi dietro, disegnate chiuse su una pallina appoggiata a terra; nell'esploso sono agganciate sotto la base
+  piatta del braccio e si muovono con il cursore "Braccio" (posizione indicativa).
 - `Braccio(angolo)`, `Pinza(angolo)`; in `RwdFoto.py`: `AbbassaPinza`, `AlzaPinza`, `ApriPinza`, `ChiudiPinza`,
   `CaricaPalla`, `SvuotaPinza`, `ScaricaPalla(tipo)`, `AccostaTriangolo`.
 - **Scatola nera**: `br` (braccio), `pz` (pinza), `pal` (palline).
