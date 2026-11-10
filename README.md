@@ -114,7 +114,8 @@ Nel simulatore la V41 completa la pista della scuola con 6 semi su 6 (255-259 s)
 | [`Strumenti_prove_Claude/`](Strumenti_prove_Claude/) | prove automatiche di porte e altalena nel simulatore |
 | [`Laboratorio Shuri/`](Laboratorio%20Shuri/) | gli strumenti di Shuri: batteria di prove, analisi delle scatole nere, ultimo rapporto |
 | [`ScatoleNere/`](ScatoleNere/) | le scatole nere delle gare vere e la foto dell'arena dall'alto |
-| [`Meccanica_STL/`](Meccanica_STL/) | i pezzi stampati in 3D del robot (millimetri) |
+| [`Meccanica_STL/`](Meccanica_STL/) | i pezzi stampati in 3D del robot (millimetri) e **`esploso_robot.html`**: il robot in 3D che si smonta (doppio clic) |
+| [`.claude/skills/anatomia/`](.claude/skills/anatomia/) | la skill **anatomia**: chiedete a Claude *"smontami il sistema dei laser"* e vi spiega ogni pezzo, nel robot e nel codice |
 | [`COME_LAVORARE.md`](COME_LAVORARE.md) | **per chi entra nella squadra**: GitHub, regole delle versioni, prove nel simulatore |
 | [`CLAUDE.md`](CLAUDE.md) | regole del progetto, storia delle versioni e cose da fare (lo legge Claude Code) |
 | `Aggiorna da GitHub.command` | doppio clic sul Mac: aggiorna la cartella `02_Robotica` con l'ultima versione |

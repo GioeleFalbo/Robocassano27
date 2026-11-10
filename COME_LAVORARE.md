@@ -170,6 +170,18 @@ prova prima/dopo.
 6. Prima di aprire la pull request, chiedi a Claude di spiegarti la modifica finché sai rispondere da solo alle tre
    domande della sezione 0. **La pull request la firmi tu**: il prof la approva solo se sai spiegarla.
 
+### La skill "anatomia": smontare il robot
+
+Nella repository c'è una **skill** (`.claude/skills/anatomia/`) che il vostro Claude usa da solo quando gli chiedete di
+spiegare un pezzo del robot. Provate per esempio:
+- *"smontami il sistema dei laser"*, *"come parla l'Arduino con il Raspberry?"*, *"dove sono i motori nel codice?"*;
+- *"smontami il comportamento dell'uscita dall'arena: dai sensori ai motori"*;
+- *"quali FIX hanno cambiato l'ingresso, e perché?"*.
+
+Per ogni sistema vi dice: cos'è, dove sta sul robot, come parla con il resto, dove è nel codice, i parametri, come si vede
+nella scatola nera e nel simulatore, la sua storia (FIX) e un esercizio. È il modo migliore per **studiare il robot prima
+di cambiarlo**. E c'è l'esploso 3D: `Meccanica_STL/esploso_robot.html` (doppio clic).
+
 ### Shuri, il collaudatore
 
 Oltre a Claude c'è un secondo agente, **Shuri**, che gira sul Mac del prof: **prova** ogni versione nel simulatore

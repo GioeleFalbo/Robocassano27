@@ -175,6 +175,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 7. Da tarare sul robot vero: `ENTRATA_OLTRE_CM` (9, stimato), `USCITA_LIBERO_CM` (30), `ALTALENA_SALTO_GRADI` (30).
 8. Simulatore: aggiornare `SIMULA.*` alla versione nuova; posizione vera della linea rossa della scuola.
 
+## Skill anatomia
+- `.claude/skills/anatomia/`: "smontare" il robot sistema per sistema (`anatomia.md`: mappa, hardware, collegamenti, funzioni,
+  parametri, campi della scatola nera, FIX) ed esploso 3D (`costruisci_esploso.py` → `Meccanica_STL/esploso_robot.html`).
+  Scritta sulla V41: quando una versione cambia un sistema, aggiornare anche la sua scheda in `anatomia.md`.
+
 ## Documenti più dettagliati
 Nel progetto "RoboCup Junior" su claude.ai ci sono i documenti di ogni versione (V28, V30, V31-V34, V35-V36, V37, V38,
 V39) e "Flusso di lavoro - scatole nere, Shuri e Claude". Nelle cartelle: `CHANGELOG.md` di ogni versione (storia
