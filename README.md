@@ -23,7 +23,7 @@
   <img src="https://img.shields.io/badge/FIX-106-d64545" alt="106 correzioni">
   <img src="https://img.shields.io/badge/Raspberry%20Pi-5-c51a4a?logo=raspberrypi&logoColor=white" alt="Raspberry Pi 5">
   <img src="https://img.shields.io/badge/Python-3-3776ab?logo=python&logoColor=white" alt="Python 3">
-  <img src="https://img.shields.io/badge/simulatore-V31-6b7280" alt="Simulatore V31">
+  <img src="https://img.shields.io/badge/simulatore-V32-6b7280" alt="Simulatore V32">
 </p>
 
 <p align="center">
@@ -108,7 +108,7 @@ Lavoriamo con persone e agenti di intelligenza artificiale insieme, ma con una r
 | 9 novembre 2026 | **V40** | percorso completo, arrivo a 388 s, **3 vittime su 3**, uscita in 64 s, altalena superata |
 | prossima prova | **V41** | 🔜 ingresso senza retromarce |
 
-Nel simulatore la V41 completa la pista della scuola con 6 semi su 6 (255-259 s) e i campi RoboCup di prova.
+Nel simulatore V32 la V41 completa la **pista della scuola a piastrelle** (ponte, tunnel, altalena) con 6 semi su 6 (262-311 s, 5 senza LoP) e i campi RoboCup di prova.
 
 ## 📁 Cosa c'è qui
 
@@ -116,7 +116,8 @@ Nel simulatore la V41 completa la pista della scuola con 6 semi su 6 (255-259 s)
 |---|---|
 | [`ClaudeRob_V41/`](ClaudeRob_V41/) | il codice del robot (ultima versione). Sul Raspberry parte da solo da `~/ClaudeRob_GARA` |
 | [`ClaudeRob_V40/`](ClaudeRob_V40/), [`ClaudeRob_V39/`](ClaudeRob_V39/) | le versioni precedenti, tenute per i confronti nel simulatore |
-| [`ClaudeRob_Simulatore_V31/`](ClaudeRob_Simulatore_V31/) | il simulatore (Python 3 + `numpy` + `opencv-python`), con la pista della scuola |
+| [`ClaudeRob_Simulatore_V32/`](ClaudeRob_Simulatore_V32/) | il simulatore (Python 3 + `numpy` + `opencv-python`), con la pista della scuola **a piastrelle**: ponte sopra il tunnel, rampe di 21°, altalena, luci e ombre, cono vero del laser ([mappa](ClaudeRob_Simulatore_V32/mappa_scuola.png)) |
+| [`ClaudeRob_Simulatore_V31/`](ClaudeRob_Simulatore_V31/) | il simulatore precedente, tenuto per i confronti |
 | [`Strumenti_prove_Claude/`](Strumenti_prove_Claude/) | prove automatiche di porte e altalena nel simulatore |
 | [`Laboratorio Shuri/`](Laboratorio%20Shuri/) | gli strumenti di Shuri: batteria di prove, analisi delle scatole nere, ultimo rapporto |
 | [`ScatoleNere/`](ScatoleNere/) | le scatole nere delle gare vere e la foto dell'arena dall'alto |
@@ -133,13 +134,13 @@ Nel simulatore la V41 completa la pista della scuola con 6 semi su 6 (255-259 s)
 ```
 pip3 install numpy opencv-python
 cd Strumenti_prove_Claude
-python3 gira.py ../ClaudeRob_V41 prova scuola 480 seme=1
+python3 gira.py ../ClaudeRob_V41 prova scuola_nuova 480 seme=1
 ```
 
 E per vederlo muoversi nel browser:
 
 ```
-cd ../ClaudeRob_Simulatore_V31
+cd ../ClaudeRob_Simulatore_V32
 python3 crea_replay.py prova.html replay_prova.json:"Prova V41"
 ```
 

@@ -1,7 +1,7 @@
 # Strumenti di prova di Claude (V35-V39)
 
-Script usati per provare le porte e l'altalena nel Simulatore V31. Stanno in `02_Robotica/Strumenti_prove_Claude/` e trovano
-da soli il simulatore in `../ClaudeRob_Simulatore_V31` (oppure nella variabile d'ambiente `SIMULATORE`). Si lanciano da questa
+Script usati per provare le porte e l'altalena nel simulatore (dal 10/11 il Simulatore V32). Stanno in `02_Robotica/Strumenti_prove_Claude/` e trovano
+da soli il simulatore in `../ClaudeRob_Simulatore_V32` (oppure nella variabile d'ambiente `SIMULATORE`). Si lanciano da questa
 cartella. Le copie di prova delle versioni finiscono in `copie_di_prova/` (si possono cancellare); i replay nel simulatore.
 
 | Script | Cosa prova | Risultato V39 |
@@ -21,5 +21,5 @@ python prova_uscita.py ../ClaudeRob_V39 usc_10 10
 python prova_uscita_angolo.py ../ClaudeRob_V39 ang_230 230
 python prova_altalena.py ../ClaudeRob_V39 alt
 python -I analizza_scatola_nera.py ../ScatoleNere/run_2026-11-06_10-48-52_V38.jsonl
-python ../ClaudeRob_Simulatore_V31/crea_replay.py confronto.html <replay_A.json>:"A" <replay_B.json>:"B"
+python ../ClaudeRob_Simulatore_V32/crea_replay.py confronto.html <replay_A.json>:"A" <replay_B.json>:"B"
 ```

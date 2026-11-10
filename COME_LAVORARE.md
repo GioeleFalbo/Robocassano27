@@ -140,7 +140,7 @@ I risultati di riferimento sono in `CLAUDE.md` (sezione "Il simulatore"). Altre 
 in `Strumenti_prove_Claude/LEGGIMI.md`. Per vedere la gara nel browser:
 
 ```
-cd ../ClaudeRob_Simulatore_V31
+cd ../ClaudeRob_Simulatore_V32
 python3 crea_replay.py confronto.html replay_prima.json:"V40" replay_dopo.json:"V41"
 ```
 
@@ -193,7 +193,7 @@ un lavoro leggete il suo ultimo rapporto (`Laboratorio Shuri/SHURI_rapporto.md`)
 ## 8. Cosa NON fare
 
 - Non lavorare direttamente su `main` (è protetto: GitHub non te lo lascia fare).
-- Non modificare le cartelle delle versioni già consegnate né il simulatore `ClaudeRob_Simulatore_V31`
+- Non modificare le cartelle delle versioni già consegnate né i simulatori già consegnati (`ClaudeRob_Simulatore_V31`, `V32`)
   (il simulatore ha la sua numerazione: se serve cambiarlo, si fa `ClaudeRob_Simulatore_V32`).
 - Non caricare foto o video con persone riconoscibili, password o dati personali.
 - Non caricare file enormi (sopra 50 MB): zip, video, cartelle dei modelli YOLO restano fuori.

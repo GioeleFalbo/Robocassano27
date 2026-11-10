@@ -11,7 +11,7 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 
 ## Regole fisse (da rispettare sempre)
 1. Ogni modifica al codice del robot = **versione nuova** in una cartella nuova: `ClaudeRob_V<n>` (ultima: **V41**).
-   Il simulatore ha la sua numerazione: `ClaudeRob_Simulatore_V<n>` (ultimo: **V31**).
+   Il simulatore ha la sua numerazione: `ClaudeRob_Simulatore_V<n>` (ultimo: **V32**).
 2. **Non modificare mai** le cartelle delle versioni già consegnate: si copia l'ultima e si lavora sulla copia.
 3. I **nomi dei file** delle classi non cambiano mai (`RwdFoto.py`, `ViennaClsRobot.py`, `ViennaDataConf.py`, ...).
 4. Ogni modifica è commentata nel codice con **`[FIX n]`** (ultimo: **FIX 106**), con il motivo (di solito: quale scatola
@@ -41,7 +41,7 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   una pull request) → un'issue per pezzo (es. Battista l'altalena, Gioele l'uscita) → ognuno la sua versione, analisi della
   scatola nera, simulatore, pull request con prima/dopo → il prof controlla e unisce → chi arriva secondo si aggiorna → la
   versione nuova va sul robot. Dettagli per gli studenti in `COME_LAVORARE.md`.
-- Il repository contiene le **ultime versioni** del codice (V39 e V40 come riferimento, V41), il simulatore V31, gli strumenti
+- Il repository contiene le **ultime versioni** del codice (V39 e V40 come riferimento, V41), i simulatori V31 e V32, gli strumenti
   di prova, il Laboratorio Shuri (solo gli strumenti), i pezzi stampati (`Meccanica_STL/`) e alcune scatole nere recenti, con gli **stessi nomi di cartella** del Mac (così i percorsi relativi funzionano uguale). Le versioni
   vecchie (V25-V38) restano sul Mac; la loro storia è nel `CHANGELOG.md`.
 - Versione nuova: si copia l'ultima (`ClaudeRob_V41`) in `ClaudeRob_V42`, si lavora lì, poi un commit con un messaggio tipo
@@ -113,16 +113,29 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - Il metodo che ha funzionato: trovare l'evento, guardare i campioni secondo per secondo (laser, rotta, motori, YOLO),
   capire la causa fisica, riprodurla nel simulatore, correggere, dimostrare la correzione con una prova prima/dopo.
 
-## Il simulatore (ClaudeRob_Simulatore_V31)
-- `python esegui.py "../ClaudeRob_V39" nome 480 scuola` (scenari: `rcj2026`, `lunga`, `contorto`, `gara`, `arena`,
+## Il simulatore (ClaudeRob_Simulatore_V32, dal 10/11; la V31 resta per i confronti)
+- **V32** (10/11, issue #17): pista della scuola **a piastrelle** dalle 9 foto del 10/11 (`pista_scuola_piastrelle.py`, BOZZA
+  da correggere con la squadra: `python3 disegna_mappa.py` → `mappa_scuola.png`, colonne A-K e righe 1-9). Scenari
+  `scuola_nuova` e `scuola_nuova_buio`. Ponte sopra il tunnel su **due livelli** (`metti(..., sotto=True)`, `K.tunnel(...)`):
+  rampe 21° (2 x 30 x tan 21° = 23,0 cm = ponte misurato), tunnel 91 x 30 x 22,3 cm (robot 21 cm: `altezza_robot`), tubi.
+  Altalena 19,5°. `realismo.py`: luci da più angolazioni con ombre (muri, ponte, robot), tunnel buio, strisce LED (GPIO 22/23),
+  verdi di 5 tonalità, alcuni lucidi (riflesso → YOLO non li vede), **cono del VL53L1X** (27°, rumore 0,5 + 1,6·(d/100)² cm),
+  il fianco scivola sulle pareti. Tutto acceso solo dal `cfg` dello scenario (`CFG_REALISMO` in `campo.py`): le 15 piste
+  vecchie danno risultati **identici** alla V31, campione per campione. Corretto `arena(palline=..., righe=4)`.
+- V32, V41 su `scuola_nuova`: semi 1-6 tutti all'arrivo (262-311 s), 5 senza LoP (1042,7 punti); seme 2: nel tunnel, storto, il
+  laser davanti (cono) vede la parete a 8 cm → "ostacolo" → torna indietro → LoP. `scuola_nuova_buio` semi 1-3: 2 senza LoP,
+  il seme 3 perde la linea 3 volte vicino al tunnel. Ingresso col cono (y 55-95): V40 8 "non avanzo", V41 4 (come il 9/11);
+  col raggio sottile V40 = V41.
+- `python esegui.py "../ClaudeRob_V41" nome 480 scuola_nuova` (scenari: `scuola_nuova`, `scuola_nuova_buio`, `rcj2026`, `lunga`, `contorto`, `gara`, `arena`,
   `arena_parete`, `scuola`, `scuola_rampa`, `scuola_basso`, `scuola_parete`; le prove "stress" con i guasti le
   aggiunge la batteria di Shuri). Scrive
   `replay_<nome>.json`; `python crea_replay.py uscita.html replay_a.json:"A" replay_b.json:"B"` fa la pagina di confronto.
 - Guasti nel `cfg`: `seme`, `imu_bloccato`, `imu_blocca_da`, `tof_fr_spurie`, `tof_lat_spurie`, `arduino_muto_da`, ...
 - La V31 ha l'arena vera della scuola (dalla foto dall'alto del 5/11). La **linea rossa** dopo l'uscita è una stima
-  (`ROSSO_FOTO` in `pista_scuola.py`). `SIMULA.bat`/`SIMULA.command` partono ancora con ClaudeRob_V34.
-- Limiti: il laser è un raggio sottile (il VL53L1X vero ha un cono largo); contro uno stipite il robot si ferma e non
-  ruota; niente altalena; il robot vero risponde circa 0,1 s più tardi.
+  (`ROSSO_FOTO` in `pista_scuola.py`). Dalla V32 `SIMULA.bat`/`SIMULA.command` partono con ClaudeRob_V41 su `scuola_nuova`.
+- Limiti: nelle piste vecchie il laser è un raggio sottile (il cono c'è solo negli scenari V32); contro uno stipite il robot
+  si ferma e non ruota (negli scenari V32 scivola); YOLO resta un oracolo (luci e ombre cambiano l'immagine e la ricerca del
+  nero, non le classi, tranne i verdi col riflesso); il robot vero risponde circa 0,1 s più tardi.
 - Risultati di riferimento V39 = V40 = V41 (identici): scuola semi 1-6 arrivo (255-259 s); rcj2026 1468, lunga 1893, contorto
   1989 (tutti con arrivo); arena_parete (227 s) e gara (362 s) arrivo. `scuola_basso` e `scuola_rampa` non arrivano (parete
   di destra presa per ostacolo, così da V34); anche `scuola_parete` non arriva (fuori campo a 115 s).
@@ -179,7 +192,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 6. Raspberry: ~~lanciare da una cartella pulita~~ fatto il 9/11 (`~/ClaudeRob_GARA` → `~/ClaudeRob_V40`). Resta: archiviare i
    file vecchi di `/home/pi` (dopo una gara riuscita con l'avvio nuovo e una copia sul Mac).
 7. Da tarare sul robot vero: `ENTRATA_OLTRE_CM` (9, stimato), `USCITA_LIBERO_CM` (30), `ALTALENA_SALTO_GRADI` (30).
-8. Simulatore: aggiornare `SIMULA.*` alla versione nuova; posizione vera della linea rossa della scuola.
+8. Simulatore: ~~`SIMULA.*`~~ fatto nella V32. **Correggere la mappa a piastrelle** con la squadra (partenza, ordine dei pezzi,
+   verdi, linea rossa, palline) e aggiungere `scuola_nuova` alla batteria di Shuri (è un file di Shuri: lo decide il prof).
+9. Dal simulatore V32: nel tunnel, se il robot entra storto, il cono del laser davanti vede la parete e la V41 la prende per un
+   ostacolo (1 prova su 6). Da guardare sul robot vero e, se serve, una versione nuova (es. niente ostacolo con le due pareti
+   laterali a meno di 10 cm).
 
 ## Skill anatomia
 - `.claude/skills/anatomia/`: "smontare" il robot sistema per sistema (`anatomia.md`: mappa, hardware, collegamenti, funzioni,

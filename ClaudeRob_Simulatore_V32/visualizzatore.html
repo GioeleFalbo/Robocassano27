@@ -1,0 +1,804 @@
+<title>Simulatore ClaudeRob V32</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: banco di prova — campo grande a sinistra, strumenti del robot a destra, cronologia sotto */
+:root {
+  --bg: #e9ecef;          /* alluminio dei profilati */
+  --panel: #ffffff;
+  --panel-2: #f4f6f8;
+  --ink: #1a1e23;
+  --muted: #5b6570;
+  --rule: #d3d9df;
+  --gold: #9a6f05;        /* il robot dorato */
+  --gold-soft: #f3e3b3;
+  --ok: #23804a;
+  --err: #c0392b;
+  --info: #2f6aa3;
+  --tile: #fbfbf9;
+  --table: #c9ced3;
+  --font-display: "Saira Semi Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101317; --panel: #171b20; --panel-2: #1d2228; --ink: #e5e8eb; --muted: #97a1ab; --rule: #2b323a;
+    --gold: #e2b440; --gold-soft: #3a3016; --ok: #4cbf7a; --err: #ff7a66; --info: #79aee6;
+    --tile: #e4e6e2; --table: #2a3037; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101317; --panel: #171b20; --panel-2: #1d2228; --ink: #e5e8eb; --muted: #97a1ab; --rule: #2b323a;
+  --gold: #e2b440; --gold-soft: #3a3016; --ok: #4cbf7a; --err: #ff7a66; --info: #79aee6;
+  --tile: #e4e6e2; --table: #2a3037; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 14px; line-height: 1.45; }
+.wrap { max-width: 1440px; margin: 0 auto; padding-inline: 16px; padding-block: 16px 40px; display: grid; gap: 14px; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; text-wrap: balance; letter-spacing: .01em; }
+h1 { font-size: 1.7rem; font-weight: 700; }
+h2 { font-size: 1.05rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 14px; min-width: 0; }
+header.top { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: end; justify-content: space-between; }
+header.top p { margin: 2px 0 0; color: var(--muted); max-width: 70ch; }
+.runs { display: flex; flex-wrap: wrap; gap: 6px; }
+.runs button { font: 600 0.92rem var(--font-display); letter-spacing: .02em; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--rule);
+  background: var(--panel); color: var(--ink); cursor: pointer; }
+.runs button[aria-pressed="true"] { background: var(--gold); color: var(--panel); border-color: var(--gold); }
+.runs button:focus-visible, .ctrl:focus-visible, .ev:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--info); outline-offset: 2px; }
+
+.summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.stat { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 9px 12px; display: grid; gap: 2px; }
+.stat .k { font-size: .74rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.stat .v { font: 600 1.25rem var(--font-display); }
+.stat .s { font-size: .8rem; color: var(--muted); }
+.pill { display: inline-block; padding: 1px 9px; border-radius: 999px; font: 600 .85rem var(--font-display); letter-spacing: .03em; }
+.pill.ok { background: color-mix(in srgb, var(--ok) 18%, transparent); color: var(--ok); }
+.pill.err { background: color-mix(in srgb, var(--err) 18%, transparent); color: var(--err); }
+.pill.info { background: color-mix(in srgb, var(--info) 18%, transparent); color: var(--info); }
+
+.main { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 14px; align-items: start; }
+@media (max-width: 1020px) { .main { grid-template-columns: minmax(0, 1fr); } }
+.field-panel { display: grid; gap: 10px; padding: 10px; }
+#campo { width: 100%; display: block; border-radius: 6px; background: var(--table); }
+.transport { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.ctrl { font: 600 .9rem var(--font-display); padding: 6px 12px; border-radius: 8px; border: 1px solid var(--rule); background: var(--panel-2); color: var(--ink); cursor: pointer; min-width: 44px; }
+.ctrl.play { background: var(--ink); color: var(--panel); border-color: var(--ink); min-width: 92px; }
+.time { font-size: 1.05rem; }
+.scrub { flex: 1 1 260px; display: grid; gap: 3px; min-width: 0; }
+#scrub { width: 100%; accent-color: var(--gold); margin: 0; }
+#ticks { width: 100%; height: 10px; display: block; }
+select { font: 500 .88rem var(--font-body); padding: 5px 8px; border-radius: 8px; border: 1px solid var(--rule); background: var(--panel-2); color: var(--ink); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .8rem; color: var(--muted); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+
+.side { display: grid; gap: 14px; }
+.cam { display: grid; gap: 6px; }
+.cam canvas { width: 100%; display: block; border-radius: 6px; background: #777; image-rendering: auto; }
+.cam .cap { display: flex; justify-content: space-between; gap: 8px; font-size: .8rem; color: var(--muted); }
+.yolo { font: 600 .95rem var(--font-display); color: var(--ink); }
+.yolo b { color: var(--gold); }
+.crumbs { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; min-height: 26px; }
+.crumbs span { font: 500 .8rem var(--font-mono); padding: 2px 7px; border-radius: 5px; background: var(--panel-2); border: 1px solid var(--rule); }
+.crumbs span:last-child { background: var(--gold-soft); border-color: var(--gold); }
+.crumbs em { color: var(--muted); font-style: normal; font-size: .8rem; }
+.tele { display: grid; gap: 10px; }
+.row { display: grid; grid-template-columns: 112px minmax(0, 1fr) 62px; gap: 8px; align-items: center; font-size: .86rem; }
+.row .lab { color: var(--muted); }
+.row .val { text-align: right; }
+.bar { position: relative; height: 10px; background: var(--panel-2); border: 1px solid var(--rule); border-radius: 3px; overflow: hidden; }
+.bar .z { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--muted); opacity: .5; }
+.bar .f { position: absolute; top: 0; bottom: 0; background: var(--gold); }
+.bar.uni .f { left: 0; }
+.gauges { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; align-items: center; }
+.gauges svg { width: 96px; height: 96px; }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; font-size: .86rem; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; text-align: right; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--rule); vertical-align: 0; margin-right: 4px; }
+.dot.on { background: var(--gold); box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 25%, transparent); }
+
+.lower { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 14px; align-items: start; }
+@media (max-width: 1020px) { .lower { grid-template-columns: minmax(0, 1fr); } }
+.events { display: grid; gap: 2px; max-height: 300px; overflow: auto; margin-top: 8px; }
+.ev { display: grid; grid-template-columns: 58px 10px minmax(0, 1fr); gap: 8px; align-items: baseline; padding: 4px 6px; border-radius: 6px; cursor: pointer; background: none; border: 0; color: var(--ink); text-align: left; font: inherit; }
+.ev:hover { background: var(--panel-2); }
+.ev.passato { opacity: .55; }
+.ev.attuale { background: var(--gold-soft); opacity: 1; }
+.ev .t { color: var(--muted); font-size: .82rem; }
+.ev .m { width: 8px; height: 8px; border-radius: 2px; align-self: center; }
+#log { margin: 8px 0 0; padding: 10px; background: var(--panel-2); border: 1px solid var(--rule); border-radius: 8px; font: .8rem/1.5 var(--font-mono); height: 300px; overflow: auto; white-space: pre-wrap; word-break: break-word; }
+#log .t { color: var(--muted); }
+#log .last { color: var(--gold); font-weight: 500; }
+
+.notes { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 14px; }
+@media (max-width: 1020px) { .notes { grid-template-columns: minmax(0, 1fr); } }
+.notes ol, .notes ul { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 7px; }
+.notes li { max-width: 75ch; }
+.notes li b { font-weight: 600; }
+.small { font-size: .82rem; color: var(--muted); }
+.punteggio { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+@media (max-width: 1020px) { .punteggio { grid-template-columns: minmax(0, 1fr); } }
+.punteggio table { width: 100%; border-collapse: collapse; font-size: .86rem; }
+.punteggio td { padding: 3px 6px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.punteggio td.n { text-align: right; font-family: var(--font-mono); white-space: nowrap; }
+.punteggio .righe { max-height: 260px; overflow: auto; margin-top: 8px; }
+.totali { display: grid; gap: 6px; margin-top: 8px; }
+.totali div { display: flex; justify-content: space-between; gap: 10px; font-size: .9rem; }
+.totali .grande { font: 600 1.35rem var(--font-display); }
+.catalogo { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px; margin-top: 10px; }
+.catalogo figure { margin: 0; display: grid; gap: 4px; justify-items: center; text-align: center; font-size: .78rem; color: var(--muted); }
+.catalogo canvas { width: 105px; height: 105px; border-radius: 4px; border: 1px solid var(--rule); }
+.catalogo b { color: var(--ink); font-weight: 600; }
+.err-box { border-color: var(--err); }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Simulatore ClaudeRob V32</h1>
+      <p>Il vostro <span class="mono">RwdFoto.py</span> eseguito senza modifiche su un robot virtuale con gli stessi componenti: Raspberry Pi 5, 2 PCA9685, 4 servo a rotazione continua, braccio e pinza, 3 VL53L1X, giroscopio, 2 camere e LED.</p>
+    </div>
+    <div class="runs" id="runs" role="group" aria-label="Prova da rivedere"></div>
+  </header>
+
+  <section class="summary" id="summary" aria-label="Riepilogo della prova"></section>
+
+  <section class="panel punteggio" id="boxPunti" aria-label="Punteggio della prova" hidden>
+    <div>
+      <h2>Punti conquistati (regolamento 2026)</h2>
+      <div class="righe"><table id="righePunti"></table></div>
+    </div>
+    <div>
+      <h2>Calcolo finale</h2>
+      <div class="totali" id="totali"></div>
+    </div>
+  </section>
+
+  <div class="main">
+    <section class="panel field-panel" aria-label="Campo di gara">
+      <canvas id="campo" aria-label="Vista dall'alto del campo con il robot"></canvas>
+      <div class="transport">
+        <button class="ctrl play" id="play" type="button">▶ Avvia</button>
+        <button class="ctrl" id="back" type="button" title="Indietro di 5 s">−5 s</button>
+        <button class="ctrl" id="fwd" type="button" title="Avanti di 5 s">+5 s</button>
+        <label class="small" for="speed">Velocità</label>
+        <select id="speed">
+          <option value="0.5">0,5×</option><option value="1">1×</option><option value="2">2×</option>
+          <option value="4" selected>4×</option><option value="8">8×</option><option value="16">16×</option>
+        </select>
+        <span class="time mono" id="time">0,0 s</span>
+        <div class="scrub">
+          <input type="range" id="scrub" min="0" max="1000" step="1" value="0" aria-label="Tempo della prova">
+          <canvas id="ticks" aria-hidden="true"></canvas>
+        </div>
+      </div>
+      <div class="legend">
+        <span><i style="background:var(--gold)"></i>robot e traiettoria</span>
+        <span><i style="background:rgba(47,106,163,.45)"></i>inquadratura camera linea</span>
+        <span><i style="background:#d9534f"></i>raggi dei VL53L1X</span>
+        <span><i style="background:#c0c0c0;border:1px solid #888"></i>pallina argento</span>
+        <span><i style="background:#222"></i>pallina nera</span>
+      </div>
+    </section>
+
+    <aside class="side">
+      <section class="panel cam" aria-label="Camera della linea">
+        <h2>Camera linea</h2>
+        <canvas id="camLinea" width="220" height="130"></canvas>
+        <div class="yolo" id="yolo">YOLO vede: —</div>
+        <div class="cap"><span>Il tratteggio è la soglia y = 80 di VerificaVerde: un incrocio sopra la linea viene trattato come linea normale.</span></div>
+      </section>
+      <section class="panel cam" aria-label="Camera dell'arena">
+        <h2>Camera arena</h2>
+        <canvas id="camArena" width="220" height="130"></canvas>
+        <div class="cap"><span>schema di ciò che riconosce YOLO</span></div>
+      </section>
+      <section class="panel tele" aria-label="Stato del robot">
+        <h2>Funzione attiva</h2>
+        <div class="crumbs" id="crumbs"></div>
+        <h2>Servo di trazione</h2>
+        <div class="row"><span class="lab">Ruote sinistre</span><div class="bar" id="barL"><span class="z"></span><span class="f"></span></div><span class="val mono" id="valL"></span></div>
+        <div class="row"><span class="lab">Ruote destre</span><div class="bar" id="barR"><span class="z"></span><span class="f"></span></div><span class="val mono" id="valR"></span></div>
+        <h2>VL53L1X</h2>
+        <div class="row"><span class="lab">Sinistra</span><div class="bar uni" id="barT0"><span class="f"></span></div><span class="val mono" id="valT0"></span></div>
+        <div class="row"><span class="lab">Fronte</span><div class="bar uni" id="barT1"><span class="f"></span></div><span class="val mono" id="valT1"></span></div>
+        <div class="row"><span class="lab">Destra</span><div class="bar uni" id="barT2"><span class="f"></span></div><span class="val mono" id="valT2"></span></div>
+        <div class="gauges">
+          <svg viewBox="-50 -50 100 100" aria-label="Bussola del giroscopio">
+            <circle r="44" fill="none" stroke="var(--rule)" stroke-width="2"></circle>
+            <g fill="var(--muted)" font-size="10" font-family="var(--font-mono)" text-anchor="middle">
+              <text y="-32">0</text><text x="35" y="4">90</text><text y="40">180</text><text x="-34" y="4">270</text>
+            </g>
+            <g id="needle"><path d="M0 -38 L6 0 L0 8 L-6 0 Z" fill="var(--gold)"></path></g>
+            <circle r="3" fill="var(--ink)"></circle>
+          </svg>
+          <dl class="kv">
+            <dt>Direzione</dt><dd class="mono" id="vHead"></dd>
+            <dt>Pendenza</dt><dd class="mono" id="vPitch"></dd>
+            <dt>Inclin. laterale</dt><dd class="mono" id="vRoll"></dd>
+            <dt>Quota</dt><dd class="mono" id="vZ"></dd>
+            <dt>Braccio</dt><dd class="mono" id="vArm"></dd>
+            <dt>Pinza</dt><dd class="mono" id="vGrip"></dd>
+            <dt>Switch pallina</dt><dd id="vBall"></dd>
+            <dt>LED 1 · LED 2</dt><dd id="vLed"></dd>
+          </dl>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <div class="lower">
+    <section class="panel" aria-label="Eventi della prova">
+      <h2>Eventi</h2>
+      <div class="small" id="evNote"></div>
+      <div class="events" id="events"></div>
+    </section>
+    <section class="panel" aria-label="Uscita del programma">
+      <h2>Cosa stampa il programma</h2>
+      <div id="log" aria-live="off"></div>
+    </section>
+  </div>
+
+  <div class="notes">
+    <section class="panel">
+      <h2>Cosa mostra la simulazione</h2>
+      <ol>
+        <li><b>Pista lunga (simulatore V26).</b> 84 piastrelle su 26 × 14 e zona di evacuazione 4 × 4 con ingresso e uscita sullo stesso muro, come l'arena della scuola. La V25 (FIX 63-70) esce sempre dalla porta giusta; per vedere la gara intera il limite di 8 minuti è stato alzato: il robot ci mette 8 min 4 s - 8 min 46 s.</li>
+        <li><b>Servo come quelli veri (simulatore V26).</b> Dalla scatola nera del 23/10: il robot va a circa 11 cm/s, ruota sul posto a circa 35 gradi al secondo e con uno sterzo piccolo non gira (i servo sono già quasi al massimo). Con questo modello la V24 resta a 16-17 cm dal muro come il robot vero; la V25 (FIX 63-69) si raddrizza ruotando sul posto e sta a 7-8 cm, esce dall'arena della scuola in 61 s ed esce in 37-45 s dopo l'ultima pallina nella gara vecchia.</li>
+        <li><b>Campo contorto (simulatore V24).</b> Un serpentone di 6 file a 30 cm l'una dall'altra: se il robot perde la linea accanto c'è sempre un'altra linea (curva, zig-zag, onda). 15 piastrelle con interruzioni, anche subito dopo una curva a U, sull'altopiano stretto tra due file e tratteggiate; ramo senza verde, vicolo cieco, angolo acuto, due ostacoli, altalena.</li>
+        <li><b>Interruzioni dopo una curva (ClaudeRob V24, FIX 62).</b> Il robot segue il nastro fino alla fine, poi attraversa il vuoto con la direzione agganciata ai lati delle piastrelle (se stava curvando, il lato successivo nel verso della curva). Sul campo contorto la V23 sbagliava dopo la U in tutte le gare (prova "V23 (sbaglia dopo la U)", secondo 17); con il simulatore V25 la V24 fa il punteggio pieno, 1.989, in tutte e 8 le gare.</li>
+        <li><b>Arbitro corretto intorno all'ostacolo (simulatore V25).</b> Il simulatore V24 chiamava la LoP appena il robot, girando intorno all'ostacolo, passava sopra una piastrella vicina con un'altra linea (per questo "cadeva" sempre al primo ostacolo del campo contorto). Il regolamento la chiama solo se il robot raggiunge e segue una linea fuori sequenza: ora intorno all'ostacolo si può passare.</li>
+        <li><b>Seguilinea senza cadute (ClaudeRob V23, FIX 57–59).</b> Interruzioni: il robot arretra, si allinea al pezzo dritto e attraversa col giroscopio. Linea persa: ventaglio sul posto fino a ±120° e retromarcia, mai avanti alla cieca. Incroci senza verde: il robot sceglie il braccio opposto a quello da cui arriva. In 8 gare: 0 cadute e 0 LoP sulla linea (la V22 cadeva dall'altopiano: guardate "V22 (cade dall'altopiano)" al secondo 35). Resta l'uscita dalla zona: nella prova "bloccata all'uscita" il robot tocca lo stipite e spinge fino alla LoP.</li>
+        <li><b>Rampa o ostacolo? (ClaudeRob V22, FIX 56).</b> Ai piedi della rampa il laser frontale, a 6 cm da terra, colpisce la salita a 14–15 cm e la V21 faceva il giro dell'ostacolo intorno alla rampa (prova "V21 (rampa = ostacolo)", al secondo 19). La V22 avanza piano: se il laser arriva a 8 cm è un ostacolo, se il robot si inclina oltre 6° è una rampa. Rampa salita in 6 gare su 6, ostacolo vero sempre aggirato.</li>
+        <li><b>Campo RCJ 2026 a piastrelle (simulatore V22).</b> 20 × 12 piastrelle con tutto quello che il regolamento permette: zig-zag, curve strette, angolo retto e acuto, interruzioni da 14 e 18 cm, rampa di 20° fino a un altopiano alto 22 cm, tratto inclinato di lato di 10°, discesa con onde, dossi, detriti, falso verde, vicolo cieco, incrocio attraversato due volte, ostacolo, altalena, zona di evacuazione 4 × 3 e arrivo. Gli 8 minuti di gara sono veri.</li>
+        <li><b>Fisica in 3D.</b> Sulle rampe il robot rallenta in salita e accelera in discesa; sui tratti inclinati scivola verso valle (circa 1,7 cm/s a 10°); da fermo in pendenza scivola un po' indietro. All'inizio della rampa salgono prima le ruote davanti, come sul robot vero. I laser sono a 6 cm d'altezza: davanti a una rampa il laser frontale "vede" la rampa come un muro. La camera della linea guarda il pavimento inclinato. Se il robot esce da un bordo rialzato cade.</li>
+        <li><b>Punteggio ufficiale e LoP.</b> Il simulatore fa l'arbitro: conta piastrelle e checkpoint (5/3/1 punti), ostacoli superati, vittime salvate (×1,4 ciascuna, la nera solo dopo le due argento), bonus d'uscita (60 − 5 per LoP). Quando il robot perde la linea, prende una linea fuori sequenza, cade o resta fermo 90 s, chiama la mancanza di progresso: spegne lo switch, rimette il robot all'ultimo checkpoint e lo riaccende, come fa il capitano.</li>
+        <li><b>Palline dentro il triangolo (V21, FIX 54).</b> Il robot si accosta al triangolo con il laser frontale fino a 3 cm e apre la pinza lì, senza arretrare prima. Prima arretrava 0,4 s e la pallina cadeva fuori: il robot la rivedeva, la riprendeva e la contava due volte, così una pallina argento restava sul campo.</li>
+        <li><b>Ostacolo al primo colpo (V21, FIX 54).</b> La variabile della distanza partiva da 25, che era già "abbastanza vicino": il robot girava subito senza avvicinarsi. Ora parte da 999 e lo 0 del laser non vale più 13 cm.</li>
+        <li><b>Robot incastrato (V21, FIX 55).</b> Se il laser frontale non cambia, o con il fronte libero l'immagine della camera arena resta ferma, il robot arretra e riprova. Il giro delle pareti ora riconosce l'apertura anche se ci arriva in diagonale.</li>
+        <li><b>Uscita costeggiando le pareti (V20, metodo della squadra).</b> Dopo l'ultima pallina il robot sceglie la parete più vicina, la costeggia a 5 cm e quando il laser laterale "cade" in un'apertura la misura, torna al centro, la guarda con la camera arena e il pavimento: ingresso = continua il giro, uscita = esce. Guardate "Arena scuola · V20".</li>
+        <li><b>Svolte come nel codice originale (V20).</b> Avanti a tempo e Gira(42) o Gira(-35): il seguilinea finisce la curva.</li>
+</ol>
+    </section>
+    <section class="panel">
+      <h2>Ipotesi del simulatore</h2>
+      <ul class="small">
+        <li><b>Rampe e piastrelle</b>: la pianta è disegnata in orizzontale, quindi una piastrella in rampa da 30 cm in pianta è lunga 32 cm sulla superficie. L'altalena bascula a 60°/s quando il centro del robot supera il perno. Le scivolate laterali (10 cm/s × seno dell'inclinazione) sono una stima: controllatela sul robot vero.</li>
+        <li><b>L'arbitro del simulatore</b> chiama la LoP se il robot entra in una piastrella con una linea fuori sequenza (ma non intorno a un ostacolo, dove il giro può passare sulle piastrelle vicine), se è a più di una piastrella dalla linea, se resta 6 s su piastrelle bianche (20 s vicino all'ostacolo), se cade, se esce dalla zona dall'ingresso o se non fa progressi per 90 s (150 s nella zona). Dopo tre tentativi falliti salta al checkpoint successivo.</li>
+        <li><b>YOLO è un "oracolo"</b>: vede esattamente cosa c'è davanti alla camera e applica la regola dei verdi (un verde vale solo se il robot lo incontra prima dell'incrocio). Il modello vero può sbagliare: la prova "YOLO sbaglia i falsi verdi" mostra cosa succede.</li>
+        <li>Camera linea: 8,3 cm d'altezza, 15° dalla verticale, campo orizzontale 80°, sul muso del robot (misure dalle foto). Camera arena: 9,8 cm, 26° verso il basso, campo 68°.</li>
+        <li>Servo al massimo: circa 12,6 cm/s per ruota con il modello &laquo;reale&raquo; (V26), 30 cm/s con quello &laquo;lineare&raquo;. Robot 22 × 18 cm. Laser laterali sui fianchi, 4 cm avanti al centro. La pinza lascia la pallina 17 cm davanti al centro.</li>
+        <li>Tempi del Raspberry Pi 5: 45 ms per predizione YOLO, 350 ms per caricare un modello, 10 ms per salvare una foto.</li>
+        <li>Le camere sono misurate; velocità, ingombro e posizione dei laser sono ancora stime: correggete <span class="mono">CONFIG</span> in <span class="mono">mondo.py</span> se le misurate.</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="panel" aria-label="Catalogo delle piastrelle">
+    <h2>Le piastrelle del regolamento 2026</h2>
+    <p class="small">Il robot entra sempre dal basso. Tra parentesi i punti che vale la piastrella superata (oltre ai 5 punti per piastrella dei checkpoint). Le versioni a sinistra sono speculari. Azzurro = rampa (scuro in alto), viola = inclinata di lato, verde acqua = altalena.</p>
+    <div class="catalogo" id="catalogo"></div>
+  </section>
+</div>
+
+<script>
+const DATI = /*__DATI__*/null;
+(function () {
+  "use strict";
+  let C = DATI.campo;
+  const PROVE = DATI.prove;
+  const $ = (id) => document.getElementById(id);
+  const fmt = (n, d = 1) => n.toLocaleString("it-IT", { minimumFractionDigits: d, maximumFractionDigits: d });
+  const rad = (g) => g * Math.PI / 180;
+  const dirv = (h) => [Math.sin(rad(h)), -Math.cos(rad(h))];
+  const destra = (h) => [Math.cos(rad(h)), Math.sin(rad(h))];
+  const YOLO_NOMI = { Ln: "linea", Sx: "verde a sinistra", Dx: "verde a destra", Fr: "doppio verde", Di: "interruzione", In: "ingresso arena", Ro: "linea rossa", Bi: "bianco", "": "—" };
+  const COL_EV = { ok: "var(--ok)", errore: "var(--err)", info: "var(--info)", avvio: "var(--info)", presa: "var(--gold)", salvata: "var(--ok)", mancata: "var(--err)", urto: "var(--muted)", punti: "var(--gold)", lop: "var(--err)" };
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+  let P = PROVE[0];
+  let t = 0, playing = false, lastFrame = 0;
+
+  // ---------- selettore prove ----------
+  const runs = $("runs");
+  PROVE.forEach((p, i) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = p.etichetta; b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+    b.addEventListener("click", () => { scegli(i); });
+    runs.appendChild(b);
+  });
+  function scegli(i) {
+    P = PROVE[i];
+    const nuovo = (DATI.campi && DATI.campi[P.campo]) || DATI.campo;
+    if (nuovo !== C) { C = nuovo; dimensiona(); }
+    [...runs.children].forEach((b, j) => b.setAttribute("aria-pressed", j === i ? "true" : "false"));
+    t = 0; preparaCamLinea(); riepilogo(); listaEventi(); disegnaTacche(); aggiorna();
+  }
+
+  // ---------- riepilogo ----------
+  function riepilogo() {
+    const ev = P.eventi;
+    const salvate = ev.filter(e => e.tipo === "salvata").length;
+    const prese = ev.filter(e => e.tipo === "presa").length;
+    const traguardi = ev.filter(e => e.tipo === "ok").length;
+    const esiti = { "arrivo": ["Arrivato", "ok"], "bloccato": ["Fermo da 60 s", "err"], "tempo scaduto": ["Tempo scaduto", "info"], "fuori campo": ["Fuori dal campo", "err"], "errore Python": ["Errore Python", "err"] };
+    const [testo, cls] = esiti[P.fine] || [P.fine, "info"];
+    const s = P.statistiche;
+    $("summary").innerHTML = `
+      <div class="stat"><span class="k">Esito</span><span class="v"><span class="pill ${cls}">${testo}</span></span><span class="s">${P.scenario_nome}</span></div>
+      <div class="stat"><span class="k">Durata</span><span class="v mono">${fmt(P.durata, 0)} s</span><span class="s">tempo simulato</span></div>
+      <div class="stat"><span class="k">Traguardi</span><span class="v mono">${traguardi}</span><span class="s">superati</span></div>
+      <div class="stat"><span class="k">Palline</span><span class="v mono">${salvate} / 3</span><span class="s">salvate · ${prese} prese</span></div>
+      <div class="stat"><span class="k">YOLO</span><span class="v mono">${s.predizioni_yolo}</span><span class="s">predizioni · ${s.caricamenti_yolo} caricamenti</span></div>
+      <div class="stat"><span class="k">Urti</span><span class="v mono">${P.urti}</span><span class="s">contro muri e ostacolo</span></div>`;
+    const pt = P.punteggio, box = $("boxPunti");
+    box.hidden = !pt;
+    if (!pt) return;
+    $("summary").insertAdjacentHTML("afterbegin", `
+      <div class="stat"><span class="k">Punteggio 2026</span><span class="v mono">${fmt(pt.totale_2026, 0)}</span><span class="s">su ${fmt(pt.massimo_2026, 0)} possibili</span></div>
+      <div class="stat"><span class="k">LoP</span><span class="v mono">${pt.lop}</span><span class="s">${pt.lop_zona} nella zona</span></div>`);
+    $("righePunti").innerHTML = pt.dettaglio.map(([tt, n, testo]) =>
+      `<tr><td class="n">${fmt(tt)} s</td><td>${testo}</td><td class="n">+${n}</td></tr>`).join("") || "<tr><td>nessun punto</td></tr>";
+    const sv = pt.salvataggi.map(s => `${s.tipo === "argento" ? "argento" : "nera"}${s.valido ? " ×1,4" : " (non conta)"}`).join(" · ") || "nessuna";
+    const pen = pt.lop_zona ? ` (con ${pt.lop_zona} LoP nella zona ogni ×1,4 scende a ×${fmt(Math.max(1.25, 1.4 - 0.05 * pt.lop_zona), 2)})` : "";
+    $("totali").innerHTML = `
+      <div><span>Piastrelle e checkpoint</span><span class="mono">${pt.checkpoint}</span></div>
+      <div><span>Ostacoli superati</span><span class="mono">${pt.ostacoli}</span></div>
+      <div><span>Bonus d'uscita ${pt.arrivato ? "(60 − 5 × " + pt.lop + " LoP)" : "(non arrivato)"}</span><span class="mono">${pt.bonus_2026}</span></div>
+      <div><span>Vittime: ${sv}${pen}</span><span class="mono">×${fmt(pt.moltiplicatore, 3)}</span></div>
+      <div class="grande"><span>Totale 2026</span><span class="mono">${fmt(pt.totale_2026, 1)}</span></div>
+      <div><span>Con la bozza 2027 (+30 se esce dalla zona, bonus minimo 10)</span><span class="mono">${fmt(pt.totale_2027, 1)}</span></div>
+      <div class="small"><span>Massimo su questo campo: ${pt.piastrelle} piastrelle × 5 + ${pt.ostacoli_max} ostacoli + 60 bonus, × 1,4³ = ${fmt(pt.massimo_2026, 0)}</span></div>`;
+  }
+
+  // ---------- eventi ----------
+  function listaEventi() {
+    const box = $("events"); box.innerHTML = "";
+    const visibili = P.eventi.filter(e => e.tipo !== "urto");
+    $("evNote").textContent = `${P.urti} urti non elencati (tacche grigie sulla barra del tempo). Clicca un evento per saltarci.`;
+    visibili.forEach(e => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "ev"; b.dataset.t = e.t;
+      b.innerHTML = `<span class="t mono">${fmt(e.t)} s</span><span class="m" style="background:${COL_EV[e.tipo] || "var(--muted)"}"></span><span>${e.testo}</span>`;
+      b.addEventListener("click", () => { t = Math.max(0, e.t - 1.5); aggiorna(); });
+      box.appendChild(b);
+    });
+    if (P.errore) {
+      const pre = document.createElement("pre"); pre.className = "mono small"; pre.textContent = P.errore; box.appendChild(pre);
+    }
+  }
+
+  // ---------- campo ----------
+  const cv = $("campo"), ctx = cv.getContext("2d");
+  let S = 3, OX = 6, OY = 6, statico = null;
+  const MARG = 6;
+  function dimensiona() {
+    const w = cv.clientWidth || 800;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    S = (w - 2 * MARG) / C.larghezza;
+    const h = C.altezza * S + 2 * MARG;
+    cv.style.height = h + "px";
+    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    OX = MARG; OY = MARG;
+    statico = disegnaStatico(w, h, dpr);
+    disegnaTacche(); aggiorna();
+  }
+  const X = (x) => OX + x * S, Y = (y) => OY + y * S;
+
+  function disegnaCampoSu(g, s, ox, oy, opzioni) {
+    const tile = opzioni.tile, tav = opzioni.tavolo;
+    g.fillStyle = tav; g.fillRect(0, 0, g.canvas.width, g.canvas.height);
+    g.save(); g.translate(ox, oy); g.scale(s, s);
+    g.fillStyle = tile; g.fillRect(0, 0, C.larghezza, C.altezza);
+    g.strokeStyle = "rgba(0,0,0,0.07)"; g.lineWidth = 0.25;
+    for (let x = 0; x <= C.larghezza; x += 30) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, C.altezza); g.stroke(); }
+    for (let y = 0; y <= C.altezza; y += 30) { g.beginPath(); g.moveTo(0, y); g.lineTo(C.larghezza, y); g.stroke(); }
+    if (C.rampa) { const r = C.rampa; g.fillStyle = "rgba(60,90,130,0.10)"; g.fillRect(r.x, r.y, r.w, r.h); }
+    (C.quote || []).forEach(q => {
+      const x0 = q.cella[0] * 30, y0 = q.cella[1] * 30;
+      if (q.tipo === "rampa") {
+        const gr = g.createLinearGradient(q.cx - q.sx / Math.hypot(q.sx, q.sy) * 15, q.cy - q.sy / Math.hypot(q.sx, q.sy) * 15, q.cx + q.sx / Math.hypot(q.sx, q.sy) * 15, q.cy + q.sy / Math.hypot(q.sx, q.sy) * 15);
+        gr.addColorStop(0, "rgba(60,90,130,0.06)"); gr.addColorStop(1, "rgba(60,90,130,0.30)");
+        g.fillStyle = gr; g.fillRect(x0, y0, 30, 30);
+        if (opzioni.dettagli) {   // freccia verso l'alto della rampa
+          const n = Math.hypot(q.sx, q.sy), ux = q.sx / n, uy = q.sy / n;
+          g.strokeStyle = "rgba(40,70,110,0.55)"; g.lineWidth = 0.8; g.beginPath();
+          g.moveTo(q.cx - ux * 8 + uy * 9, q.cy - uy * 8 - ux * 9); g.lineTo(q.cx + ux * 8 + uy * 9, q.cy + uy * 8 - ux * 9);
+          g.lineTo(q.cx + ux * 5 + uy * 7, q.cy + uy * 5 - ux * 7); g.stroke();
+        }
+      } else if (q.tipo === "banca") {
+        g.fillStyle = "rgba(130,60,150,0.14)"; g.fillRect(x0, y0, 30, 30);
+      } else if (q.tipo === "altalena") {
+        g.fillStyle = "rgba(30,140,140,0.16)"; g.fillRect(x0, y0, 30, 30);
+      } else {
+        g.fillStyle = `rgba(60,90,130,${Math.min(0.28, 0.06 + q.z / 100)})`; g.fillRect(x0, y0, 30, 30);
+      }
+    });
+    (C.dossi || []).forEach(d => { g.fillStyle = "rgba(0,0,0,0.10)"; g.fillRect(d[0], d[1], d[2] - d[0], d[3] - d[1]); });
+    g.strokeStyle = "#191919"; g.lineWidth = 1.8; g.lineCap = "round"; g.lineJoin = "round";
+    C.linee.forEach(L => { g.beginPath(); L.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); g.stroke(); });
+    const rett = (d, col) => { g.fillStyle = col; g.fillRect(d.x, d.y, d.w, d.h); };
+    C.verdi.forEach(v => rett(v, "#28aa28"));
+    rett(C.argento, "#c0c0c0"); rett(C.nero_uscita, "#191919"); rett(C.rosso, "#dc1e1e");
+    const ost = (C.ostacolo ? [[C.ostacolo.x, C.ostacolo.y, C.ostacolo.x + C.ostacolo.w, C.ostacolo.y + C.ostacolo.h]] : []).concat(C.ostacoli || []);
+    ost.forEach(o => {
+      g.fillStyle = "#bf8c5a"; g.fillRect(o[0], o[1], o[2] - o[0], o[3] - o[1]);
+      if (opzioni.dettagli) { g.strokeStyle = "#8a5a2c"; g.lineWidth = 0.4; g.strokeRect(o[0], o[1], o[2] - o[0], o[3] - o[1]); }
+    });
+    g.strokeStyle = "#c79a5b"; g.lineWidth = 0.35; g.lineCap = "round";
+    (C.detriti || []).forEach(([a, b]) => { g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke(); });
+    if (opzioni.dettagli && C.percorso) {   // checkpoint: dischetto nell'angolo della piastrella
+      C.percorso.forEach((p, i) => {
+        if (!p.cp) return;
+        const cx = p.cella[0] * 30 + 4.5, cy = p.cella[1] * 30 + 4.5;
+        g.beginPath(); g.arc(cx, cy, 3.2, 0, Math.PI * 2); g.fillStyle = "#9fb3c8"; g.fill();
+        g.fillStyle = "#1a1e23"; g.font = "600 2.6px sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText("CP", cx, cy + 0.2);
+      });
+    }
+    C.triangoli.forEach(tr => {
+      g.beginPath(); tr.poli.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); g.closePath();
+      g.fillStyle = tr.colore === "verde" ? "#3ca03c" : "#c83232"; g.fill();
+    });
+    g.strokeStyle = "#969696"; g.lineWidth = 1.2; g.lineCap = "butt";
+    C.muri.forEach(m => { g.beginPath(); g.moveTo(m[0][0], m[0][1]); g.lineTo(m[1][0], m[1][1]); g.stroke(); });
+    // [Sim V32] tunnel sotto il ponte: linea del tunnel tratteggiata in blu, pareti marroni
+    (C.tunnel || []).forEach(t => {
+      g.setLineDash([2, 1.5]); g.strokeStyle = "#8a5a2b"; g.lineWidth = 0.5;
+      g.strokeRect(t.rett[0], t.rett[1], t.rett[2] - t.rett[0], t.rett[3] - t.rett[1]);
+      g.setLineDash([]); g.lineWidth = 1.0;
+      t.pareti.forEach(m => { g.beginPath(); g.moveTo(m[0][0], m[0][1]); g.lineTo(m[1][0], m[1][1]); g.stroke(); });
+    });
+    g.setLineDash([2.5, 1.5]); g.strokeStyle = "#2b6cb0"; g.lineWidth = 1.6; g.lineCap = "butt";
+    (C.linee_sotto || []).forEach(L => { g.beginPath(); L.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); g.stroke(); });
+    g.setLineDash([]);
+    g.restore();
+  }
+
+  function disegnaStatico(w, h, dpr) {
+    const off = document.createElement("canvas");
+    off.width = Math.round(w * dpr); off.height = Math.round(h * dpr);
+    const g = off.getContext("2d"); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    disegnaCampoSu(g, S, OX, OY, { tile: css("--tile"), tavolo: css("--table"), dettagli: true });
+    // etichette
+    g.font = `600 ${Math.max(9, (C.percorso ? 2.6 : 3.6) * S)}px ${css("--font-display") || "sans-serif"}`;
+    g.textBaseline = "middle"; g.lineJoin = "round";
+    (C.etichette || []).forEach(([txt, x, y, al]) => {
+      g.textAlign = al || "left";
+      g.strokeStyle = "rgba(251,251,249,0.85)"; g.lineWidth = 3; g.strokeText(txt, X(x), Y(y));
+      g.fillStyle = "rgba(20,24,28,0.72)"; g.fillText(txt, X(x), Y(y));
+    });
+    return off;
+  }
+
+  // ---------- interpolazione ----------
+  function idx(arr, tt) { let lo = 0, hi = arr.length - 1; if (tt <= arr[0][0]) return 0; while (hi - lo > 1) { const m = (lo + hi) >> 1; if (arr[m][0] <= tt) lo = m; else hi = m; } return lo; }
+  function campione(tt) {
+    const A = P.campioni, i = idx(A, tt), a = A[i], b = A[Math.min(i + 1, A.length - 1)];
+    const k = b[0] > a[0] ? Math.min(1, Math.max(0, (tt - a[0]) / (b[0] - a[0]))) : 0;
+    let dh = ((b[3] - a[3] + 540) % 360) - 180;
+    return { s: a, x: a[1] + (b[1] - a[1]) * k, y: a[2] + (b[2] - a[2]) * k, h: (a[3] + dh * k + 360) % 360, i };
+  }
+  function pallineA(tt) { const L = P.palline; let st = L[0][1]; for (const [tc, s] of L) { if (tc <= tt) st = s; else break; } return st; }
+
+  // ---------- geometria camera (uguale a mondo.py) ----------
+  function terrenoDaPixel(u, v, c) {
+    const tau = rad(c.cam_linea_inclinazione), f = 220 / Math.tan(rad(c.cam_linea_hfov / 2));
+    const xc = (u - 220) / f, yc = (v - 130) / f;
+    const giu = Math.cos(tau) + yc * Math.sin(tau), tt = c.cam_linea_altezza / giu;
+    return [c.cam_linea_avanti + tt * (Math.sin(tau) - yc * Math.cos(tau)), tt * xc];
+  }
+
+  // ---------- disegno dinamico ----------
+  function disegnaCampo(st) {
+    const w = cv.clientWidth, h = cv.clientHeight;
+    ctx.clearRect(0, 0, w, h);
+    if (statico) ctx.drawImage(statico, 0, 0, w, h);
+    const A = P.campioni, gold = css("--gold");
+    // traiettoria
+    ctx.lineWidth = Math.max(1.2, 0.5 * S); ctx.strokeStyle = gold; ctx.globalAlpha = 0.85; ctx.lineJoin = "round";
+    ctx.beginPath();
+    let prec = null;
+    for (let i = 0; i <= st.i; i += 2) {
+      const s = A[i];   // dopo una LoP il robot viene spostato a mano: niente tratto di collegamento
+      (!prec || Math.hypot(s[1] - prec[1], s[2] - prec[2]) > 12) ? ctx.moveTo(X(s[1]), Y(s[2])) : ctx.lineTo(X(s[1]), Y(s[2]));
+      prec = s;
+    }
+    ctx.lineTo(X(st.x), Y(st.y)); ctx.stroke(); ctx.globalAlpha = 1;
+    // palline
+    const rp = C.raggio_pallina;
+    pallineA(t).forEach(([id, x, y, s]) => {
+      if (s === "presa") return;
+      const nera = id.startsWith("N");
+      ctx.beginPath(); ctx.arc(X(x), Y(y), Math.max(2.5, rp * S), 0, Math.PI * 2);
+      ctx.fillStyle = nera ? "#1b1b1b" : "#c8c8c8"; ctx.fill();
+      ctx.lineWidth = 1; ctx.strokeStyle = nera ? "#000" : "#7a7a7a"; ctx.stroke();
+      if (s === "salvata" || s === "sbagliata") {
+        ctx.font = `600 ${Math.max(10, 3.4 * S)}px sans-serif`; ctx.fillStyle = s === "salvata" ? "#23804a" : "#c0392b";
+        ctx.textAlign = "center"; ctx.fillText(s === "salvata" ? "✓" : "✗", X(x), Y(y) - rp * S - 6);
+      }
+    });
+    const c = P.config, [dx, dy] = dirv(st.h), [rx, ry] = destra(st.h);
+    const pt = (f, l) => [X(st.x + f * dx + l * rx), Y(st.y + f * dy + l * ry)];
+    // altalena: la metà più scura è quella appoggiata a terra
+    (C.altalene || []).forEach((a, k) => {
+      const ang = (st.s[22] || [])[k]; if (ang === undefined) return;
+      const x0 = a.cella[0] * 30 + 15, y0 = a.cella[1] * 30 + 15, s = ang > 0 ? 1 : -1;
+      const [ax, ay] = a.asse;
+      ctx.fillStyle = "rgba(20,110,110,0.35)";
+      const qx = x0 + ax * 7.5 * s, qy = y0 + ay * 7.5 * s;
+      ctx.fillRect(X(qx - (ax ? 7.5 : 15)), Y(qy - (ay ? 7.5 : 15)), (ax ? 15 : 30) * S, (ay ? 15 : 30) * S);
+    });
+    // inquadratura camera linea (dal simulatore 3D, se c'è)
+    const quad = st.s[21];
+    ctx.beginPath();
+    if (quad && quad.length === 8) { for (let i = 0; i < 4; i++) i ? ctx.lineTo(X(quad[2 * i]), Y(quad[2 * i + 1])) : ctx.moveTo(X(quad[0]), Y(quad[1])); }
+    else { const ang = [[0, 0], [439, 0], [439, 259], [0, 259]].map(([u, v]) => terrenoDaPixel(u, v, c)); ang.forEach(([f, l], i) => { const p = pt(f, l); i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }); }
+    ctx.closePath();
+    ctx.fillStyle = "rgba(47,106,163,0.18)"; ctx.fill(); ctx.strokeStyle = "rgba(47,106,163,0.7)"; ctx.lineWidth = 1; ctx.stroke();
+    // raggi VL53L1X
+    const tof = [st.s[8], st.s[9], st.s[10]];
+    c.tof.forEach(([f, l, a], i) => {
+      const o = pt(f, l), [ddx, ddy] = dirv(st.h + a), d = Math.min(tof[i], c.tof_max), lontano = tof[i] >= c.tof_max;
+      const L = lontano ? 25 : d;
+      ctx.beginPath(); ctx.moveTo(o[0], o[1]);
+      ctx.lineTo(o[0] + ddx * L * S, o[1] + ddy * L * S);
+      ctx.setLineDash(lontano ? [3, 3] : []); ctx.strokeStyle = lontano ? "rgba(217,83,79,0.35)" : d > 60 ? "rgba(217,83,79,0.4)" : "rgba(217,83,79,0.95)"; ctx.lineWidth = 1.4; ctx.stroke(); ctx.setLineDash([]);
+      if (!lontano) { ctx.beginPath(); ctx.arc(o[0] + ddx * L * S, o[1] + ddy * L * S, 2.5, 0, Math.PI * 2); ctx.fillStyle = "#d9534f"; ctx.fill(); }
+    });
+    // robot
+    const Lr = c.robot_davanti ?? c.lunghezza_robot / 2, Lb = c.lunghezza_robot - Lr, Wr = c.larghezza_robot / 2;
+    const corpo = [[Lr, -Wr], [Lr, Wr], [-Lb, Wr], [-Lb, -Wr]].map(([f, l]) => pt(f, l));
+    ctx.beginPath(); corpo.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath();
+    ctx.fillStyle = gold; ctx.globalAlpha = 0.92; ctx.fill(); ctx.globalAlpha = 1; ctx.strokeStyle = "rgba(0,0,0,0.6)"; ctx.lineWidth = 1; ctx.stroke();
+    [[6.5, -Wr], [6.5, Wr], [-6.5, -Wr], [-6.5, Wr]].forEach(([f, l]) => {
+      const q = [[f + 3.2, l - 1.4], [f + 3.2, l + 1.4], [f - 3.2, l + 1.4], [f - 3.2, l - 1.4]].map(([a, b]) => pt(a, b));
+      ctx.beginPath(); q.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.fillStyle = "#151515"; ctx.fill();
+    });
+    const nas = [pt(Lr - 1, 0), pt(Lr - 6, -3.5), pt(Lr - 6, 3.5)];
+    ctx.beginPath(); nas.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.fillStyle = "rgba(0,0,0,0.65)"; ctx.fill();
+    if (st.s[14]) { const q = pt(-2, 0); ctx.beginPath(); ctx.arc(q[0], q[1], Math.max(2.5, rp * S), 0, Math.PI * 2); ctx.fillStyle = "#eee"; ctx.fill(); ctx.strokeStyle = "#555"; ctx.stroke(); }
+    if (st.s[12] > 150) { const q = pt(Lr + 4, 0); ctx.beginPath(); ctx.arc(q[0], q[1], 2.2, 0, Math.PI * 2); ctx.fillStyle = "#333"; ctx.fill(); }
+  }
+
+  // ---------- camera della linea (rifatta qui con la stessa geometria) ----------
+  const camL = $("camLinea"), gl = camL.getContext("2d");
+  const VW = 220, VH = 130, PXC = 4;
+  let campoPix = null, tabella = null;
+  function preparaCampoPix() {
+    const off = document.createElement("canvas"); off.width = C.larghezza * PXC; off.height = C.altezza * PXC;
+    const g = off.getContext("2d");
+    disegnaCampoSu(g, PXC, 0, 0, { tile: "#f5f5f5", tavolo: "#787878", dettagli: false });
+    campoPix = g.getImageData(0, 0, off.width, off.height);
+  }
+  function preparaCamLinea() {
+    tabella = new Float32Array(VW * VH * 2);
+    for (let j = 0; j < VH; j++) for (let i = 0; i < VW; i++) {
+      const [f, l] = terrenoDaPixel(i * 2 + 1, j * 2 + 1, P.config);
+      tabella[(j * VW + i) * 2] = f; tabella[(j * VW + i) * 2 + 1] = l;
+    }
+  }
+  const imgL = gl.createImageData(VW, VH);
+  function omografia(src, dst) {   // 4 punti -> 4 punti (matrice 3x3, h33 = 1)
+    const A = [], b = [];
+    for (let i = 0; i < 4; i++) {
+      const [x, y] = src[i], [u, v] = dst[i];
+      A.push([x, y, 1, 0, 0, 0, -u * x, -u * y]); b.push(u);
+      A.push([0, 0, 0, x, y, 1, -v * x, -v * y]); b.push(v);
+    }
+    for (let i = 0; i < 8; i++) {
+      let m = i; for (let r = i + 1; r < 8; r++) if (Math.abs(A[r][i]) > Math.abs(A[m][i])) m = r;
+      [A[i], A[m]] = [A[m], A[i]]; [b[i], b[m]] = [b[m], b[i]];
+      for (let r = 0; r < 8; r++) if (r !== i) { const f = A[r][i] / A[i][i]; for (let c2 = i; c2 < 8; c2++) A[r][c2] -= f * A[i][c2]; b[r] -= f * b[i]; }
+    }
+    return b.map((v, i) => v / A[i][i]).concat([1]);
+  }
+  function disegnaCamLinea(st) {
+    const [dx, dy] = dirv(st.h), [rx, ry] = destra(st.h), W = campoPix.width, H = campoPix.height, src = campoPix.data, out = imgL.data;
+    const quad = st.s[21];
+    const Hm = quad && quad.length === 8 ? omografia([[0, 0], [439, 0], [439, 259], [0, 259]], [[quad[0], quad[1]], [quad[2], quad[3]], [quad[4], quad[5]], [quad[6], quad[7]]]) : null;
+    for (let k = 0, n = VW * VH; k < n; k++) {
+      let px, py;
+      if (Hm) {
+        const u = (k % VW) * 2 + 1, v = ((k / VW) | 0) * 2 + 1, w = Hm[6] * u + Hm[7] * v + 1;
+        px = (((Hm[0] * u + Hm[1] * v + Hm[2]) / w) * PXC) | 0; py = (((Hm[3] * u + Hm[4] * v + Hm[5]) / w) * PXC) | 0;
+      } else {
+        const f = tabella[k * 2], l = tabella[k * 2 + 1];
+        px = ((st.x + f * dx + l * rx) * PXC) | 0; py = ((st.y + f * dy + l * ry) * PXC) | 0;
+      }
+      let r = 120, g = 120, b = 120;
+      if (px >= 0 && py >= 0 && px < W && py < H) { const o = (py * W + px) * 4; r = src[o]; g = src[o + 1]; b = src[o + 2]; }
+      out[k * 4] = r; out[k * 4 + 1] = g; out[k * 4 + 2] = b; out[k * 4 + 3] = 255;
+    }
+    gl.putImageData(imgL, 0, 0);
+    const ys = 93 / 2;   // y = 80 su 224 -> riga 93 su 260
+    gl.setLineDash([5, 4]); gl.strokeStyle = "rgba(226,180,64,0.95)"; gl.lineWidth = 1.2;
+    gl.beginPath(); gl.moveTo(0, ys); gl.lineTo(VW, ys); gl.stroke(); gl.setLineDash([]);
+  }
+
+  // ---------- camera dell'arena (schema) ----------
+  const camA = $("camArena"), ga = camA.getContext("2d");
+  function proiettaArena(wx, wy, wz, st) {
+    const c = P.config, [dx, dy] = dirv(st.h), [rx, ry] = destra(st.h);
+    const cx = st.x + dx * c.cam_arena_avanti, cy = st.y + dy * c.cam_arena_avanti;
+    const relx = wx - cx, rely = wy - cy, f = relx * dx + rely * dy, l = relx * rx + rely * ry;
+    const th = rad(c.cam_arena_inclinazione), hc = c.cam_arena_altezza;
+    const zc = f * Math.cos(th) + (hc - wz) * Math.sin(th), yc = -f * Math.sin(th) + (hc - wz) * Math.cos(th);
+    if (zc < 3) return null;
+    const t2 = Math.tan(rad(c.cam_arena_hfov / 2)), fx = 112 / t2, fy = 112 / (t2 * 260 / 440);
+    return [112 + fx * l / zc, 112 + fy * yc / zc, zc, fx, fy, Math.hypot(relx, rely)];
+  }
+  function disegnaCamArena(st) {
+    const sx = VW / 224, sy = VH / 224, c = P.config;
+    ga.fillStyle = "#ededed"; ga.fillRect(0, 0, VW, VH);
+    const orizzonte = 112 - (112 / (Math.tan(rad(c.cam_arena_hfov / 2)) * 260 / 440)) * Math.tan(rad(c.cam_arena_inclinazione));
+    ga.fillStyle = "#dcdcdc"; ga.fillRect(0, 0, VW, Math.max(0, orizzonte * sy));
+    const box = (pts, col, tutti) => {
+      const pr = pts.map(p => proiettaArena(p[0], p[1], p[2], st)).filter(Boolean);
+      if (!pr.length || pr.length < (tutti ? pts.length : pts.length / 2)) return;
+      if (Math.min(...pr.map(p => p[5])) > c.cam_arena_portata) return;
+      const us = pr.map(p => p[0]), vs = pr.map(p => p[1]);
+      const u0 = Math.max(0, Math.min(...us)), u1 = Math.min(223, Math.max(...us)), v0 = Math.max(0, Math.min(...vs)), v1 = Math.min(223, Math.max(...vs));
+      if (u1 <= u0 || v1 <= v0) return;
+      ga.fillStyle = col; ga.fillRect(u0 * sx, v0 * sy, (u1 - u0) * sx, (v1 - v0) * sy);
+    };
+    C.triangoli.forEach(tr => box(tr.poli.flatMap(p => [[p[0], p[1], 0], [p[0], p[1], 6]]), tr.colore === "verde" ? "#3ca03c" : "#c83232"));
+    const A = C.arena, yb = A.y + A.h, [x0, x1] = A.uscita, [y0, y1] = A.ingresso;
+    if (A.uscita_muro === "sinistro") { if (st.x > A.x + 2) box([[A.x, x0, 0], [A.x, x1, 0], [A.x, x0, 10], [A.x, x1, 10]], "#2a2a2a", true); }
+    else if (st.y < yb - 2) box([[x0, yb, 0], [x1, yb, 0], [x0, yb, 10], [x1, yb, 10]], "#2a2a2a", true);
+    box([[A.x, y0, 0], [A.x, y1, 0], [A.x, y0, 10], [A.x, y1, 10]], "#b5b5b5", true);
+    const rp = C.raggio_pallina;
+    pallineA(t).forEach(([id, x, y, s]) => {
+      if (s !== "libera") return;
+      const p = proiettaArena(x, y, rp, st); if (!p || p[5] > c.cam_arena_portata) return;
+      const r = p[3] * rp / p[2];
+      ga.beginPath(); ga.arc(p[0] * sx, p[1] * sy, Math.max(1.5, r * sx), 0, Math.PI * 2);
+      ga.fillStyle = id.startsWith("N") ? "#161616" : "#bdbdbd"; ga.fill();
+    });
+  }
+
+  // ---------- pannello stato ----------
+  function barra(id, v, uni) {
+    const f = $(id).querySelector(".f");
+    if (uni) { f.style.width = (Math.max(0, Math.min(1, v)) * 100) + "%"; return; }
+    const w = Math.min(1, Math.abs(v)) * 50;
+    f.style.width = w + "%"; f.style.left = (v >= 0 ? 50 : 50 - w) + "%";
+  }
+  function pannello(st) {
+    const s = st.s, c = P.config;
+    const vmax = c.servo_modello === "reale" ? c.vmax_reale : c.vmax;   // [V26]
+    const vl = (s[4] + s[5]) / 2 * vmax, vr = -(s[6] + s[7]) / 2 * vmax;
+    barra("barL", vl / vmax); barra("barR", vr / vmax);
+    $("valL").textContent = fmt(vl, 0) + " cm/s"; $("valR").textContent = fmt(vr, 0) + " cm/s";
+    [8, 9, 10].forEach((k, i) => {
+      const v = s[k], fuori = v >= c.tof_max;
+      barra("barT" + i, fuori ? 0 : 1 - Math.min(v, 60) / 60, true);
+      $("valT" + i).textContent = fuori ? "libero" : v + " cm";
+    });
+    $("needle").setAttribute("transform", `rotate(${st.h.toFixed(1)})`);
+    $("vHead").textContent = fmt(st.h, 0) + "°";
+    $("vPitch").textContent = s[11] ? fmt(s[11], 0) + "°" + (s[11] > 2 ? " salita" : s[11] < -2 ? " discesa" : "") : "0°";
+    $("vRoll").textContent = s[19] !== undefined && typeof s[19] === "number" ? fmt(s[19], 0) + "°" : "—";
+    $("vZ").textContent = typeof s[20] === "number" ? fmt(s[20], 1) + " cm" : "—";
+    $("vArm").textContent = s[12] + "°" + (s[12] > 150 ? " giù" : "");
+    $("vGrip").textContent = s[13] + "°" + (s[13] < 110 ? " chiusa" : s[13] > 140 ? " aperta" : "");
+    $("vBall").innerHTML = `<span class="dot ${s[14] ? "on" : ""}"></span>${s[14] ? "pallina presa" : "vuota"}`;
+    $("vLed").innerHTML = `<span class="dot ${s[15] ? "on" : ""}"></span><span class="dot ${s[16] ? "on" : ""}"></span>`;
+    const stato = P.stati[s[17]] || "attesa";
+    const parti = stato.split(" › ");
+    $("crumbs").innerHTML = stato === "attesa" ? "<em>in attesa dello switch</em>" : parti.map(p => `<span>${p}</span>`).join("<em>›</em>");
+    $("yolo").innerHTML = `YOLO vede: <b>${s[18] || "—"}</b> ${YOLO_NOMI[s[18]] ? "· " + YOLO_NOMI[s[18]] : ""}`;
+  }
+
+  // ---------- log ed eventi sincronizzati ----------
+  function aggiornaLog() {
+    const L = P.log, box = $("log");
+    if (!L.length) { box.textContent = "(nessuna stampa)"; return; }
+    let lo = 0, hi = L.length; while (lo < hi) { const m = (lo + hi) >> 1; if (L[m][0] <= t) lo = m + 1; else hi = m; }
+    const fine = lo, inizio = Math.max(0, fine - 60);
+    const righe = [];
+    for (let i = inizio; i < fine; i++) {
+      const esc = String(L[i][1]).replace(/[&<>]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[ch]));
+      righe.push(`<div${i === fine - 1 ? ' class="last"' : ""}><span class="t">${fmt(L[i][0])}</span>  ${esc}</div>`);
+    }
+    box.innerHTML = righe.join("") || "<span class='t'>il programma non ha ancora stampato nulla</span>";
+    box.scrollTop = box.scrollHeight;
+  }
+  let ultimoEv = -2;
+  function aggiornaEventi() {
+    const evs = [...$("events").children].filter(e => e.dataset.t !== undefined);
+    let att = -1; evs.forEach((e, i) => { if (+e.dataset.t <= t) att = i; });
+    if (att === ultimoEv) return; ultimoEv = att;
+    evs.forEach((e, i) => { e.classList.toggle("passato", i < att); e.classList.toggle("attuale", i === att); });
+    if (att >= 0) { const box = $("events"), el = evs[att]; box.scrollTop = el.offsetTop - box.offsetTop - box.clientHeight / 2; }
+  }
+
+  // ---------- barra del tempo ----------
+  function disegnaTacche() {
+    const c = $("ticks"), g = c.getContext("2d"), w = c.clientWidth || 300, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    c.width = w * dpr; c.height = 10 * dpr; g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, 10);
+    P.eventi.forEach(e => {
+      const x = e.t / P.durata * w;
+      const col = { ok: css("--ok"), errore: css("--err"), mancata: css("--err"), presa: css("--gold"), salvata: css("--ok"), urto: css("--muted"), lop: css("--err"), punti: css("--gold") }[e.tipo] || css("--info");
+      g.fillStyle = col; const alto = e.tipo === "urto" ? 4 : 10; g.fillRect(x - 1, 10 - alto, 2, alto);
+    });
+  }
+
+  // ---------- ciclo ----------
+  function aggiorna() {
+    t = Math.max(0, Math.min(P.durata, t));
+    const st = campione(t);
+    disegnaCampo(st); disegnaCamLinea(st); disegnaCamArena(st); pannello(st); aggiornaLog(); aggiornaEventi();
+    $("time").textContent = fmt(t) + " s / " + fmt(P.durata, 0) + " s";
+    $("scrub").value = Math.round(t / P.durata * 1000);
+  }
+  function frame(ts) {
+    if (!playing) return;
+    const dt = lastFrame ? (ts - lastFrame) / 1000 : 0; lastFrame = ts;
+    t += dt * parseFloat($("speed").value);
+    if (t >= P.durata) { t = P.durata; playing = false; aggiornaPlay(); }
+    aggiorna();
+    if (playing) requestAnimationFrame(frame);
+  }
+  function aggiornaPlay() { $("play").textContent = playing ? "❚❚ Pausa" : "▶ Avvia"; }
+  $("play").addEventListener("click", () => {
+    if (!playing && t >= P.durata) t = 0;
+    playing = !playing; lastFrame = 0; aggiornaPlay(); if (playing) requestAnimationFrame(frame);
+  });
+  $("back").addEventListener("click", () => { t -= 5; aggiorna(); });
+  $("fwd").addEventListener("click", () => { t += 5; aggiorna(); });
+  $("scrub").addEventListener("input", (e) => { t = e.target.value / 1000 * P.durata; aggiorna(); });
+  document.addEventListener("keydown", (e) => {
+    if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
+    if (e.code === "Space") { e.preventDefault(); $("play").click(); }
+    if (e.code === "ArrowRight") { t += 1; aggiorna(); }
+    if (e.code === "ArrowLeft") { t -= 1; aggiorna(); }
+  });
+
+  // tema: ridisegna il campo quando cambia
+  const ridisegna = () => { statico = null; dimensiona(); };
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ridisegna);
+  new MutationObserver(ridisegna).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  let larghezzaPrec = 0;
+  new ResizeObserver(() => { const w = cv.clientWidth; if (Math.abs(w - larghezzaPrec) > 1) { larghezzaPrec = w; dimensiona(); } }).observe(cv.parentElement);
+
+  // ---------- catalogo delle piastrelle ----------
+  (DATI.catalogo || []).forEach(t => {
+    const fig = document.createElement("figure"), cv2 = document.createElement("canvas");
+    const k = 3.5, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv2.width = 105 * dpr; cv2.height = 105 * dpr;
+    const g = cv2.getContext("2d"); g.setTransform(dpr * k, 0, 0, dpr * k, 0, 0);
+    g.fillStyle = "#fbfbf9"; g.fillRect(0, 0, 30, 30);
+    if (t.superficie === "rampa") { const gr = g.createLinearGradient(0, t.pendenza > 0 ? 30 : 0, 0, t.pendenza > 0 ? 0 : 30); gr.addColorStop(0, "rgba(60,90,130,0.05)"); gr.addColorStop(1, "rgba(60,90,130,0.35)"); g.fillStyle = gr; g.fillRect(0, 0, 30, 30); }
+    if (t.superficie === "banca") { const gr = g.createLinearGradient(0, 0, 30, 0); gr.addColorStop(0, "rgba(130,60,150,0.30)"); gr.addColorStop(1, "rgba(130,60,150,0.05)"); g.fillStyle = gr; g.fillRect(0, 0, 30, 30); }
+    if (t.superficie === "altalena") { g.fillStyle = "rgba(30,140,140,0.25)"; g.fillRect(0, 15, 30, 15); g.fillStyle = "#1a1e23"; g.fillRect(0, 14.6, 1.5, 0.8); g.fillRect(28.5, 14.6, 1.5, 0.8); }
+    t.dossi.forEach(d => { g.fillStyle = "rgba(0,0,0,0.12)"; g.fillRect(d[0], d[1], d[2] - d[0], d[3] - d[1]); });
+    g.strokeStyle = "#191919"; g.lineWidth = 1.8; g.lineCap = "round"; g.lineJoin = "round";
+    t.linee.forEach(L => { g.beginPath(); L.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); g.stroke(); });
+    g.strokeStyle = "#c79a5b"; g.lineWidth = 0.35;
+    t.detriti.forEach(([a, b]) => { g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke(); });
+    t.verdi.forEach(([x, y]) => { g.fillStyle = "#28aa28"; g.fillRect(x, y, 2.5, 2.5); });
+    t.ostacoli.forEach(o => { g.fillStyle = "#bf8c5a"; g.fillRect(o[0], o[1], o[2] - o[0], o[3] - o[1]); });
+    if (t.rosso) { g.fillStyle = "#dc1e1e"; g.fillRect(t.rosso[0], t.rosso[1], t.rosso[2] - t.rosso[0], t.rosso[3] - t.rosso[1]); }
+    g.strokeStyle = "rgba(0,0,0,0.25)"; g.lineWidth = 0.3; g.strokeRect(0.15, 0.15, 29.7, 29.7);
+    fig.appendChild(cv2);
+    const cap = document.createElement("figcaption");
+    cap.innerHTML = `<b>${t.nome}</b>${t.punti ? ` (${t.punti})` : ""}`;
+    fig.appendChild(cap);
+    $("catalogo").appendChild(fig);
+  });
+
+  preparaCampoPix(); preparaCamLinea(); riepilogo(); listaEventi();
+  // si apre su un momento interessante: il robot all'incrocio
+  const evInc = P.eventi.find(e => /doppio verde/.test(e.testo)) || P.eventi.find(e => /Incrocio/.test(e.testo));
+  t = evInc ? Math.max(0, evInc.t - 3) : 0;
+  if (location.hash === "#festa") { const e = P.log.find(l => /FESTA/.test(l[1])); if (e) t = Math.max(0, e[0] - 2); }
+  if (location.hash === "#uscita") { const e = P.eventi.find(e => /Uscito/.test(e.testo)); if (e) t = Math.max(0, e.t - 12); }
+  dimensiona();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => ridisegna());
+})();
+</script>
