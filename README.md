@@ -91,7 +91,7 @@ Dal primo programma della squadra a oggi: **111 correzioni** (FIX), ognuna con i
 | | Chi | Ruolo |
 |---|---|---|
 | 🧑‍🏫 | **Prof. Giovanni Vaccaro** | capo squadra: decide, controlla, approva |
-| 👨‍🎓 | **Battista** | seguilinea e altalena |
+| 👨‍🎓 | **Battista** | programmatore, ex modder in HEX, compositore musicale e DJ house. Gestisce la parte del seguilinea e altalena. P.s rimane sempre un tipo retro in tutto  |
 | 👨‍🎓 | **Gioele** | zona di evacuazione: ingresso, vittime, uscita |
 | 🛠️ | **Gabriel** | il tuttofare: disegno 3D, elettronica e meccanica del robot. Se un pezzo esiste, probabilmente l'ha disegnato, saldato o avvitato lui |
 | 🚜 | **Antonio** | l'assemblatore: monta e smonta il robot con metodi da officina di campagna. Non conosce la parola "delicato", ma i pezzi alla fine stanno su. Il suo motto: *"se un pezzo non entra, non è il pezzo sbagliato: è che non hai spinto abbastanza"* |
