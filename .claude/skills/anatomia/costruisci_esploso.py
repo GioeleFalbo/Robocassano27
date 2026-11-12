@@ -46,8 +46,27 @@ PEZZI = [
      # "Braccio" lo ruota da 0 (giù) a "alzato" (gradi negativi). Posizione INDICATIVA, presa dalle foto.
      "posa": {"perno_stl": [41.7, 74.6, -372.4], "perno": [-30, 5, -160], "alzato_gradi": -140},
      "dove": "Sul davanti, a sinistra: il disco si avvita alla squadretta del servo DM996 (il perno), la base piatta porta la pinza. Usa il cursore 'Braccio' per alzarlo e abbassarlo. Posizione indicativa (lo STL non è nelle coordinate di montaggio).",
-     "porta": "La pinza con il suo servo (STL della pinza in arrivo).",
+     "porta": "La pinza con le due ganasce (agganciata alla base piatta, si muove con il braccio).",
      "codice": "Servo DM996 all metal, PCA9685 0x40 canale 4: Braccio(angolo) in ViennaClsRobot.py; AbbassaPinza / AlzaPinza / CaricaPalla in RwdFoto.py."},
+    # [10/11] le due ganasce della pinza (STL del prof): disegnate CHIUSE intorno a una pallina appoggiata sul pavimento,
+    # con gli ingranaggi dietro. Non sono nelle coordinate di montaggio: "attacca" le mette sotto la base piatta del braccio
+    # (spostamento "sposta" nelle coordinate dello STL del braccio), così si alzano e si abbassano con il cursore "Braccio".
+    # Posizione INDICATIVA. "via" qui è nel sistema del braccio: le due ganasce si aprono di lato.
+    {"file": "PinzaParteSxSfera.stl", "nome": "Pinza: ganascia sinistra", "colore": "#f0c419",
+     "attacca": {"a": "Braccio.stl", "sposta": [-8, 76, -165]}, "via": [-20, -25, 25],
+     "dove": "In fondo al braccio, sotto la base piatta. Posizione indicativa (lo STL non è nelle coordinate di montaggio).",
+     "porta": "Mezza coppa sferica: con l'altra ganascia abbraccia la pallina (vittima, circa 5 cm). Gli ingranaggi dietro fanno chiudere le due ganasce insieme.",
+     "codice": "Pinza: PCA9685 0x40 canale 11, Pinza(angolo) in ViennaClsRobot.py (sotto 110 gradi = chiusa); CaricaPalla in RwdFoto.py."},
+    {"file": "PinzaParteDxSfera.stl", "nome": "Pinza: ganascia destra", "colore": "#e67e22",
+     "attacca": {"a": "Braccio.stl", "sposta": [-8, 76, -165]}, "via": [-20, -25, -25],
+     "dove": "In fondo al braccio, sotto la base piatta, accanto alla ganascia sinistra. Posizione indicativa.",
+     "porta": "L'altra mezza coppa sferica della pinza, con il suo ingranaggio.",
+     "codice": "Come la ganascia sinistra: si muovono insieme (un solo servo, canale 11)."},
+    {"file": "BiSwitch.stl", "nome": "Supporto degli switch", "colore": "#9b59b6",
+     "via": [0, 75, 70],
+     "dove": "Sul fianco del robot, in alto (è già nelle coordinate di montaggio).",
+     "porta": "Gli interruttori del robot: lo switch di avvio della run (quello che spegnete per la LoP) e il secondo switch. Quale è quale: da confermare con la squadra.",
+     "codice": "Li legge l'Arduino Nano (campi sw1, sw2 della seriale); GetSwitch()['sw_sof'] in RwdFoto.py. Switch spento = Arduino zitto (5/11)."},
     # --- componenti: modelli SEMPLIFICATI fatti da componenti.py (misure dei datasheet), montati ai loro LIVELLI (dal prof,
     # 10/11): livello 1 = piastra dei servo (piano a Y -41): batteria e buck; livello 2 = base della logica (Y +4): le due
     # PCA9685 e l'Arduino; livello 3 = copertura alta (Y +41): Raspberry e relè. Il livello è giusto; il punto preciso
@@ -98,9 +117,9 @@ PEZZI = [
 # Componenti veri del robot che non hanno ancora un file 3D: nella pagina compaiono nell'elenco, in grigio.
 # Quando arriva il loro STL, spostarli in PEZZI (con colore e "via").
 SENZA_MODELLO = [
-    {"nome": "Pinza e il suo servo", "nota": "PCA9685 0x40 canale 11 · STL in arrivo"},
+    {"nome": "Servo della pinza", "nota": "PCA9685 0x40 canale 11"},
     {"nome": "2 camere (linea verso il basso, arena inclinata)", "nota": "Picamera2(0) e Picamera2(1)"},
-    {"nome": "3 laser VL53L1X, giroscopio BNO055, switch", "nota": "collegati all'Arduino Nano"},
+    {"nome": "3 laser VL53L1X, giroscopio BNO055, interruttori", "nota": "collegati all'Arduino Nano"},
     {"nome": "2 strisce LED COB 5 V", "nota": "comandate dalla scheda a 2 relè (GPIO 22 e 23)"},
 ]
 
@@ -240,6 +259,13 @@ PEZZI.forEach((p, i) => {
     const a = p.posa.perno_stl;
     geo.translate(-a[0], -a[1], -a[2]);
   }
+  let padre = null;
+  if (p.attacca) {   // pezzo agganciato a un altro (la pinza al braccio): si muove con lui
+    const j = PEZZI.findIndex((q) => q.file === p.attacca.a);
+    padre = portaPezzi[j];
+    const s = p.attacca.sposta, a = PEZZI[j].posa ? PEZZI[j].posa.perno_stl : [0, 0, 0];
+    geo.translate(s[0] - a[0], s[1] - a[1], s[2] - a[2]);
+  }
   geo.computeVertexNormals();
   const mat = new THREE.MeshStandardMaterial({ color: p.colore, roughness: 0.6, metalness: 0.05 });
   if (p.copie) {    // componente: una o più copie, si smontano insieme al loro livello ("via")
@@ -252,7 +278,11 @@ PEZZI.forEach((p, i) => {
   }
   const mesh = new THREE.Mesh(geo, mat); mesh.userData.i = i;
   oggetti.push(mesh);
-  if (p.posa) {
+  if (padre) {
+    mesh.userData.base = new THREE.Vector3(0, 0, 0);
+    padre.add(mesh); portaPezzi[i] = mesh;
+    padre.updateMatrixWorld(true); box.union(new THREE.Box3().setFromObject(mesh));
+  } else if (p.posa) {
     const porta = new THREE.Group(); porta.add(mesh); gruppo.add(porta);
     porta.userData.base = new THREE.Vector3(...p.posa.perno);
     porta.position.copy(porta.userData.base); porta.rotation.z = THREE.MathUtils.degToRad(p.posa.alzato_gradi || 0);

@@ -88,7 +88,8 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   **LiPo Zeee 3S 2200 mAh 50C (24,4 Wh)**. Camera **linea** = quella che punta in basso, camera **arena** = quella inclinata.
   Tre livelli: 1 (piastra dei servo) batteria e buck; 2 (base della logica) le due PCA9685 e l'Arduino; 3 (copertura)
   Raspberry e relè. Foto in `immagini/foto_robot/`; dettagli nella skill `anatomia`. `Meccanica_STL/Braccio.stl` (10/11, non nelle coordinate
-  di montaggio: nell'esploso in posizione indicativa, cursore "Braccio"); STL della pinza in arrivo dal prof.
+  di montaggio: nell'esploso in posizione indicativa, cursore "Braccio"). Dal 10/11 anche le due ganasce della pinza (`PinzaParteSxSfera.stl`, `PinzaParteDxSfera.stl`, agganciate al
+  braccio nell'esploso, posizione indicativa) e il supporto degli interruttori (`BiSwitch.stl`, già nelle coordinate di montaggio).
 - Robot largo **15,6 cm**; porte dell'arena circa **27-31 cm**. Camera linea 12 cm davanti alle ruote.
 - Pista della scuola: arena **120 x 90 cm**; ingresso argento sul lato lungo (in comune con la pista), uscita nera sul
   lato corto accanto al triangolo rosso; i triangoli (rosso e verde) vengono spostati tra le prove; c'è una parete a

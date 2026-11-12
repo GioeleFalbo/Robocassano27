@@ -10,11 +10,20 @@ Mandati dal prof in chat il 5 novembre 2026. Unità: millimetri.
 | `SupportoPinzaWebcam_1.stl` | 4556 | 61 x 67 x 157 |
 | `CupolaWebArenaLED.stl` | 1282 | 8 x 52 x 148 |
 | `Braccio.stl` | 3694 | 79 x 90 x 59 |
+| `PinzaParteSxSfera.stl` | 11556 | 80 x 50 x 33 |
+| `PinzaParteDxSfera.stl` | 12304 | 81 x 50 x 33 |
+| `BiSwitch.stl` | 5816 | 13 x 23 x 19 |
 
 `Braccio.stl` (mandato il 10/11, nome originale `0Servo4WDFisso2006PinzaMonoVaccaro.stl`) **non è nelle coordinate di
 montaggio** degli altri: è disegnato con il braccio abbassato. Il perno è il centro del disco per la squadretta del servo DM996
 (X 41,7, Y 74,6, Z -372,4 nelle sue coordinate). Nell'esploso viene messo sul davanti a sinistra, in posizione indicativa, e
-si alza e abbassa con il cursore "Braccio". Manca ancora lo STL della pinza.
+si alza e abbassa con il cursore "Braccio".
+
+`PinzaParteSxSfera.stl` e `PinzaParteDxSfera.stl` (mandati il 10/11): le due ganasce della pinza, con le coppe a mezza sfera e
+gli ingranaggi. Sono disegnate **chiuse intorno a una pallina** di circa 5 cm appoggiata sul pavimento e non sono nelle
+coordinate di montaggio: nell'esploso sono agganciate sotto la base piatta del braccio (spostamento -8, +76, -165 mm nelle
+coordinate di `Braccio.stl`) e si muovono con lui. Posizione indicativa; manca il blocchetto del servo della pinza.
+`BiSwitch.stl` (10/11): il supporto degli interruttori, già nelle coordinate di montaggio (sul fianco, in alto).
 
 ## Componenti (modelli semplificati)
 
