@@ -277,7 +277,7 @@ PENDENZA_CONFERMA_S = 0.4   # il nuovo stato deve durare almeno così prima di e
 ROLLIO_POSITIVO_A_DESTRA = False
 
 # [FIX 37] Terminale, scatola nera e cruscotto 3D (ViennaMonitor.py)
-VERSIONE = "ClaudeRob V47"  # FIX 113: Lux e controllo vista
+VERSIONE = "ClaudeRob V47"  #[FIX 113]: Lux e controllo vista
 PANNELLO = False            # [FIX 42] finestra "ClaudeRob - STATO" con tutti i sensori e l'operazione in corso
                             # [FIX 109] dalla V44 spenta: la cabina del terminale (FIX 107) ha già tutto, camere comprese.
                             # True = si apre anche lei (per vedere le camere grandi)
@@ -306,7 +306,7 @@ PORTA_CRUSCOTTO = 8000
 BATTERIA_INA219 = None      # indirizzo I2C dell'INA219 se lo montate (es. 0x45; NON 0x40/0x41: sono le PCA9685)
 BATTERIA_CELLE = 3          # LiPo 3S = 11,1 V
 
-# FIX 113 - metadati e controllo vista (soglie provvisorie da tarare sul robot)
+#[FIX 113]- metadati e controllo vista (soglie provvisorie da tarare sul robot)
 CAM_METADATI_INTERVALLO_S = 1.0
 CAM_LUX_MIN = 10.0
 CAM_LUX_MAX = 10000.0

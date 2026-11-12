@@ -1,4 +1,4 @@
-# ClaudeRob V12 – codice del robot
+# ClaudeRob V47 – codice del robot
 
 Ogni modifica nel codice è segnata con un commento `# [FIX n]`.
 Per trovarle tutte in Notepad++: **Cerca → Trova nei file → `[FIX`**.
@@ -124,6 +124,31 @@ Per trovarle tutte in Notepad++: **Cerca → Trova nei file → `[FIX`**.
 | 109 | DataConf, Monitor | `PANNELLO = False`: la finestra "ClaudeRob - STATO" non si apre più da sola; con `TERMINALE = "cabina"` e `FINESTRE_CAMERE = False` `cv2.imshow` resta spento anche senza la finestra di stato | 12/11, prima accensione della V43: si aprivano cabina e finestra STATO insieme ("partono entrambe"); la cabina ha già tutto |
 | 110 | RwdFoto, DataConf | In cima a `RwdFoto.py`, prima di aprire camere, seriale e motori: lucchetto `flock` su `LUCCHETTO` (/tmp/clauderob_robot.lock); se è già preso da un altro programma, avviso con il numero del processo, attesa `LUCCHETTO_ATTESA_S` (20 s) e uscita; `UN_SOLO_PROGRAMMA` per spegnerlo; non nel simulatore | 12/11: sul Raspberry c'erano due avvii automatici (labwc e lxsession con `sleep 30`): due programmi comanderebbero gli stessi motori e la stessa seriale. Prova: il secondo programma esce con l'avviso, il primo continua |
 | 111 | RwdFoto, DataConf | `ArenaDavanti()` prima di "Verificata entrata" (in `TrovaIngressoArena` e `IngressoDopoArgento`): mediana delle letture vere (non 0) del laser davanti negli ultimi `ARGENTO_FRONTE_FINESTRA_S` (0,5 s); oltre `ARGENTO_FRONTE_MAX_CM` (150) l'ingresso si annulla con `ScartaArgento`; con il laser fuori portata non blocca. `ARGENTO_DOPO_S` (0 = spento): niente ingresso nei primi N s della run (`Monitor._t_run`, non si azzera con le LoP) | Scatola nera 12/11 10:09 (V43), 93-103 s: falso argento dopo una linea persa, "ingresso" a velocità 68 in mezzo alla pista, discesa di 28 gradi, LoP 2; laser davanti 155-166 cm. Nei 15 ingressi veri delle 18 scatole nere: al massimo 105 cm. Prova sui dati veri: 15 veri entrano, il falso è annullato; simulatore identico alla V44 |
+| 113 | WebCam, Monitor, Cabina, DataConf | Metadati Lux/ExposureTime/AnalogueGain ogni secondo; controllo vista all'avvio; autoesposizione iniziale e tentativo di blocco per la camera arena | Mancavano una misura della luce e un controllo preliminare delle camere; soglie ed esposizione restano da tarare sul robot |
+
+## FIX 113 – Lux, controllo vista e camera arena
+
+La V47 aggiunge una verifica delle due camere prima della partenza e registra la luce durante la gara.
+
+- **Metadati:** una volta al secondo legge `Lux`, `ExposureTime` (microsecondi) e `AnalogueGain` sia dalla camera linea sia dalla camera arena.
+- **Scatola nera:** aggiunge `lux: [linea, arena]`, `cam_meta` (con i tre valori e il timestamp) e `vista` (esito, testo e dettagli).
+- **Cabina:** mostra Lux, esposizione e gain per entrambe le camere. La moviola usa automaticamente la `ViennaCabina.py` dell'ultima versione disponibile.
+- **Controllo all'avvio:** attende `CAM_AVVIO_ATTESA_S`, controlla che arrivi un fotogramma da ciascuna camera e segnala immagini quasi completamente nere o bianche. Per la camera linea verifica anche la quota di pixel neri: per questa prova il robot deve essere posizionato sulla linea.
+- **Partenza:** il risultato è solo informativo ("VISTA OK" oppure "ATTENZIONE: ..."). Non blocca il robot.
+- **Camera arena:** l'autoesposizione può restare attiva durante l'assestamento; poi il programma prova a fissare i valori correnti di esposizione e gain.
+
+**Parametri provvisori in `ViennaDataConf.py`:** `CAM_LUX_MIN`, `CAM_LUX_MAX`, `CAM_NERO_MIN`, `CAM_NERO_MAX`, `CAM_AVVIO_ATTESA_S`, `CAM_ARENA_AUTOESPOSIZIONE`, `CAM_ARENA_BLOCCA_ESPOSIZIONE`, `CAM_VISTA_ABILITATA`. Le soglie attuali sono iniziali, non una taratura definitiva.
+
+### Prove da fare sul robot
+
+1. Con illuminazione normale, registrare i Lux di entrambe le camere.
+2. Ripetere con luci spente e con una torcia: annotare Lux, ExposureTime e AnalogueGain.
+3. Coprire una camera alla volta all'avvio: deve comparire ATTENZIONE con il nome della camera.
+4. Con il robot sulla linea, verificare il controllo del nero; ripetere fuori dalla linea per capire quanto è sensibile la soglia.
+5. Aprire la scatola nera con `Strumenti_prove_Claude/terminale_nuovo.py` e verificare che i valori e lo stato siano visibili.
+6. Eseguire il confronto nel simulatore con la V45: le gare devono restare identiche.
+
+**Esposizione arena:** non fissare ancora un valore manuale definitivo. Prima raccogliere i metadati con luci normali, spente e torcia; poi scegliere insieme se lasciare l'autoesposizione, bloccarla dopo l'assestamento o usare un'esposizione fissa.
 
 ## Novità della V9: l'uscita si riconosce dalla striscia nera
 

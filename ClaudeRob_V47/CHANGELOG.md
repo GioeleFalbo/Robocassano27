@@ -1,13 +1,13 @@
 # ClaudeRob – Changelog
 
 Robot RoboCup Junior Rescue Line – IISS "Erodoto di Thurii", Cassano allo Ionio
-Versione attuale: **ClaudeRob V45** (12 novembre 2026)
+Versione attuale: **ClaudeRob V47** (12 novembre 2026)
 
 Questo file riassume, versione per versione, cosa è cambiato e perché. Il dettaglio tecnico di ogni
-modifica è in `LEGGIMI_MODIFICHE.md`: ogni correzione è numerata (FIX 1 … FIX 111) e nel codice è
+modifica è in `LEGGIMI_MODIFICHE.md`: ogni correzione è numerata (FIX 1 … FIX 113) e nel codice è
 segnata con un commento `# [FIX n]`, così si ritrova subito con "Cerca" in Notepad++.
 
-Il programma da lanciare è sempre `RwdFoto.py` dalla cartella `ClaudeRob_V45` (oppure `./avvia.sh`).
+Il programma da lanciare è sempre `RwdFoto.py` dalla cartella `ClaudeRob_V47` (oppure `./avvia.sh`).
 Nella cartella vanno copiate anche le 4 cartelle dei modelli YOLO (`best_ncnn_model_...`), che non
 sono nello zip.
 
@@ -61,6 +61,23 @@ sono nello zip.
 | V43 | Una scatola nera per ogni run, con le LoP dentro; camere della cabina più grandi con la finestra grande |
 | V44 | Solo la cabina nel terminale (finestra STATO spenta); un secondo programma del robot non parte se uno sta già girando |
 | V45 | Niente "ingresso" in mezzo alla pista: davanti alla porta vera il laser deve vedere l'arena |
+| V47 | Misura Lux delle due camere, controllo della vista all'avvio e autoesposizione iniziale della camera arena |
+
+---
+
+## V47 – 12 novembre 2026
+
+**Issue #29 – FIX 113: Lux, controllo della vista e camera arena.** La V47 parte dalla V45 e aggiunge controlli alle due camere senza cambiare le decisioni di gara.
+
+- Ogni secondo legge dalle due Picamera2 i metadati `Lux`, `ExposureTime` e `AnalogueGain`.
+- La scatola nera registra `lux: [linea, arena]`, `cam_meta` e l'esito `vista`; la cabina mostra i valori di entrambe le camere.
+- Prima dell'attesa dello switch, dopo `CAM_AVVIO_ATTESA_S`, controlla che entrambe le camere restituiscano un fotogramma e che l'immagine non sia quasi tutta nera o bianca. Per la camera linea controlla anche la presenza del nero: il robot deve essere posizionato sulla linea.
+- Il controllo mostra **VISTA OK** oppure **ATTENZIONE** con il motivo. È informativo: non impedisce la partenza.
+- La camera arena parte con autoesposizione attiva (se abilitata); dopo l'assestamento il programma legge esposizione e gain correnti e prova a bloccarli.
+
+**Parametri ancora provvisori:** soglie Lux, quota di nero e strategia di esposizione arena sono da misurare e decidere sul robot vero. Non considerare la V47 collaudata finché non sono state completate le prove in almeno tre condizioni di luce e il controllo coprendo le camere.
+
+**Prove da completare:** verifica sul robot; verifica della scatola nera e della moviola; confronto nel simulatore con la V45. Il simulatore deve continuare a funzionare anche senza metadati delle camere.
 
 ---
 

@@ -459,6 +459,7 @@ def schermo(c, storia, eventi, fase, durate, versione, crono=None, cam_linea=Non
     t_lin = [f"{DIM}YOLO vede{R}", f"{col}{B}{nome}{R}", f"{barra} {conf:.2f}",
              (f"{VERDE}{verde[:16]}{R}" if verde else ""), f"{DIM}{c.get('fps', 0):.0f} fps · {c.get('dec_s', 0):.0f} dec/s{R}"]
     t_ar = [f"{DIM}vede{R}", f"{AZZURRO}{B}{(c.get('arena') or '—')[:17]}{R}"]
+    # [FIX 113] Lux, tempo di esposizione e gain delle due camere (anche nella moviola).
     meta = c.get("cam_meta") or {}
     def dati_cam(m):
         lux, exp, gain = m.get("lux"), m.get("exposure_us"), m.get("gain")

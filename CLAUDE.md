@@ -12,11 +12,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - Si scrive in **italiano**, in modo diretto e semplice (i ragazzi devono capire).
 
 ## Regole fisse (da rispettare sempre)
-1. Ogni modifica al codice del robot = **versione nuova** in una cartella nuova: `ClaudeRob_V<n>` (ultima: **V45**).
+1. Ogni modifica al codice del robot = **versione nuova** in una cartella nuova: `ClaudeRob_V<n>` (ultima: **V47**, ramo di lavoro).
    Il simulatore ha la sua numerazione: `ClaudeRob_Simulatore_V<n>` (ultimo: **V32**).
 2. **Non modificare mai** le cartelle delle versioni già consegnate: si copia l'ultima e si lavora sulla copia.
 3. I **nomi dei file** delle classi non cambiano mai (`RwdFoto.py`, `ViennaClsRobot.py`, `ViennaDataConf.py`, ...).
-4. Ogni modifica è commentata nel codice con **`[FIX n]`** (ultimo: **FIX 111**), con il motivo (di solito: quale scatola
+4. Ogni modifica è commentata nel codice con **`[FIX n]`** (ultimo: **FIX 113**), con il motivo (di solito: quale scatola
    nera, quale secondo, cosa si vede nei dati).
 5. In ogni versione aggiornare **`CHANGELOG.md`** (sezione nuova in cima + riga nella tabella delle versioni) e
    **`LEGGIMI_MODIFICHE.md`** (una riga per FIX), con **fine riga CRLF** (Windows).
@@ -102,7 +102,7 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   lato corto accanto al triangolo rosso; i triangoli (rosso e verde) vengono spostati tra le prove; c'è una parete a
   destra di una parte della pista e un'altalena dopo l'uscita.
 
-## Il codice (ClaudeRob_V45, impronta c6bb6bcc58a393e3; V44: a0669f32449f6c26; V43: 166f805b56cee80a; V42: ebaf44adfcfb2e81; V41: 7fa6d06745b2776b; V40: dcd59068b49486ac; V39: 9ef3d48e550bc741)
+## Il codice (ClaudeRob_V47, ramo `v47-gioele-lux-camera-check`, basata su V45; V45 impronta c6bb6bcc58a393e3; V44: a0669f32449f6c26; V43: 166f805b56cee80a; V42: ebaf44adfcfb2e81; V41: 7fa6d06745b2776b; V40: dcd59068b49486ac; V39: 9ef3d48e550bc741)
 - `RwdFoto.py` – programma di gara (~4500 righe): seguilinea `InseguitoreIA`, verdi e incroci, ostacolo, ingresso
   (`TrovaIngressoArena`, `DirezioneIngresso`, `CentraSullIngresso`, `EntraDallaPorta`), palline (`ArenaAI`), uscita
   (`TrovaUscitaArena` → `AvvicinatiAlMuro` / `GiroDeiMuri` / `SeguiParete` / `EsciDallaPortaDavanti` /
@@ -113,7 +113,7 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   `Gira`, `RuotaVerso`, `Dritto(..., ruota=False)`, `StoriaBeccheggio`, `Pendenza`.
 - `ViennaClsWebCam.py` – camere e YOLO. `ViennaDataConf.py` – tutti i parametri. `ViennaMonitor.py` – scatola nera e
   monitor (eventi riconosciuti da elenchi di espressioni regolari). `ViennaPannello.py` – pannello a schermo.
-  `ViennaCabina.py` (V42) – il terminale "cabina di pilotaggio" (`TERMINALE = "cabina"`): laser dall'alto, assetto,
+  `ViennaCabina.py` (V47: Lux, esposizione e gain delle due camere) – il terminale "cabina di pilotaggio" (`TERMINALE = "cabina"`): laser dall'alto, assetto,
   cronometro dallo switch (conta le LoP), camere in piccolo, fasi della gara, eventi; finestra di almeno 100 x 38, altrimenti
   torna il pannello. La stessa schermata rivede le scatole nere: `Strumenti_prove_Claude/terminale_nuovo.py` (moviola).
 
@@ -198,6 +198,10 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - **V45** (12/11) FIX 111: niente "ingresso" in mezzo alla pista: prima di entrare il laser davanti (letture vere) deve vedere
   l'arena entro `ARGENTO_FRONTE_MAX_CM` (150 cm). Scatola nera 12/11 10:09, 93-103 s: falso argento, 166 cm, discesa di 28°.
   Sui dati veri: 15 ingressi veri su 15 entrano, il falso è annullato. `ARGENTO_DOPO_S` (spento) per il tempo minimo.
+- **V45** (12/11) FIX 111: niente "ingresso" in mezzo alla pista: prima di entrare il laser davanti (letture vere) deve vedere
+  l'arena entro `ARGENTO_FRONTE_MAX_CM` (150 cm). Scatola nera 12/11 10:09, 93-103 s: falso argento, 166 cm, discesa di 28°.
+  Sui dati veri: 15 ingressi veri su 15 entrano, il falso è annullato. `ARGENTO_DOPO_S` (spento) per il tempo minimo.
+- **V47** (12/11, issue #29) FIX 113: metadati Lux/ExposureTime/AnalogueGain ogni secondo; valori nella scatola nera e nella cabina; controllo vista all'avvio informativo; autoesposizione arena durante l'assestamento e tentativo di blocco. Soglie e strategia esposizione ancora da tarare sul robot.
 
 ## Com'è andata sul robot vero
 - 12/11 10:09 (**V43**): percorso completo, 3 vittime, uscita in 10 s, altalena, linea rossa a 547 s; **8 LoP**, una sola scatola nera
@@ -212,6 +216,9 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - Il prof: l'ingresso "funziona sempre" (dalla V37), ma "usciva in retromarcia" (9/11). La V41 **non è ancora stata provata**.
 
 ## Aperto / da fare
+1. **V47 / FIX 113 – collaudo sul robot:** misurare Lux, ExposureTime e AnalogueGain di entrambe le camere con luci normali, luci spente e torcia; coprire una camera alla volta; verificare VISTA OK/ATTENZIONE, scatola nera e moviola. Le soglie attuali sono provvisorie.
+2. **Esposizione camera arena:** decidere dopo le misure reali se mantenere l'autoesposizione, bloccarla dopo l'assestamento o impostare un valore fisso. Non considerare la scelta definitiva prima delle prove.
+3. **V47 e V46:** la V47 attuale parte dalla V45; quando la V46 di Battista sarà unita, rifare la V47 partendo dalla versione unita e ripetere i test, secondo la regola per chi arriva secondo.
 1. **Provare la V45 sul robot vero** (copiarla in `~/ClaudeRob_V45`, modelli, `chmod +x avvia.sh` se serve, impronta
    `c6bb6bcc58a393e3`, poi `ln -sfn ~/ClaudeRob_V45 ~/ClaudeRob_GARA`): l'ingresso non deve più tornare indietro con la porta aperta davanti (FIX 106);
    in VNC ingrandire il terminale ad almeno 100 x 38 per la cabina (FIX 107).
