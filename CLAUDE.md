@@ -46,8 +46,9 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - Il repository contiene le **ultime versioni** del codice (V39-V44 come riferimento, V45), i simulatori V31 e V32, gli strumenti
   di prova, il Laboratorio Shuri (solo gli strumenti), i pezzi stampati (`Meccanica_STL/`) e alcune scatole nere recenti, con gli **stessi nomi di cartella** del Mac (così i percorsi relativi funzionano uguale). Le versioni
   vecchie (V25-V38) restano sul Mac; la loro storia è nel `CHANGELOG.md`.
-- Versione nuova: si copia l'ultima (`ClaudeRob_V45`) in `ClaudeRob_V46`, si lavora lì, poi un commit con un messaggio tipo
-  "V46: FIX 112 ...". Non si modifica la cartella della versione precedente (resta come riferimento per i confronti).
+- V47 è stata preparata su un ramo separato partendo dalla V45, mentre Battista lavora sulla V46. Se la V46 viene unita per prima,
+  la V47 va rifatta partendo dalla versione appena unita, rimettendo il FIX 113 e ripetendo le prove. Non modificare mai le cartelle
+  delle versioni precedenti.
 - Le scatole nere nuove vanno in `ScatoleNere/`. File rigenerabili (replay, zip, `__pycache__`) esclusi da `.gitignore`.
 
 ## Cartelle
@@ -198,9 +199,6 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - **V45** (12/11) FIX 111: niente "ingresso" in mezzo alla pista: prima di entrare il laser davanti (letture vere) deve vedere
   l'arena entro `ARGENTO_FRONTE_MAX_CM` (150 cm). Scatola nera 12/11 10:09, 93-103 s: falso argento, 166 cm, discesa di 28°.
   Sui dati veri: 15 ingressi veri su 15 entrano, il falso è annullato. `ARGENTO_DOPO_S` (spento) per il tempo minimo.
-- **V45** (12/11) FIX 111: niente "ingresso" in mezzo alla pista: prima di entrare il laser davanti (letture vere) deve vedere
-  l'arena entro `ARGENTO_FRONTE_MAX_CM` (150 cm). Scatola nera 12/11 10:09, 93-103 s: falso argento, 166 cm, discesa di 28°.
-  Sui dati veri: 15 ingressi veri su 15 entrano, il falso è annullato. `ARGENTO_DOPO_S` (spento) per il tempo minimo.
 - **V47** (12/11, issue #29) FIX 113: metadati Lux/ExposureTime/AnalogueGain ogni secondo; valori nella scatola nera e nella cabina; controllo vista all'avvio informativo; autoesposizione arena durante l'assestamento e tentativo di blocco. Soglie e strategia esposizione ancora da tarare sul robot.
 
 ## Com'è andata sul robot vero
@@ -216,9 +214,9 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
 - Il prof: l'ingresso "funziona sempre" (dalla V37), ma "usciva in retromarcia" (9/11). La V41 **non è ancora stata provata**.
 
 ## Aperto / da fare
-1. **V47 / FIX 113 – collaudo sul robot:** misurare Lux, ExposureTime e AnalogueGain di entrambe le camere con luci normali, luci spente e torcia; coprire una camera alla volta; verificare VISTA OK/ATTENZIONE, scatola nera e moviola. Le soglie attuali sono provvisorie.
-2. **Esposizione camera arena:** decidere dopo le misure reali se mantenere l'autoesposizione, bloccarla dopo l'assestamento o impostare un valore fisso. Non considerare la scelta definitiva prima delle prove.
-3. **V47 e V46:** la V47 attuale parte dalla V45; quando la V46 di Battista sarà unita, rifare la V47 partendo dalla versione unita e ripetere i test, secondo la regola per chi arriva secondo.
+- **V47 / FIX 113 – collaudo sul robot:** misurare Lux, ExposureTime e AnalogueGain di entrambe le camere con luci normali, luci spente e torcia; coprire una camera alla volta; verificare VISTA OK/ATTENZIONE, scatola nera e moviola. Le soglie attuali sono provvisorie.
+- **Esposizione camera arena:** decidere dopo le misure reali se mantenere l'autoesposizione, bloccarla dopo l'assestamento o impostare un valore fisso. Non considerare la scelta definitiva prima delle prove.
+- **V47 e V46:** la V47 attuale parte dalla V45; quando la V46 di Battista sarà unita, rifare la V47 partendo dalla versione unita e ripetere i test, secondo la regola per chi arriva secondo.
 1. **Provare la V45 sul robot vero** (copiarla in `~/ClaudeRob_V45`, modelli, `chmod +x avvia.sh` se serve, impronta
    `c6bb6bcc58a393e3`, poi `ln -sfn ~/ClaudeRob_V45 ~/ClaudeRob_GARA`): l'ingresso non deve più tornare indietro con la porta aperta davanti (FIX 106);
    in VNC ingrandire il terminale ad almeno 100 x 38 per la cabina (FIX 107).
