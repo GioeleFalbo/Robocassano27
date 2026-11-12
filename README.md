@@ -9,7 +9,7 @@
   |                                                                                   |
   |        -=[  RoboCup Junior  :::  Rescue Line  :::  Cassano allo Ionio  ]=-        |
   |                                                                                   |
-  |       [ ClaudeRob V44 ]     [ 110 FIX ]     [ una scatola nera alla volta ]       |
+  |       [ ClaudeRob V45 ]     [ 111 FIX ]     [ una scatola nera alla volta ]       |
   `-=================================================================================-'
 ```
 
@@ -19,8 +19,8 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/RoboCup%20Junior-Rescue%20Line-1f8a70" alt="RoboCup Junior Rescue Line">
-  <img src="https://img.shields.io/badge/codice-ClaudeRob%20V44-0d1b2a" alt="Versione ClaudeRob V44">
-  <img src="https://img.shields.io/badge/FIX-110-d64545" alt="110 correzioni">
+  <img src="https://img.shields.io/badge/codice-ClaudeRob%20V45-0d1b2a" alt="Versione ClaudeRob V45">
+  <img src="https://img.shields.io/badge/FIX-111-d64545" alt="111 correzioni">
   <img src="https://img.shields.io/badge/Raspberry%20Pi-5-c51a4a?logo=raspberrypi&logoColor=white" alt="Raspberry Pi 5">
   <img src="https://img.shields.io/badge/Python-3-3776ab?logo=python&logoColor=white" alt="Python 3">
   <img src="https://img.shields.io/badge/simulatore-V32-6b7280" alt="Simulatore V32">
@@ -83,8 +83,8 @@ flowchart LR
     P --> R
 ```
 
-Dal primo programma della squadra a oggi: **110 correzioni** (FIX), ognuna con il suo perché, raccontate nel
-[`CHANGELOG`](ClaudeRob_V44/CHANGELOG.md).
+Dal primo programma della squadra a oggi: **111 correzioni** (FIX), ognuna con il suo perché, raccontate nel
+[`CHANGELOG`](ClaudeRob_V45/CHANGELOG.md).
 
 ## 👥 La squadra
 
@@ -109,7 +109,8 @@ Lavoriamo con persone e agenti di intelligenza artificiale insieme, ma con una r
 | 5 novembre 2026 | V36 | percorso completo, arrivo a 429 s |
 | 6 novembre 2026 | V38 | percorso completo, arrivo a **376 s**, **3 vittime su 3**, altalena superata |
 | 9 novembre 2026 | **V40** | percorso completo, arrivo a 388 s, **3 vittime su 3**, uscita in 64 s, altalena superata |
-| prossima prova | **V44** | 🔜 ingresso senza retromarce, cabina di pilotaggio nel terminale, una scatola nera per run |
+| 12 novembre 2026 | V43 | percorso completo, **3 vittime su 3**, uscita in 10 s, arrivo a 547 s (8 LoP nel seguilinea) |
+| prossima prova | **V45** | 🔜 ingresso senza retromarce, cabina di pilotaggio nel terminale, una scatola nera per run |
 
 Nel simulatore V32 la V41 completa la **pista della scuola a piastrelle** (ponte, tunnel, altalena) con 6 semi su 6 (262-311 s, 5 senza LoP) e i campi RoboCup di prova.
 
@@ -117,8 +118,8 @@ Nel simulatore V32 la V41 completa la **pista della scuola a piastrelle** (ponte
 
 | Cartella | Cosa c'è |
 |---|---|
-| [`ClaudeRob_V44/`](ClaudeRob_V44/) | il codice del robot (ultima versione). Sul Raspberry parte da solo da `~/ClaudeRob_GARA` |
-| [`ClaudeRob_V43/`](ClaudeRob_V43/), [`ClaudeRob_V42/`](ClaudeRob_V42/), [`ClaudeRob_V41/`](ClaudeRob_V41/), [`ClaudeRob_V40/`](ClaudeRob_V40/), [`ClaudeRob_V39/`](ClaudeRob_V39/) | le versioni precedenti, tenute per i confronti nel simulatore |
+| [`ClaudeRob_V45/`](ClaudeRob_V45/) | il codice del robot (ultima versione). Sul Raspberry parte da solo da `~/ClaudeRob_GARA` |
+| [`ClaudeRob_V44/`](ClaudeRob_V44/), [`ClaudeRob_V43/`](ClaudeRob_V43/), [`ClaudeRob_V42/`](ClaudeRob_V42/), [`ClaudeRob_V41/`](ClaudeRob_V41/), [`ClaudeRob_V40/`](ClaudeRob_V40/), [`ClaudeRob_V39/`](ClaudeRob_V39/) | le versioni precedenti, tenute per i confronti nel simulatore |
 | [`ClaudeRob_Simulatore_V32/`](ClaudeRob_Simulatore_V32/) | il simulatore (Python 3 + `numpy` + `opencv-python`), con la pista della scuola **a piastrelle**: ponte sopra il tunnel, rampe di 21°, altalena, luci e ombre, cono vero del laser ([mappa](ClaudeRob_Simulatore_V32/mappa_scuola.png)) |
 | [`ClaudeRob_Simulatore_V31/`](ClaudeRob_Simulatore_V31/) | il simulatore precedente, tenuto per i confronti |
 | [`Strumenti_prove_Claude/`](Strumenti_prove_Claude/) | prove automatiche di porte e altalena nel simulatore |
@@ -137,14 +138,14 @@ Nel simulatore V32 la V41 completa la **pista della scuola a piastrelle** (ponte
 ```
 pip3 install numpy opencv-python
 cd Strumenti_prove_Claude
-python3 gira.py ../ClaudeRob_V44 prova scuola_nuova 480 seme=1
+python3 gira.py ../ClaudeRob_V45 prova scuola_nuova 480 seme=1
 ```
 
 E per vederlo muoversi nel browser:
 
 ```
 cd ../ClaudeRob_Simulatore_V32
-python3 crea_replay.py prova.html replay_prova.json:"Prova V44"
+python3 crea_replay.py prova.html replay_prova.json:"Prova V45"
 ```
 
 ---
