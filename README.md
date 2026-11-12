@@ -131,6 +131,7 @@ Nel simulatore V32 la V41 completa la **pista della scuola a piastrelle** (ponte
 | [`.claude/skills/anatomia/`](.claude/skills/anatomia/) | la skill **anatomia**: chiedete a Claude *"smontami il sistema dei laser"* e vi spiega ogni pezzo, nel robot e nel codice |
 | [`COME_LAVORARE.md`](COME_LAVORARE.md) | **per chi entra nella squadra**: GitHub, regole delle versioni, prove nel simulatore |
 | [`CLAUDE.md`](CLAUDE.md) | regole del progetto, storia delle versioni e cose da fare (lo legge Claude Code) |
+| [`Raspberry/`](Raspberry/) | l'avvio del robot: all'accensione parte da solo con l'ultima versione copiata sul Raspberry |
 | `Aggiorna da GitHub.command` | doppio clic sul Mac: aggiorna la cartella `02_Robotica` con l'ultima versione |
 
 ## 🚀 Provare il robot nel simulatore

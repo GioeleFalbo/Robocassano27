@@ -73,7 +73,11 @@ Va messo nella cartella `02_Robotica` sul Mac: Claude Code legge da solo un file
   `/home/pi/ClaudeRob_GARA/avvia.sh`. **Dal 12/11**: sul robot gira la V43; l'avvio è solo in `~/.config/labwc/autostart`:
   `env LANG=C.UTF-8 LC_ALL=C.UTF-8 lxterminal --geometry=120x40 -e /home/pi/ClaudeRob_GARA/avvia.sh &` (il sistema è in
   `it_IT@euro`, non UTF-8: senza `C.UTF-8` la cabina è illeggibile); quello in `lxsession` è spento (copie `.prima_del_12nov`).
-  `avvia.sh` deve essere eseguibile (`chmod +x`): su GitHub lo è dal 12/11. Versione nuova sul robot: copiare la cartella (scp o FileZilla, **come cartella**),
+  `avvia.sh` deve essere eseguibile (`chmod +x`): su GitHub lo è dal 12/11.
+  **Avvio con l'ultima versione** (12/11, `Raspberry/avvia_ultima_versione.sh`, da installare in `~/` e mettere nell'autostart al
+  posto di `ClaudeRob_GARA/avvia.sh`): a ogni accensione sceglie la `~/ClaudeRob_V<n>` più alta con `RwdFoto.py`, copia i
+  modelli se mancano, sposta `ClaudeRob_GARA` e parte; `~/ClaudeRob_FISSA` (nome di una cartella) per restare su una versione;
+  log in `~/avvio_robot.log`. Istruzioni in `Raspberry/LEGGIMI.md`. Versione nuova sul robot: copiare la cartella (scp o FileZilla, **come cartella**),
   copiarci i 4 modelli, controllare l'impronta, poi `ln -sfn ~/ClaudeRob_V41 ~/ClaudeRob_GARA` (per tornare indietro: lo
   stesso comando con la versione vecchia). Non lanciare `RwdFoto.py` via SSH: apre finestre (`cv2.imshow`), serve lo
   schermo del robot o VNC. In `/home/pi` restano ~80 file .py e ~40 modelli vecchi di altre gare: da archiviare in
