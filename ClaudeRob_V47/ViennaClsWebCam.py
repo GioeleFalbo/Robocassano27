@@ -200,7 +200,7 @@ CamAr.configure(vidconfig)
 CamAr.start()
 #CamAr.set_controls({"AfMode": controls.AfModeEnum.Continuous})
 with CamAr.controls as ctrl:     # [FIX 5] vedi sopra
-    #[FIX 113]: autoesposizione durante l'assestamento; poi la blocca ViennaMonitor.
+    # [FIX 113]: autoesposizione durante l'assestamento; poi la blocca ViennaMonitor.
     ctrl.AeEnable = bool(getattr(RwdConf, "CAM_ARENA_AUTOESPOSIZIONE", True))
     #ctrl.ExposureTime = 10000#1000#10000 
     #ctrl.AnalogueGain = 0.9 

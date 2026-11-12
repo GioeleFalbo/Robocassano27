@@ -64,7 +64,7 @@ _arena = {"cosa": "", "t": 0.0, "box": None}
 _frame_arena = [None]
 _t_arena = [0.0]                   # [FIX 51] quando è arrivato l'ultimo fotogramma della camera arena
 _t_linea = [0.0]
-#[FIX 113]: metadati delle camere aggiornati a 1 Hz
+# [FIX 113]: metadati delle camere aggiornati a 1 Hz
 _cam_meta = {"linea": {"lux": None, "exposure_us": None, "gain": None, "t": 0.0},
              "arena": {"lux": None, "exposure_us": None, "gain": None, "t": 0.0}}
 _vista = {"ok": None, "testo": "CONTROLLO VISTA IN ATTESA", "dettagli": [], "t": 0.0}
